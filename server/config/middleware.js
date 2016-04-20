@@ -6,9 +6,11 @@ var bodyParser = require('body-parser'),
   function applyMiddleware(app) {
     app.use(bodyParser.json());
     var router = express.Router();
-    app.set('port', (process.env.PORT || 8000));    
+    app.set('port', (process.env.PORT || 8000));
     app.use('/api/company');
     app.use(express.static(path.join(__dirname + '../../dist')));
+
+    
   }
 
   module.exports = applyMiddleware;
