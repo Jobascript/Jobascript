@@ -20,11 +20,17 @@ var db = new sqlite3.Database(path.join(__dirname, '../db/jobascript.sqlite3'), 
  * @return {Promise} resolve with company id
  */
 db.addCompany = function(company) {
+  if(!company) {
+    throw new Error('a company obj arg is required! e.g. {name: \'Google\'...}');
+  } else if(!company.name) {
+    throw new Error('company has to have a name property! e.g. {name: \'Google\'...}');
+  }
+
   var stmt = db.prepare('INSERT INTO companies (name, created) VALUES ($name, $created);');
 
   return new Promise(function(resolve, reject) {
     stmt.run({
-      $name: company.name,
+      $name: String(company.name),
       $created: moment().toISOString()
     }, function(error) {
       if(error) reject(error);
@@ -40,7 +46,7 @@ db.addCompany = function(company) {
  */
 db.removeCompany = function(id) {
   id = Number(id);
-  if(isNaN(id)) throw TypeError('id must be a Number');
+  if(isNaN(id)) throw new TypeError('id must be a Number');
 
   var delStmt = db.prepare('DELETE FROM companies WHERE id = $id;');
   var seletStmt = db.prepare('SELECT * FROM companies WHERE id = $id;');
