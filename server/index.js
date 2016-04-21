@@ -14,7 +14,6 @@ router.get('/', function(req, res) {
   res.send(200);
 });
 
-
 // app.use('/api', router);
 
 var server = app.listen(app.get('port'), function() {
