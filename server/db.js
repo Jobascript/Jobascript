@@ -50,6 +50,7 @@ db.removeCompany = function(id) {
       $id: id
     }, function(error, row) {
       if(error) reject(error);
+      if(!row) reject('not found');
       resolve(row);
     });
   });
@@ -65,7 +66,7 @@ db.removeCompany = function(id) {
 
   return Promise.all([selectP, delP]).then(function(values) {
     return values[0];
-  });
+  }).catch(function(err) {throw new Error(err);});
 
 };
 

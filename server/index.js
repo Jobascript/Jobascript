@@ -8,7 +8,7 @@ var db = require('./db');
 //   console.log('inserted', id); // => 2
 // });
 
-// db.removeCompany(1).then(function(company){
+// db.removeCompany(7).then(function(company){
 //   console.log('deleted', company); // => {name: 'Google'}
 // }, function(reason) {
 //   console.log('cannot delete', reason);
