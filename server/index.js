@@ -18,6 +18,7 @@ router.get('/company', function(req, res) {
 
 router.post('/company', function(req, res) {
   res.send(dummyData);
+  
 });
 
 // app.use('/api', router);
