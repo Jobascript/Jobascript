@@ -9,8 +9,6 @@ var bodyParser = require('body-parser'),
     app.set('port', (process.env.PORT || 8000));
     app.use('/api/company');
     app.use(express.static(path.join(__dirname + '../../dist')));
-
-    
   }
 
   module.exports = applyMiddleware;

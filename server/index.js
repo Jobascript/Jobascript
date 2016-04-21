@@ -6,17 +6,17 @@ var router = express.Router();
 
 app.set('port', (process.env.PORT || 8080));
 app.use(bodyParser.json());
+// app.use(express.static(path.join(__dirname + '../client/dist')));
 
-
-app.get('/', function(req, res) {
+router.get('/', function(req, res) {
   res.send(200);
 });
 
-
-app.get('/company', function(req, res) {
+router.get('/company', function(req, res) {
   res.send('hello');
 });
-app.post('/company', function(req, res) {
+
+router.post('/company', function(req, res) {
   res.send(dummyData);
 });
 
@@ -27,4 +27,4 @@ var server = app.listen(app.get('port'), function() {
   console.log('server is running on ' + port);
 });
 
-module.exports = server;
+module.exports = router;
