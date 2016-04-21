@@ -1,5 +1,4 @@
-module.exports = angular.module('jobascript.company')
-.factory('Company', function($http){
+module.exports = function($http){
 
 	//companyObj comes in form of {name: 'name'}
 	var addCompany = function(companyObj){
@@ -27,6 +26,6 @@ module.exports = angular.module('jobascript.company')
 		addCompany: addCompany,
 		deleteCompany: deleteCompany
 	};
-});
+};
 
 
