@@ -27,6 +27,7 @@
     "express": "^4.13.4",
     "gulp": "^3.9.1",
     "gulp-webpack": "^1.5.0",
-    "html-loader": "^0.4.3"
+    "html-loader": "^0.4.3",
+    "sqlite3": "^3.1.3"
   }
 }
