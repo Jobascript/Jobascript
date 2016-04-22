@@ -10,7 +10,7 @@ company.config(function($urlRouterProvider, $stateProvider, stateHelperProvider)
 	.state('company.job', {
 		url: '/job',
 		controller: 'JobController',
-		templateUrl: require('')
+		template: require('')
 	})
 });
 
@@ -22,6 +22,8 @@ company.controller('CompanyController', function($scope, $http, Company){
 
 		Company.addCompany({name: companyName})
 	};
+
+
 });
 
 company.factory('Company', require('./services.js'));

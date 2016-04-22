@@ -2,9 +2,10 @@ module.exports = function($http){
 
 	//companyObj comes in form of {name: 'name'}
 	var addCompany = function(companyObj){
-			return $http({
+		return $http({
       		method: 'POST',
-      		url: '/api/company'
+      		url: '/api/company',
+      		data: companyObj
     	})
     	.then(function(resp){
       		return resp.data;
@@ -15,7 +16,8 @@ module.exports = function($http){
 	var deleteCompany = function(companyObj){
 		return $http({
 			method: 'DELETE',
-			url: '/api/company'
+			url: '/api/company',
+			data: companyObj
 		})
 		.then(function(resp){
 			return resp.data;
@@ -27,5 +29,4 @@ module.exports = function($http){
 		deleteCompany: deleteCompany
 	};
 };
-
 
