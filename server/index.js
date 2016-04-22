@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use('/company', company);
 // app.use(express.static(path.join(__dirname + '../client/dist')));
 
-router.get('/', function(req, res) {
+app.get('/', function(req, res) {
   res.send(200);
 });
 

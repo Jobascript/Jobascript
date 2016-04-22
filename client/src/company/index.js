@@ -2,11 +2,15 @@ var company = angular.module('jobascript.company', []);
 
 company.config(function($urlRouterProvider, $stateProvider, stateHelperProvider) {
 
-	$stateProvider.state('company', {})
+	$stateProvider.state('company', {
+		url: '/company/:company',
+		controller: 'CompanyController',
+		template: require('')
+	})
 	.state('company.job', {
 		url: '/job',
 		controller: 'JobController',
-		templateUrl: '../job/job.html'
+		templateUrl: require('')
 	})
 });
 

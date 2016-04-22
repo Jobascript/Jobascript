@@ -6,7 +6,8 @@ require('./company/');
 
 angular.module('jobascript', [
 	'ui.router',
-	'ui.router.statehelper',
+	// 'ui.router.statehelper',
 	'jobascript.company'
 ]);
+
 
