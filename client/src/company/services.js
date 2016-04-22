@@ -18,7 +18,16 @@ module.exports = function ($http) {
       url: '/api/company',
       data: companyObj
     })
-    .then(function(resp){
+    .then(function (resp) {
+      return resp.data;
+    });
+  };
+
+  var getCompanies = function (options) {
+    return $http.get('/api/companies', {
+      data: options
+    })
+    .then(function (resp) {
       return resp.data;
     });
   };
@@ -36,6 +45,7 @@ module.exports = function ($http) {
   };
 
   return {
+    getCompanies: getCompanies,
     addCompany: addCompany,
     deleteCompany: deleteCompany,
     getCompany: getCompany

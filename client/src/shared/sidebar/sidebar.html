@@ -5,4 +5,7 @@
       <button class="btn btn-default" type="button" ng-click="addCompany(companyName)">Add</button>
     </span>
   </div>
+  <ul class="nav nav-pills nav-stacked mt2">
+    <li ng-repeat="company in companies"><a ui-sref="company({company: company.name})">{{ company.name }}</a></li>
+  </ul>
 </aside>

@@ -2,24 +2,11 @@
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="./bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="./tachyons/css/tachyons.min.css">
   <title>Jobascript</title>
 </head>
 <body>
-  <nav class="navbar navbar-inverse navbar-static-top">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#/">Jobascript</a>
-      </div>
-    </div>
-  </nav>
-  <div class="container-fluid">
-    <div class="row">
-      <ui-view name="sidebar"></ui-view>
-      <main class="col-xs-9">
-        <ui-view></ui-view>
-      </main>
-    </div>
-  </div>
+  <div ui-view></div>
   <script type="text/javascript" src="./bundle.js"></script>
 </body>
 </html>
