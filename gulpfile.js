@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var webpack = require('gulp-webpack');
 var del = require('del');
-var jshint = require('gulp-jshint');
+var eslint = require('gulp-eslint');
 var watch = require('gulp-watch');
 
 var paths = {
@@ -22,14 +22,16 @@ gulp.task('clean', function() {
 // lint
 gulp.task('lint-client', function(){
   return gulp.src(paths.client.scripts)
-  .pipe(jshint())
-  .pipe(jshint.reporter('jshint-stylish'));
+  .pipe(eslint())
+  .pipe(eslint.format())
+  .pipe(eslint.failAfterError());
 });
 
 gulp.task('lint-server', function(){
   return gulp.src(paths.server.scripts)
-  .pipe(jshint())
-  .pipe(jshint.reporter('jshint-stylish'));
+  .pipe(eslint())
+  .pipe(eslint.format())
+  .pipe(eslint.failAfterError());
 });
 
 gulp.task('build-client', ['clean'], function() {
