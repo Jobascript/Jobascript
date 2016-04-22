@@ -1,9 +1,13 @@
 var db = require('../db');
 
 exports.getCompany = function (req, res) {
-  var userCompany = req.body.name;
+  var userCompany = req.query.name;
+  console.log(req.query)
   db.getCompany({ name: userCompany }).then(function (company) {
-    res.status(200).send(company);
+    console.log(company)
+    res
+    // .sendStatus(200)
+    .send(company);
   }).catch(function (err) {
     console.log(err);
     res.sendStatus(500);
@@ -14,7 +18,7 @@ exports.addCompany = function (req, res) {
   var userCompany = req.body.name;
   db.addCompany({ name: userCompany })
   .then(function (companyID) {
-    res.status(200).send(companyID);
+    res.sendStatus(200).send(companyID);
   }).catch(function (err) {
     console.log(err);
     res.sendStatus(500);

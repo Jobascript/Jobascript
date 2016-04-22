@@ -16,7 +16,7 @@ var db = new sqlite3.Database(
 // db.serialize(function() {
 //   db.run('DROP TABLE IF EXISTS companies');
 
-//   db.run('CREATE TABLE IF NOT EXISTS companies (id INTEGER PRIMARY KEY ASC, name TEXT, created TEXT)');
+  db.run('CREATE TABLE IF NOT EXISTS companies (id INTEGER PRIMARY KEY ASC, name TEXT, created TEXT)');
 // });
 /* eslint-enable */
 
