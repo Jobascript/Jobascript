@@ -16,6 +16,35 @@ var db = new sqlite3.Database(path.join(__dirname, '../db/jobascript.sqlite3'), 
 // });
 
 /**
+ * @param  {Object} e.g. {name: 'Google'} or {id: 2}
+ * @return {Object} a comapany object
+ */
+db.getCompany = function(args) {
+  var company = args;
+  var stmt;
+
+  if(company.id) {
+    stmt = db.prepare('SELECT * FROM companies WHERE id = $id;');
+  } else if(company.name) {
+    stmt = db.prepare('SELECT * FROM companies WHERE name = $name;');
+  } else {
+    return Promise.reject('arg must include either an id or name property');
+  }
+  
+  return new Promise(function(resolve, reject) {
+    console.log('company: ', company);
+    stmt.get({
+      $id: company.id,
+      $name: company.name
+    }, function(error, row) {
+      if(error) reject(error);
+      if(!row) reject('not found');
+      resolve(row);
+    });
+  });
+};
+
+/**
  * @param {Object} company - e.g. {name: 'Google'...}
  * @return {Promise} resolve with company id
  */
