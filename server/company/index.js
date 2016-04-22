@@ -1,6 +1,6 @@
 var middleware = require('../config/middleware');
 var dummyData = require('../dummyData/dummyData');
-var db = require('./db');
+var db = require('../db');
 
 
 exports.getCompany = function(req, res) {
