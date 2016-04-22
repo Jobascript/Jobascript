@@ -1,7 +1,4 @@
-var middleware = require('../config/middleware');
-var dummyData = require('../dummyData/dummyData');
 var db = require('../db');
-
 
 exports.getCompany = function(req, res) {
   var userCompany = req.body.name;
@@ -24,8 +21,6 @@ exports.addCompany = function(req, res) {
   });
 };
 
-
-
 exports.removeCompany = function(req, res) {
   var companyId = req.body.id;
   db.removeCompany(companyId)
@@ -39,19 +34,3 @@ exports.removeCompany = function(req, res) {
     res.sendStatus(500);
   });
 };
-
-// module.exports = function(app) {
-  // app.get('/', function(req, res) {
-  //   res.send('things and stuff');
-  // });
-  //
-  // app.post('/', function(req, res) {
-  //   res.send(dummyData);
-  // });
-// };
-
-
-
-
-
-//router.delete implement

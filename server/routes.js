@@ -1,5 +1,5 @@
-var companyHandler = require('./company/');
-var jobHandler = require('./job/');
+var companyHandler = require('./company');
+var jobHandler = require('./job');
 
 module.exports = function(app) {
   app.get('/company', companyHandler.getCompany);
