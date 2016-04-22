@@ -20,6 +20,23 @@ var db = new sqlite3.Database(
 // });
 /* eslint-enable */
 
+/**
+ * @param  {Object} options obj e.g. {size: 10}
+ * @return {Array} Array of company objects
+ */
+db.getCompanies = function (options) {
+  var size = (options && options.size) || 10;
+  var stmt = db.prepare('SELECT * FROM companies ORDER BY created ASC LIMIT $size;');
+
+  return new Promise(function (resolve, reject) {
+    stmt.all({
+      $size: size
+    }, function (error, companies) {
+      if (error) reject(error);
+      resolve(companies);
+    });
+  });
+};
 
 /**
  * @param  {Object} e.g. {name: 'Google'} or {id: 2}
