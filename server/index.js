@@ -12,6 +12,6 @@ var server = app.listen(port, function() {
 });
 
 
-// app.use('/api', router);
 
 module.exports = app;
+
