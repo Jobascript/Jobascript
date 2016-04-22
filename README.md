@@ -7,7 +7,5 @@ npm install
 
 ### Build
 ``` bash
-grunt clean
-grunt lint
-grunt build-client
+gulp build-client
 ```
