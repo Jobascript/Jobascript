@@ -1,19 +1,16 @@
 
 var express = require('express');
-var bodyParser = require('body-parser');
-var dummyData = require('./dummyData/dummyData');
-var company = require('./company/index');
 var app = express();
-var router = express.Router();
 
-app.set('port', (process.env.PORT || 8080));
-app.use(bodyParser.json());
-app.use('/company', company);
-// app.use(express.static(path.join(__dirname + '../client/dist')));
+// app.set('port', (process.env.PORT || 8080));
+var port = process.env.PORT || 8080;
+var config = require('./config/middleware.js')(app, express);
+var routes = require('./routes')();
 
-router.get('/', function(req, res) {
-  res.send(200);
+var server = app.listen(port, function() {
+  console.log('server is listening to ' + port);
 });
+
 
 // app.use('/api', router);
 
@@ -22,4 +19,4 @@ var server = app.listen(app.get('port'), function() {
   console.log('server is running on ' + port);
 });
 
-module.exports = router;
+module.exports = app;
