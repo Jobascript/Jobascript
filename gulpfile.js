@@ -18,7 +18,7 @@ gulp.task('clean', function() {
 
 // lint
 gulp.task('lint', function(){
-  return gulp.src('./client/src/*.js')
+  return gulp.src(paths.client.scripts)
   .pipe(jshint())
   .pipe(jshint.reporter('jshint-stylish'))
 });
