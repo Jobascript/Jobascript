@@ -1,3 +1,4 @@
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var dummyData = require('./dummyData/dummyData');
@@ -13,7 +14,6 @@ app.use('/company', company);
 router.get('/', function(req, res) {
   res.send(200);
 });
-
 
 // app.use('/api', router);
 

@@ -6,12 +6,12 @@ var paths = {
   client: {
     entry: './client/src/',
     dest: './client/dist/',
-    scripts: './client/src/**/*js'
+    scripts: './client/src/**/*.js'
   }
 };
 
 gulp.task('clean', function() {
-  return del([paths.client.dest]);
+  return del([paths.client.dest + '**/*', '!' + paths.client.dest + '.gitkeep']);
 });
 
 gulp.task('build-client', ['clean'], function() {
