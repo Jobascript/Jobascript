@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html ng-app='jobascript'>
 <head>
   <title>Jobascript</title>
 </head>
-<body>
+<body ng-controller='CompanyController'>
+<form>
+	<input type='text' ng-model='company'></input>
+	<button type='button' ng-click='add(company)'>Click Me</button>
+</form>
 
 <script type="text/javascript" src="./bundle.js"></script>
 </body>
 </html>
+

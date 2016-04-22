@@ -1,14 +1,7 @@
-var bodyParser = require('body-parser'),
-    request = require('request'),
-    express = require('express');
+var bodyParser = require('body-parser');
+var path = require('path');
 
-
-  function applyMiddleware(app) {
-    app.use(bodyParser.json());
-    var router = express.Router();
-    app.set('port', (process.env.PORT || 8000));
-    app.use('/api/company');
-    app.use(express.static(path.join(__dirname + '../../dist')));
-  }
-
-  module.exports = applyMiddleware;
+module.exports = function(app, express) {
+  app.use(bodyParser.json());
+  app.use(express.static(path.join(__dirname, '../../client/dist')));
+};

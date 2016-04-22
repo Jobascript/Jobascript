@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var webpack = require('gulp-webpack');
 var del = require('del');
+var jshint = require('gulp-jshint');
+var watch = require('gulp-watch');
 
 var paths = {
   client: {
@@ -12,6 +14,13 @@ var paths = {
 
 gulp.task('clean', function() {
   return del([paths.client.dest + '**/*', '!' + paths.client.dest + '.gitkeep']);
+});
+
+// lint
+gulp.task('lint', function(){
+  return gulp.src(paths.client.scripts)
+  .pipe(jshint())
+  .pipe(jshint.reporter('jshint-stylish'))
 });
 
 gulp.task('build-client', ['clean'], function() {
@@ -31,3 +40,5 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', ['watch']);
+
+// handle error
