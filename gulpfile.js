@@ -43,11 +43,15 @@ gulp.task('build-client', ['clean'], function() {
   gulp.src(paths.client.src + 'app.js')
     .pipe(webpack(require('./webpack.config.js')))
     .pipe(gulp.dest(paths.client.dest));
+
+  // move bootstrap, temp
+  gulp.src('./node_modules/bootstrap/**/*')
+    .pipe(gulp.dest(paths.client.dest + 'bootstrap'));
 });
 
 gulp.task('watch', function() {
   // client
-  gulp.watch(paths.client.scripts, ['lint-client', 'build-client']);
+  gulp.watch(paths.client.src + '*', ['lint-client', 'build-client']);
   // server
   gulp.watch(paths.server.scripts, ['lint-server']);
 });

@@ -1,19 +1,25 @@
 <!DOCTYPE html>
-<html ng-app='jobascript'>
+<html>
 <head>
+  <link rel="stylesheet" type="text/css" href="./bootstrap/dist/css/bootstrap.min.css">
   <title>Jobascript</title>
 </head>
-<body ng-controller='CompanyController'>
-<form>
-	<input type='text' ng-model='company'>
-	<button type='button' ng-click='add(company)'>Click Me</button>
-</form>
-<form>
-	<input type='text' ng-model='companyN'>
-	<button type='button' ng-click='get(companyN)'>Click Me Part 2</button>
-</form>
-
-
-<script type="text/javascript" src="./bundle.js"></script>
+<body>
+  <nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#/">Jobascript</a>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <ui-view name="sidebar"></ui-view>
+      <main class="col-xs-9">
+        <ui-view></ui-view>
+      </main>
+    </div>
+  </div>
+  <script type="text/javascript" src="./bundle.js"></script>
 </body>
 </html>
