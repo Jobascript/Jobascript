@@ -35,7 +35,7 @@ exports.addCompany = function (req, res) {
 exports.removeCompany = function (req, res) {
   var companyId = req.body.id;
   db.removeCompany(companyId)
-  .then(function func(company) {
+  .then(function (company) {
     console.log('company ' + company + ' has been successfully removed');
     res.sendStatus(200);
   }, function () {
