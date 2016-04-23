@@ -22,7 +22,7 @@ module.exports = function ($http) {
       console.error('err', err);
     });
   };
-  
+
   /**
    * @param  {Object} options = {size: Number}
    * @return {Promise} resolved to Array of company Objects
@@ -38,7 +38,10 @@ module.exports = function ($http) {
     });
   };
 
-
+  /**
+   * @param  {Number} company id
+   * @return {Promise} resolved to ompany Object
+   */
   var getCompany = function (id) {
     return $http.get('/api/company', {
       params: { id: id }
