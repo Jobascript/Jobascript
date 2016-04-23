@@ -11,5 +11,6 @@ module.exports = {
       { test: /\.html$/, loaders: ['html'] },
       { test: /\.css$/, loader: 'style-loader!css-loader' }
     ]
-  }
+  },
+  devtool: 'source-map'
 };
