@@ -43,15 +43,6 @@ gulp.task('build-client', ['clean'], function() {
   gulp.src(paths.client.src + 'app.js')
     .pipe(webpack(require('./webpack.config.js')))
     .pipe(gulp.dest(paths.client.dest));
-
-  // move bootstrap, temp
-  gulp.src('./node_modules/bootstrap/**/*')
-    .pipe(gulp.dest(paths.client.dest + 'bootstrap'));
-
-  // move tachyons, temp
-  gulp.src('./node_modules/tachyons/**/*')
-    .pipe(gulp.dest(paths.client.dest + 'tachyons'));
-
 });
 
 gulp.task('watch', function() {
