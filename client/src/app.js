@@ -19,5 +19,6 @@ require('./communications');
 // style
 require('bootstrap/dist/css/bootstrap.css');
 require('tachyons/css/tachyons.min.css');
+require('./shared/layout.css');
 
 angular.bootstrap(document, ['jobascript']);
