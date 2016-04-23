@@ -3,7 +3,7 @@ var company = angular.module('jobascript.company', []);
 company.config(function ($urlRouterProvider, $stateProvider) {
   $stateProvider.state('company', {
     parent: 'home',
-    url: '/company/:company',
+    url: '/company/:name/:id',
     views: {
       'main@index': {
         controller: 'CompanyController',

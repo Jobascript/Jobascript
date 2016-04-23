@@ -1,13 +1,11 @@
 module.exports = function ($http) {
   // companyObj comes in form of {name: 'name'}
   var addCompany = function (companyObj) {
-    return $http({
-      method: 'POST',
-      url: '/api/company',
-      data: companyObj
-    })
+    return $http.post('/api/company', companyObj)
     .then(function (resp) {
       return resp.data;
+    }, function (err) {
+      console.error('err', err);
     });
   };
 
@@ -20,6 +18,8 @@ module.exports = function ($http) {
     })
     .then(function (resp) {
       return resp.data;
+    }, function (err) {
+      console.error('err', err);
     });
   };
 
@@ -29,6 +29,8 @@ module.exports = function ($http) {
     })
     .then(function (resp) {
       return resp.data;
+    }, function (err) {
+      console.error('err', err);
     });
   };
 

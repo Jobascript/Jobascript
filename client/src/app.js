@@ -6,16 +6,15 @@ var app = angular.module('jobascript', [
 ]);
 
 app.config(function ($urlRouterProvider, $stateProvider) {
-  $urlRouterProvider.otherwise('/dashboard');
+  $urlRouterProvider.otherwise('/');
 
-  $stateProvider.state('index', {
+  $stateProvider.state('layout', {
     abstract: true,
-    // url: '/',
     views: {
       '@': {
         template: require('./shared/layout.html')
       },
-      'sidebar@index': {
+      'sidebar@layout': {
         resolve: {
           companies: function (Company) {
             return Company.getCompanies({ size: 10 });
@@ -28,8 +27,8 @@ app.config(function ($urlRouterProvider, $stateProvider) {
   });
 
   $stateProvider.state('home', {
-    url: '/dashboard',
-    parent: 'index'
+    url: '/',
+    parent: 'layout'
   });
 
   console.log('app');

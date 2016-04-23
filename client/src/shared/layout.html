@@ -8,10 +8,8 @@
   </nav>
   <div class="container-fluid">
     <div class="row">
-      <ui-view name="sidebar"></ui-view>
-      <main class="col-xs-9">
-        <ui-view name="main"></ui-view>
-      </main>
+      <aside class="col-sm-3" ui-view="sidebar"></aside>
+      <main class="col-sm-9" ui-view="main"></main>
     </div>
   </div>
 </div>
