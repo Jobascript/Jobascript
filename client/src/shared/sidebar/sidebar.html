@@ -1,10 +1,10 @@
 <div>
-  <div class="input-group">
+  <form class="input-group" ng-submit="addCompany(companyName)">
     <input type="text" class="form-control" placeholder="Comapany..." ng-model="companyName">
     <span class="input-group-btn">
-      <button class="btn btn-default" type="button" ng-click="addCompany(companyName)">Add</button>
+      <button class="btn btn-default" type="submit">Add</button>
     </span>
-  </div>
+  </form>
   <ul class="nav nav-pills nav-stacked mt2">
     <li ng-repeat="company in companies" ui-sref-active="active"><a ui-sref="company(company)">{{ company.name }}</a></li>
   </ul>
