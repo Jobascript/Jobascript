@@ -47,7 +47,7 @@ gulp.task('build-client', ['clean'], function() {
 
 gulp.task('watch', function() {
   // client
-  gulp.watch(paths.client.scripts, ['lint-client', 'build-client']);
+  gulp.watch(paths.client.src + '**/*', ['lint-client', 'build-client']);
   // server
   gulp.watch(paths.server.scripts, ['lint-server']);
 });

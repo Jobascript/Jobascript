@@ -1,19 +1,9 @@
 <!DOCTYPE html>
-<html ng-app='jobascript'>
+<html>
 <head>
   <title>Jobascript</title>
 </head>
-<body ng-controller='CompanyController'>
-<form>
-	<input type='text' ng-model='company'>
-	<button type='button' ng-click='add(company)'>Click Me</button>
-</form>
-<form>
-	<input type='text' ng-model='companyN'>
-	<button type='button' ng-click='get(companyN)'>Click Me Part 2</button>
-</form>
-
-
-<script type="text/javascript" src="./bundle.js"></script>
+<body ui-view>
+  <script type="text/javascript" src="./bundle.js"></script>
 </body>
 </html>

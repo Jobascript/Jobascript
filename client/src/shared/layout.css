@@ -1,0 +1,21 @@
+/*@import './sidebar/sidebar.css';*/
+.jbs-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.jbs-flex-i {
+  flex-basis: none;
+}
+
+.jbs-flex-side {
+  flex-basis: 32rem;
+  flex-grow: 1;
+  max-height: 100vh;
+}
+
+.jbs-flex-main {
+  flex-grow: 2;
+  padding-left: 2rem;
+}

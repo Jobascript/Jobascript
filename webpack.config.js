@@ -1,6 +1,6 @@
 module.exports = {
   resolve: {
-      modulesDirectories: ['node_modules']
+    modulesDirectories: ['node_modules']
   },
   entry: './client/src/app.js',
   output: {
@@ -8,7 +8,13 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.html$/, loaders: ['html'] }
+      { test: /\.html$/, loaders: ['html'] },
+      { test: /\.css$/, loader: 'style-loader!css-loader' },
+      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
+      { test: /\.(woff|woff2)$/, loader:"url?prefix=font/&limit=5000" },
+      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
+      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml"}
     ]
-  }
+  },
+  devtool: 'source-map'
 };

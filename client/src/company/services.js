@@ -1,44 +1,62 @@
-module.exports = function($http){
+module.exports = function ($http) {
+  // companyObj comes in form of {name: 'name'}
+  var addCompany = function (companyObj) {
+    return $http.post('/api/company', companyObj)
+    .then(function (resp) {
+      return resp.data;
+    }, function (err) {
+      console.error('err', err);
+    });
+  };
 
-  //companyObj comes in form of {name: 'name'}
-  var addCompany = function(companyObj){
+  // companyObj comes in form of {id: 'id'}
+  var deleteCompany = function (companyObj) {
     return $http({
-      method: 'POST',
-      url: '/company',
-      		data: companyObj
-    	})
-      .then(function(resp){
-      	return resp.data;
-    	});
-	};
+      method: 'DELETE',
+      url: '/api/company',
+      data: companyObj
+    })
+    .then(function (resp) {
+      return resp.data;
+    }, function (err) {
+      console.error('err', err);
+    });
+  };
 
-	//companyObj comes in form of {id: 'id'}
-	var deleteCompany = function(companyObj){
-		return $http({
-			method: 'DELETE',
-			url: '/company',
-			data: companyObj
-		})
-		.then(function(resp){
-			return resp.data;
-		})
-	};
+  /**
+   * @param  {Object} options = {size: Number}
+   * @return {Promise} resolved to Array of company Objects
+   */
+  var getCompanies = function (options) {
+    return $http.get('/api/companies', {
+      params: options
+    })
+    .then(function (resp) {
+      return resp.data;
+    }, function (err) {
+      console.error('err', err);
+    });
+  };
 
-	var getCompany = function(companyObj){
-		return $http({
-			method: 'GET',
-			url: '/company',
-			params: companyObj
-		})
-		.then(function(data){
-			console.log(data)
-			return data;
-		})
-	}
+  /**
+   * @param  {Number} company id
+   * @return {Promise} resolved to ompany Object
+   */
+  var getCompany = function (id) {
+    return $http.get('/api/company', {
+      params: { id: id }
+    })
+    .then(function (resp) {
+      return resp.data;
+    }, function (err) {
+      console.error('err', err);
+    });
+  };
 
-	return {
+  return {
+    getCompany: getCompany,
+    getCompanies: getCompanies,
     addCompany: addCompany,
-    deleteCompany: deleteCompany,
-    getCompany: getCompany
-	};
+    deleteCompany: deleteCompany
+  };
 };
