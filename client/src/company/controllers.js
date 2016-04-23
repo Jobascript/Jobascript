@@ -1,3 +1,4 @@
 module.exports = function ($scope, $stateParams) {
-  $scope.companyName = $stateParams.company;
+  console.log('params: ', $stateParams);
+  $scope.companyName = $stateParams.name;
 }

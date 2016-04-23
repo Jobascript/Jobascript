@@ -6,7 +6,7 @@ var app = angular.module('jobascript', [
 ]);
 
 app.config(function ($urlRouterProvider, $stateProvider) {
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/a');
 
   $stateProvider.state('layout', {
     abstract: true,
@@ -27,7 +27,7 @@ app.config(function ($urlRouterProvider, $stateProvider) {
   });
 
   $stateProvider.state('home', {
-    url: '/',
+    url: '/a',
     parent: 'layout'
   });
 

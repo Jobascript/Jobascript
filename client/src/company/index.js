@@ -5,7 +5,7 @@ company.config(function ($urlRouterProvider, $stateProvider) {
     parent: 'home',
     url: '/company/:name/:id',
     views: {
-      'main@index': {
+      'main@layout': {
         controller: 'CompanyController',
         template: require('./company.html')
       }

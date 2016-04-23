@@ -1,3 +1,5 @@
+var inflection = require('inflection');
+
 module.exports = function ($scope, Company, companies) {
   var refreshList;
   $scope.companies = companies;
@@ -14,7 +16,7 @@ module.exports = function ($scope, Company, companies) {
   $scope.addCompany = function (companyName) {
     console.log('to be added: ', companyName);
     Company.addCompany({
-      name: companyName
+      name: inflection.dasherize(angular.lowercase(companyName))
     })
     .then(function (id) {
       console.log(companyName, ' added as id: ', id);
