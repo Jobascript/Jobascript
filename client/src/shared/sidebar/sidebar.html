@@ -6,6 +6,6 @@
     </span>
   </div>
   <ul class="nav nav-pills nav-stacked mt2">
-    <li ng-repeat="company in companies"><a ui-sref="company(company)">{{ company.name }}</a></li>
+    <li ng-repeat="company in companies" ui-sref-active="active"><a ui-sref="company(company)">{{ company.name }}</a></li>
   </ul>
 </div>
