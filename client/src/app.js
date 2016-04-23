@@ -30,13 +30,15 @@ app.config(function ($urlRouterProvider, $stateProvider) {
     url: '/a',
     parent: 'layout'
   });
-
-  console.log('app');
 });
 
 app.controller('sidebarCtrl', require('./shared/sidebar/sidebarCtrl.js'));
 
 require('angular-ui-router');
 require('./company');
+
+// style
+require('bootstrap/dist/css/bootstrap.css');
+require('tachyons/css/tachyons.min.css');
 
 angular.bootstrap(document, ['jobascript']);
