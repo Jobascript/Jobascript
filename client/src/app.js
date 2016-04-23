@@ -17,7 +17,7 @@ app.config(function ($urlRouterProvider, $stateProvider) {
       'sidebar@layout': {
         resolve: {
           companies: function (Company) {
-            return Company.getCompanies({ size: 10 });
+            return Company.getCompanies({ size: 20 });
           }
         },
         controller: 'sidebarCtrl',

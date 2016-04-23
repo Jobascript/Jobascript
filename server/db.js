@@ -27,7 +27,7 @@ var db = new sqlite3.Database(
 db.getCompanies = function (options) {
   var size = (options && options.size) || 10;
   var stmt = db.prepare('SELECT * FROM companies ORDER BY created DESC LIMIT $size;');
-
+  
   return new Promise(function (resolve, reject) {
     stmt.all({
       $size: size

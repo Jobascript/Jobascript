@@ -1,8 +1,8 @@
 var db = require('../db');
 
 exports.getCompanies = function (req, res) {
-  var options = req.body.options;
-
+  var options = req.query;
+  
   db.getCompanies(options).then(function (companies) {
     res.status(200).send(companies);
   }).catch(function (err) {

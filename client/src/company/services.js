@@ -22,10 +22,14 @@ module.exports = function ($http) {
       console.error('err', err);
     });
   };
-
+  
+  /**
+   * @param  {Object} options = {size: Number}
+   * @return {Promise} resolved to Array of company Objects
+   */
   var getCompanies = function (options) {
     return $http.get('/api/companies', {
-      data: options
+      params: options
     })
     .then(function (resp) {
       return resp.data;
