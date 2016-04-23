@@ -34,22 +34,22 @@ module.exports = function ($http) {
     });
   };
 
-  var getCompany = function (companyObj) {
-    return $http({
-      method: 'GET',
-      url: '/company',
-      params: companyObj
+
+  var getCompany = function (id) {
+    return $http.get('/api/company', {
+      params: { id: id }
     })
-    .then(function(data){
-      console.log(data)
-      return data;
+    .then(function (resp) {
+      return resp.data;
+    }, function (err) {
+      console.error('err', err);
     });
   };
 
   return {
+    getCompany: getCompany,
     getCompanies: getCompanies,
     addCompany: addCompany,
-    deleteCompany: deleteCompany,
-    getCompany: getCompany
+    deleteCompany: deleteCompany
   };
 };

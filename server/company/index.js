@@ -12,12 +12,9 @@ exports.getCompanies = function (req, res) {
 };
 
 exports.getCompany = function (req, res) {
-  var userCompany = req.query.name;
-  console.log(req.query)
-  db.getCompany({ name: userCompany }).then(function (company) {
-    console.log(company)
-    res.sendStatus(200)
-    .send(company);
+  var id = req.query.id;
+  db.getCompany({ id: id }).then(function (company) {
+    res.status(200).send(company);
   }).catch(function (err) {
     console.log(err);
     res.sendStatus(500);

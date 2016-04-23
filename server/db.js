@@ -55,7 +55,6 @@ db.getCompany = function (args) {
   }
 
   return new Promise(function (resolve, reject) {
-    console.log('company: ', company);
     stmt.get({
       $id: company.id,
       $name: company.name

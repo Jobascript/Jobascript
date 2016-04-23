@@ -4,10 +4,11 @@ module.exports = function ($scope, Company, companies) {
 
   refreshList = function (id) {
     $scope.companyName = '';
-    // return Company.getCompany(id)
-    // .then(function (newCompany) {
-    //   $scope.companies.unshift(newCompany);
-    // });
+    Company.getCompany(id)
+    .then(function (newCompany) {
+      console.log('new: ', newCompany);
+      $scope.companies.unshift(newCompany);
+    });
   };
 
   $scope.addCompany = function (companyName) {
