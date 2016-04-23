@@ -1,14 +1,14 @@
 module.exports = function($http){
 
-	//companyObj comes in form of {name: 'name'}
-	var addCompany = function(companyObj){
-		return $http({
-      		method: 'POST',
-      		url: '/api/company',
+  //companyObj comes in form of {name: 'name'}
+  var addCompany = function(companyObj){
+    return $http({
+      method: 'POST',
+      url: '/company',
       		data: companyObj
     	})
-    	.then(function(resp){
-      		return resp.data;
+      .then(function(resp){
+      	return resp.data;
     	});
 	};
 
@@ -16,7 +16,7 @@ module.exports = function($http){
 	var deleteCompany = function(companyObj){
 		return $http({
 			method: 'DELETE',
-			url: '/api/company',
+			url: '/company',
 			data: companyObj
 		})
 		.then(function(resp){
@@ -24,9 +24,21 @@ module.exports = function($http){
 		})
 	};
 
+	var getCompany = function(companyObj){
+		return $http({
+			method: 'GET',
+			url: '/company',
+			params: companyObj
+		})
+		.then(function(data){
+			console.log(data)
+			return data;
+		})
+	}
+
 	return {
-		addCompany: addCompany,
-		deleteCompany: deleteCompany
+    addCompany: addCompany,
+    deleteCompany: deleteCompany,
+    getCompany: getCompany
 	};
 };
-

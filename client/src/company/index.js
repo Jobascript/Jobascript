@@ -1,28 +1,42 @@
 var company = angular.module('jobascript.company', []);
 
-company.config(function($urlRouterProvider, $stateProvider, stateHelperProvider) {
+company.config(function($urlRouterProvider, $stateProvider) {
 
-	$stateProvider.state('company', {
-		url: '/company/:company',
-		controller: 'CompanyController',
-		template: require('')
-	})
-	.state('company.job', {
-		url: '/job',
-		controller: 'JobController',
-		template: require('')
-	})
+	// $stateProvider.state('company', {
+	// 	url: '/company/:company',
+	// 	controller: 'CompanyController',
+	// 	template: require('')
+	// })
+	// .state('company.job', {
+	// 	url: '/job',
+	// 	controller: 'JobController',
+	// 	template: require('')
+	// })
 });
 
 company.controller('CompanyController', function($scope, $http, Company){
 
 	$scope.company = '';
+	$scope.companyN = '';
 
-	$scope.add = function(companyName){
+	$scope.add = function(companyObj){
 
-		Company.addCompany({name: companyName})
+		// console.log(Company.addCompany({name: companyName}))
+		// .then(function(data){
+		// 	console.log(data)
+		// })
+		Company.addCompany({name: companyObj})
+		.then(function(data){
+			console.log(data)
+		})
 	};
 
+	$scope.get = function(companyObj){
+		Company.getCompany({name: companyObj})
+		.then(function(data){
+			console.log(data)
+		})
+	}
 
 });
 
