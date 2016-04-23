@@ -48,6 +48,7 @@ describe('/company route tests', function() {
         throw err;
       }
       expect(res.body).to.deep.equal(data);
+      
       done();
     });
   });
