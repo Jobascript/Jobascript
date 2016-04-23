@@ -2,7 +2,8 @@ var angular = require('angular');
 
 var app = angular.module('jobascript', [
   'ui.router',
-  'jobascript.company'
+  'jobascript.company',
+  'jobascript.jobs'
 ]);
 
 app.config(function ($urlRouterProvider, $stateProvider) {
@@ -36,6 +37,7 @@ app.controller('sidebarCtrl', require('./shared/sidebar/sidebarCtrl.js'));
 
 require('angular-ui-router');
 require('./company');
+require('./jobs');
 
 // style
 require('bootstrap/dist/css/bootstrap.css');
