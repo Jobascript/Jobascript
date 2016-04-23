@@ -16,8 +16,7 @@ exports.getCompany = function (req, res) {
   console.log(req.query)
   db.getCompany({ name: userCompany }).then(function (company) {
     console.log(company)
-    res
-    // .sendStatus(200)
+    res.sendStatus(200)
     .send(company);
   }).catch(function (err) {
     console.log(err);
@@ -29,7 +28,7 @@ exports.addCompany = function (req, res) {
   var userCompany = req.body.name;
   db.addCompany({ name: userCompany })
   .then(function (companyID) {
-    res.sendStatus(200).send(companyID);
+    res.status(200).send(companyID.toString());
   }).catch(function (err) {
     console.log(err);
     res.sendStatus(500);
