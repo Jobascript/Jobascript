@@ -19,10 +19,10 @@ exports.getCompany = function (req, res) {
   var userCompany = req.query.name;
   console.log(req.query);
   db.getCompany({ name: userCompany }).then(function (company) {
-    console.log(company)
+    console.log(company);
 
     // res.sendStatus(200)
-    .send(company);
+    res.send(company);
   }).catch(function (err) {
     console.log(err);
     res.sendStatus(500);
