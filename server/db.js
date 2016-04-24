@@ -13,10 +13,10 @@ var db = new sqlite3.Database(
 // Uncomment to drop/create tables when restarting the server
 /* eslint-disable */
 
-// db.serialize(function() {
+//  db.serialize(function() {
 //   db.run('DROP TABLE IF EXISTS companies');
-
-  db.run('CREATE TABLE IF NOT EXISTS companies (id INTEGER PRIMARY KEY ASC, name TEXT, created TEXT)');
+//
+//   db.run('CREATE TABLE IF NOT EXISTS companies (id INTEGER PRIMARY KEY ASC, name TEXT, created TEXT)');
 // });
 /* eslint-enable */
 
@@ -46,7 +46,7 @@ db.getCompany = function (args) {
   var company = args;
   var stmt;
 
-  if (company.id) {
+  if (company.id !== undefined) {
     stmt = db.prepare('SELECT * FROM companies WHERE id = $id;');
   } else if (company.name) {
     stmt = db.prepare('SELECT * FROM companies WHERE name = $name;');
