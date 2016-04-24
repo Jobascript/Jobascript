@@ -26,51 +26,21 @@ describe('base root tests', function() {
 
 
 describe('/company route tests', function() {
-  it ('should respond with a company ID after the company was added', function(done) {
-    var data = {
-      name: 'google'
+  it ('should respond with a 200 status code to show that the company was added', function(done) {
+    var data =  {
+      id: 1,
+      name: "google",
+      created: "2016-04-23T00:22:40.510Z"
     };
-  //   companyHandler.__set__("db", {addCompany: function(args) {
-  //     // expect(args.id).to.equal(1);
-  //     var returnPromise = new Promise(function(resolve, reject) {
-  //       setTimeout(function() {
-  //         resolve(data);
-  //       }, 0);
-  //     });
-  //    }
-  //  });
-   request.post('/company')
-     .set('accept', 'application/json')
-     .send({"name": "google"})
-     .expect(function(res) {
-      //  console.log('res.text', res);
-       res.text = Number(res.text);
-       if (typeof res.text !== 'number') {
-         throw new Error('Response is not a number');
-       }
-     })
-     .expect(200)
-     .end(function(err, res) {
-       if (err) {
-         throw err;
-       }
-      done();
-     });
+    companyHandler.__set__("db", {getCompany: function(args) {
+      expect(args.name).to.equal('google');
+      var returnPromised = new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          resolve(data);
+        }, 0);
+      });
+    }
   });
-  it ('should return the same company that was added', function(done) {
-    var company = {name: 'google'};
-    beforeEach(function() {
-      db.addCompany(company);
-    });
-  //   companyHandler.__set__("db", {getCompany: function(args) {
-  //     expect(args.name).to.equal('google');
-  //     var returnPromised = new Promise(function(resolve, reject) {
-  //       setTimeout(function() {
-  //         resolve(data);
-  //       }, 0);
-  //     });
-  //   }
-  // });
     request.get('/company')
     .set('accept', 'application/json')
     .query({name: 'google'})
@@ -78,8 +48,7 @@ describe('/company route tests', function() {
       if (err) {
         throw err;
       }
-      // console.log('res.body', res);
-      expect(res.body.name).to.equal('google');
+      expect(res.body).to.deep.equal(data);
       done();
     });
   });
