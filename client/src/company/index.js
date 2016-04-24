@@ -31,19 +31,23 @@ company.controller('CompanyController', function($scope, $http, Company){
 		// })
 		Company.addCompany({name: companyObj})
 		.then(function(data){
-			console.log(data);
-		});
+			console.log(data)
+		})
 	};
 
 	$scope.get = function(companyObj){
 		Company.getCompany({name: companyObj})
 		.then(function(data){
-			console.log(data);
-		});
-	};
+			console.log(data)
+		})
+	}
+
 });
 
 
 company.factory('Company', require('./services.js'));
 
 module.exports = company;
+
+
+

@@ -52,9 +52,4 @@ gulp.task('watch', function() {
   gulp.watch(paths.server.scripts, ['lint-server']);
 });
 
-
 gulp.task('default', ['watch', 'lint-client', 'lint-server', 'build-client']);
-
-
-
-// handle error
