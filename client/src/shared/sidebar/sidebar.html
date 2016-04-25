@@ -1,10 +1,15 @@
 <div class="jbs-sidebar overflow-container">
+<div class="dropdown" ng-class="{'open': option.length > 0}">
   <form class="input-group" ng-submit="addCompany(companyName)">
-    <input type="text" class="form-control" placeholder="Company..." ng-model="companyName">
+    <input type="text" class="form-control typeahead" placeholder="Company..." ng-model="companyName" ng-change="potentialCompanies(companyName)">
     <span class="input-group-btn">
       <button class="btn btn-default" type="submit">Add</button>
     </span>
   </form>
+  <ul class="dropdown-menu">
+    <li ng-repeat="company in option">{{ company.name }}</li>
+  </ul>
+</div>
   <ul class="nav nav-pills nav-stacked mt2">
     <li ng-repeat="company in companies" ui-sref-active="active"><a ui-sref="company(company)">{{ company.name }}</a></li>
   </ul>
