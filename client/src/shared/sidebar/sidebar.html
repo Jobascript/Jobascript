@@ -1,10 +1,17 @@
 <div class="jbs-sidebar overflow-container">
-  <form class="input-group" ng-submit="addCompany(companyName)">
-    <input type="text" class="form-control" placeholder="Comapany..." ng-model="companyName">
-    <span class="input-group-btn">
-      <button class="btn btn-default" type="submit">Add</button>
-    </span>
-  </form>
+  <div class="dropdown" ng-class="{ open: suggestions.length > 0 }">
+    <form class="input-group" ng-submit="addCompany(companyName)">
+      <input type="text" class="form-control" placeholder="Comapany..." ng-model="companyName" ng-change="findCompanies(companyName)">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit">Add</button>
+      </span>
+    </form>
+    <ul class="dropdown-menu w-100">
+      <li ng-repeat="company in suggestions">
+        <a href="#">{{ company.name || '[Name Missing]' }}</a>
+      </li>
+    </ul>
+  </div>
   <ul class="nav nav-pills nav-stacked mt2">
     <li ng-repeat="company in companies" ui-sref-active="active"><a ui-sref="company(company)">{{ company.name }}</a></li>
   </ul>

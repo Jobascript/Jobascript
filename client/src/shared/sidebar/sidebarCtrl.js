@@ -1,8 +1,11 @@
 var inflection = require('inflection');
+var _ = require('underscore');
+var clearbitUrl = 'https://autocomplete.clearbit.com/v1/companies/suggest';
 
-module.exports = function ($scope, Company, companies) {
+module.exports = function ($scope, Company, companies, $http) {
   var refreshList;
   $scope.companies = companies;
+  $scope.suggestions = [];
 
   refreshList = function (id) {
     $scope.companyName = '';
@@ -24,4 +27,13 @@ module.exports = function ($scope, Company, companies) {
     })
     .then(refreshList);
   };
+
+  $scope.findCompanies = _.debounce(function (queryStr) {
+    $http.get(clearbitUrl, {
+      params: { query: queryStr }
+    }).then(function (resp) {
+      console.log(resp.data);
+      $scope.suggestions = resp.data;
+    });
+  }, 200);
 };
