@@ -40,9 +40,17 @@ describe('Database tests', function () {
   });
   
   describe('Add Company', function () {
-    it('Should add company', function () {
+    it('Should return companyID', function () {
       db.addCompany(company, function (id) {
         expect(id).to.be.a('number');
+      });
+    });
+
+    it('Should NOT add if company already exists', function (done) {
+      db.addCompany(companies[0]).then(function (id) {
+        // never run
+      }, function (reason) {
+        done();
       });
     });
   });

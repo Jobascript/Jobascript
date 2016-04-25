@@ -12,12 +12,25 @@ var paths = {
     scripts: './client/src/**/*.js'
   },
   server: {
-    scripts: './server/**/*.js'
+    scripts: './server/**/*.js',
+    test: './spec/server/**/*.js'
   }
 };
 
 gulp.task('clean', function() {
   return del([paths.client.dest + '**/*', '!' + paths.client.dest + '.gitkeep']);
+});
+
+// test
+gulp.task('test-server', function () {
+  return gulp.src(paths.server.test, {read: false})
+  .pipe(mocha());
+  // .once('error', function () {
+  //     process.exit(1);
+  //   })
+  // .once('end', function () {
+  //   process.exit();
+  // });
 });
 
 // lint
@@ -50,7 +63,7 @@ gulp.task('watch', function() {
   // client
   gulp.watch(paths.client.src + '**/*', ['lint-client', 'build-client']);
   // server
-  gulp.watch(paths.server.scripts, ['lint-server']);
+  gulp.watch(paths.server.scripts, ['lint-server', 'test-server']);
 });
 
-gulp.task('default', ['watch', 'lint-client', 'lint-server', 'build-client']);
+gulp.task('default', ['watch', 'lint-server', 'test-server', 'lint-client', 'build-client']);
