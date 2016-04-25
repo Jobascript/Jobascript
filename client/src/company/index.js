@@ -1,3 +1,4 @@
+
 var company = angular.module('jobascript.company', []);
 
 company.config(require('./routes.js'));
