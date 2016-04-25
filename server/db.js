@@ -46,7 +46,7 @@ db.getCompany = function (args) {
   var company = args;
   var stmt;
 
-  if (company.id !== undefined) {
+  if (company.id) {
     stmt = db.prepare('SELECT * FROM companies WHERE id = $id;');
   } else if (company.name) {
     stmt = db.prepare('SELECT * FROM companies WHERE name = $name;');
