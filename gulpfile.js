@@ -21,9 +21,9 @@ gulp.task('clean', function() {
   return del([paths.client.dest + '**/*', '!' + paths.client.dest + '.gitkeep']);
 });
 
-// test
+// tests
 gulp.task('test-server', function () {
-  return gulp.src(paths.server.test, {read: false})
+  return gulp.src([paths.server.test, '!./spec/server/test.js'], {read: false})
   .pipe(mocha());
   // .once('error', function () {
   //     process.exit(1);
