@@ -3,6 +3,7 @@ var webpack = require('gulp-webpack');
 var del = require('del');
 var eslint = require('gulp-eslint');
 var watch = require('gulp-watch');
+var mocha = require('gulp-mocha');
 
 var paths = {
   client: {
