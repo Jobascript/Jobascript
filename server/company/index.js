@@ -1,4 +1,5 @@
-var db = require('../db');
+var config = require('../common.js').config();
+var db = require('../db')(config);
 
 exports.getCompanies = function (req, res) {
   var options = req.query;
