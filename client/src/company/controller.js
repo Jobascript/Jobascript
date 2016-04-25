@@ -9,3 +9,4 @@ module.exports = function ($scope, currentCompany, Company, $state) {
     }
   };
 };
+

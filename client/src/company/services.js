@@ -59,3 +59,4 @@ module.exports = function ($http) {
     deleteCompany: deleteCompany
   };
 };
+

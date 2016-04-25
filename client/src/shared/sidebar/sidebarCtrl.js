@@ -58,3 +58,4 @@ module.exports = function ($scope, Company, companies, $http) {
   $scope.findCompanies = findCompanies;
   $scope.addCompany = addCompany;
 };
+
