@@ -53,8 +53,6 @@ module.exports = function ($http) {
     });
   };
 
-	//companyObj comes in form of {id: 'id'}
-
   return {
     getCompany: getCompany,
     getCompanies: getCompanies,

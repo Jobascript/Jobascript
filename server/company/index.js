@@ -12,22 +12,13 @@ exports.getCompanies = function (req, res) {
 };
 
 exports.getCompany = function (req, res) {
-
   var id = req.query.id;
   db.getCompany({ id: id }).then(function (company) {
     res.status(200).send(company);
-  var userCompany = req.query.name;
-  console.log(req.query);
-  db.getCompany({ name: userCompany }).then(function (company) {
-    console.log(company);
-
-    // res.sendStatus(200)
-    res.send(company);
   }).catch(function (err) {
     console.log(err);
     res.sendStatus(500);
   });
- });
 };
 
 exports.addCompany = function (req, res) {
@@ -47,7 +38,7 @@ exports.removeCompany = function (req, res) {
   .then(function (company) {
     console.log('company ' + company + ' has been successfully removed');
     res.sendStatus(200);
-  }, function() {
+  }, function () {
     res.sendStatus(404);
   }).catch(function (err) {
     console.log(err);
