@@ -22,6 +22,7 @@ module.exports = function ($http) {
       console.error('err', err);
     });
   };
+
   /**
    * @param  {Object} options = {size: Number}
    * @return {Promise} resolved to Array of company Objects
@@ -51,9 +52,6 @@ module.exports = function ($http) {
       console.error('err', err);
     });
   };
-
-	//companyObj comes in form of {id: 'id'}
-
 
   return {
     getCompany: getCompany,

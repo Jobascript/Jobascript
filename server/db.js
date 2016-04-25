@@ -13,9 +13,9 @@ var db = new sqlite3.Database(
 // Uncomment to drop/create tables when restarting the server
 /* eslint-disable */
 
-//  db.serialize(function() {
+// db.serialize(function() {
 //   db.run('DROP TABLE IF EXISTS companies');
-//
+
 //   db.run('CREATE TABLE IF NOT EXISTS companies (id INTEGER PRIMARY KEY ASC, name TEXT, created TEXT)');
 // });
 /* eslint-enable */
@@ -27,7 +27,7 @@ var db = new sqlite3.Database(
 db.getCompanies = function (options) {
   var size = (options && options.size) || 10;
   var stmt = db.prepare('SELECT * FROM companies ORDER BY created DESC LIMIT $size;');
-  
+
   return new Promise(function (resolve, reject) {
     stmt.all({
       $size: size
@@ -98,38 +98,26 @@ db.addCompany = function (company) {
  *                   reject if company do not exist
  */
 db.removeCompany = function (id) {
-  var delStmt;
-  var seletStmt;
-  var selectP;
-  var delP;
-
   if (isNaN(Number(id))) throw new TypeError('id must be a Number');
 
-  delStmt = db.prepare('DELETE FROM companies WHERE id = $id;');
-  seletStmt = db.prepare('SELECT * FROM companies WHERE id = $id;');
+  var delStmt = db.prepare('DELETE FROM companies WHERE id = $id;');
 
-  selectP = new Promise(function (resolve, reject) {
-    seletStmt.get({
-      $id: id
-    }, function (error, row) {
-      if (error) reject(error);
-      if (!row) reject('not found');
-      resolve(row);
+  var deleteCompany = function (company) {
+    return new Promise(function (resolve, reject) {
+      delStmt.run({
+        $id: company.id
+      }, function (error) {
+        if (error) reject(error);
+        resolve(company);
+      });
     });
-  });
+  };
 
-  delP = new Promise(function (resolve, reject) {
-    delStmt.run({
-      $id: id
-    }, function (error) {
-      if (error) reject(error);
-      resolve(this.changes);
-    });
+  return db.getCompany({ id: id })
+  .then(deleteCompany, function (reason) {
+    // rejected by getCompany
+    return Promise.reject(reason);
   });
-
-  return Promise.all([selectP, delP]).then(function (values) {
-    return values[0];
-  }).catch(function (err) { throw new Error(err); });
 };
 
 module.exports = db;

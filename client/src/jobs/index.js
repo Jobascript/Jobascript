@@ -1,8 +1,7 @@
-var job = angular.module('jobascript.jobs', ['jobascript.company']);
+var company = angular.module('jobascript.company', []);
 
-job.config(require('./routes.js'));
+company.config(require('./routes.js'));
+company.controller('CompanyController', require('./controller.js'));
+company.factory('Company', require('./services.js'));
 
-job.controller('JobsController', require('./controller.js'));
-job.factory('Job', require('./services.js'));
-
-module.exports = job;
+module.exports = company;
