@@ -159,7 +159,7 @@ module.exports = function (config) {
       return Promise.reject(reason);
     });
   };
-  
+
   /**
    * Update a Company
    * @param  {Object} comapany The Company to be updated. e.g. {name: 'google'} or {id: 2}
@@ -179,18 +179,18 @@ module.exports = function (config) {
       ';'
     ].join(' '));
 
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       stmt.run(function (error) {
         if (error) reject(error);
         resolve(this.changes);
       });
     });
   };
-  
+
   // turn obj into sql str, e.g. {a:1, b:2} => '"a"="1", "b"="2"'
   function toSqlString(obj) {
     var tuples = _.pairs(obj);
-    
+
     var string = tuples.map(function (tuple) {
       return JSON.stringify(tuple[0]) + ' = ' + JSON.stringify(tuple[1]);
     }).join(', ');
