@@ -11,25 +11,22 @@ app.config(require('./routes.js'));
 app.run(function ($rootScope, Company, $state) {
   // listener
   $rootScope.$on('$stateChangeSuccess', function (event, toState) {
-    var promise = null;
+    var companyList = Company.getList();
 
     // when company is removed && when loading up the first time
     if (toState.name === 'home') {
       event.preventDefault();
-      promise = Company.getCompanies().then(function (companies) {
-        if (companies.length > 0) {
-          // load the first company in the list
-          $state.transitionTo('company', {
-            name: companies[0].name,
-            id: companies[0].id
-          }, { reload: true });
-        } else {
-          // if not company goto home
-          $state.transitionTo('home', {}, { notify: false });
-        }
-      });
+      if (companyList.length > 0) {
+        // load the first company in the list
+        $state.transitionTo('company', {
+          name: companyList[0].name,
+          id: companyList[0].id
+        }, { reload: true });
+      } else {
+        // if not company goto home
+        $state.transitionTo('home', {}, { notify: false });
+      }
     }
-    return promise;
   });
 });
 

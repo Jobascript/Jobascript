@@ -1,5 +1,17 @@
+var clearbitUrl = 'https://autocomplete.clearbit.com/v1/companies/suggest';
+
 module.exports = function ($http) {
   var list = [];
+
+  var suggestCompanies = function (queryStr) {
+    if (!queryStr) {
+      return Promise.reject();
+    }
+
+    return $http.get(clearbitUrl, {
+      params: { query: queryStr }
+    });
+  };
 
   // companyObj comes in form of {name: 'name'}
   var addCompany = function (companyObj) {
@@ -60,6 +72,7 @@ module.exports = function ($http) {
     getCompanies: getCompanies,
     addCompany: addCompany,
     deleteCompany: deleteCompany,
+    suggest: suggestCompanies,
     getList: function () {
       return list;
     }
