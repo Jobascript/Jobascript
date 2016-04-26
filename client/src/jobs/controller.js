@@ -1,3 +1,4 @@
+
 module.exports = function ($scope, Job, currentCompany) {
   $scope.currentJobs = [];
   $scope.jobDescription = '';
