@@ -1,4 +1,6 @@
 module.exports = function ($http) {
+  var list = [];
+
   // companyObj comes in form of {name: 'name'}
   var addCompany = function (companyObj) {
     return $http.post('/api/company', companyObj)
@@ -31,6 +33,7 @@ module.exports = function ($http) {
       params: options
     })
     .then(function (resp) {
+      list = resp.data;
       return resp.data;
     }, function (err) {
       console.error('err', err);
@@ -56,6 +59,9 @@ module.exports = function ($http) {
     getCompany: getCompany,
     getCompanies: getCompanies,
     addCompany: addCompany,
-    deleteCompany: deleteCompany
+    deleteCompany: deleteCompany,
+    getList: function () {
+      return list;
+    }
   };
 };
