@@ -1,7 +1,8 @@
 var sqlite3 = require('sqlite3').verbose();
 var path = require('path');
 var moment = require('moment');
-
+var Promise = require('bluebird');
+var _ = require('underscore');
 
 module.exports = function (config) {
   var db = new sqlite3.Database(
@@ -61,7 +62,7 @@ module.exports = function (config) {
   };
 
   /**
-   * @param  {Object} e.g. {name: 'Google'} or {id: 2}
+   * @param  {Object} args e.g. {name: 'google'} or {id: 2}
    * @return {Object} a comapany object
    */
   db.getCompany = function (args) {
@@ -79,7 +80,7 @@ module.exports = function (config) {
     return new Promise(function (resolve, reject) {
       stmt.get({
         $id: company.id,
-        $name: company.name
+        $name: JSON.stringify(company.name)
       }, function (error, row) {
         if (error) reject(error);
         if (!row) reject('not found');
@@ -119,11 +120,11 @@ module.exports = function (config) {
 
     return new Promise(function (resolve, reject) {
       stmt.run({
-        $name: String(company.name),
-        $displayName: company.displayName ? String(company.displayName) : null,
-        $domain: company.domain ? String(company.domain) : null,
-        $logo: company.logo ? String(company.logo) : null,
-        $created: moment().toISOString()
+        $name: JSON.stringify(company.name),
+        $displayName: company.displayName ? JSON.stringify(company.displayName) : null,
+        $domain: company.domain ? JSON.stringify(company.domain) : null,
+        $logo: company.logo ? JSON.stringify(company.logo) : null,
+        $created: JSON.stringify(moment().toISOString())
       }, function (error) {
         if (error) reject(error);
         resolve(this.lastID); // resolve with id
@@ -158,6 +159,44 @@ module.exports = function (config) {
       return Promise.reject(reason);
     });
   };
+  
+  /**
+   * Update a Company
+   * @param  {Object} comapany The Company to be updated. e.g. {name: 'google'} or {id: 2}
+   * @param  {Object} args     Properties as columns
+   *                           e.g. {
+   *                                  description: '...',
+   *                                  legalName: '...',
+   *                                  url: '...'
+   *                                }
+   * @return {Promise}         resolve with number of rows changed
+   */
+  db.updateCompany = function (comapany, args) {
+    var stmt = db.prepare([
+      'UPDATE companies',
+      'SET ' + toSqlString(args),
+      'WHERE ' + toSqlString(comapany),
+      ';'
+    ].join(' '));
+
+    return new Promise(function(resolve, reject) {
+      stmt.run(function (error) {
+        if (error) reject(error);
+        resolve(this.changes);
+      });
+    });
+  };
+  
+  // turn obj into sql str, e.g. {a:1, b:2} => '"a"="1", "b"="2"'
+  function toSqlString(obj) {
+    var tuples = _.pairs(obj);
+    
+    var string = tuples.map(function (tuple) {
+      return JSON.stringify(tuple[0]) + ' = ' + JSON.stringify(tuple[1]);
+    }).join(', ');
+
+    return string;
+  }
 
   return db;
 };

@@ -54,4 +54,36 @@ describe('Database tests', function () {
       });
     });
   });
+
+  describe('Update Company', function () {
+    it('Should update by name', function () {
+      db.updateCompany({name: 'stripe'}, {
+        displayName: 'Striper',
+        url: 'https://pornhub.com'
+      })
+      .then(function (changes) {
+        expect(changes).to.equal(1);
+      });
+    });
+
+    it('Should update by id', function () {
+      db.updateCompany({id: 1}, {
+        displayName: 'Striper',
+        url: 'https://pornhub.com'
+      })
+      .then(function (changes) {
+        expect(changes).to.equal(1);
+      });
+    });
+
+    it('Should NOT update if id not found', function () {
+      db.updateCompany({id: 13}, {
+        displayName: 'Striper',
+        url: 'https://pornhub.com'
+      })
+      .then(function (changes) {
+        expect(changes).to.equal(0);
+      });
+    });
+  });
 });
