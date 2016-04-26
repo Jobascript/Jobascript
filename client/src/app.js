@@ -7,28 +7,8 @@ var app = angular.module('jobascript', [
   'jobascript.comm'
 ]);
 
-app.config(require('./routes.js'));
-app.run(function ($rootScope, Company, $state) {
-  // listener
-  $rootScope.$on('$stateChangeSuccess', function (event, toState) {
-    var companyList = Company.getList();
-
-    // when company is removed && when loading up the first time
-    if (toState.name === 'home') {
-      event.preventDefault();
-      if (companyList.length > 0) {
-        // load the first company in the list
-        $state.transitionTo('company', {
-          name: companyList[0].name,
-          id: companyList[0].id
-        }, { reload: true });
-      } else {
-        // if not company goto home
-        $state.transitionTo('home', {}, { notify: false });
-      }
-    }
-  });
-});
+app.config(require('./routes.js').config);
+app.run(require('./routes.js').listen);
 
 app.controller('sidebarCtrl', require('./shared/sidebar/sidebarCtrl.js'));
 
