@@ -9,12 +9,11 @@ module.exports = function ($http) {
     });
   };
 
-  // companyObj comes in form of {id: 'id'}
-  var deleteCompany = function (companyObj) {
+  // companyID
+  var deleteCompany = function (companyID) {
     return $http({
       method: 'DELETE',
-      url: '/api/company',
-      data: companyObj
+      url: '/api/company/' + companyID
     })
     .then(function (resp) {
       return resp.data;

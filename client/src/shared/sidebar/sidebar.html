@@ -1,11 +1,13 @@
-<div>
+<div ng-blur="suggestions = []">
   <div class="dropdown" ng-class="{ open: suggestions.length > 0 }">
       <input type="text" class="form-control" placeholder="Comapany..." ng-model="companyName" ng-change="findCompanies(companyName)">
     <ul class="dropdown-menu w-100">
       <li ng-repeat="company in suggestions">
-        <a class="pv2" ng-click="addCompany(company)">
-          <img class="w2" ng-src="{{company.logo}}" alt="{{company.name}}">
-          {{ company.name || '[Name Missing]' }}
+        <a class="clickable" ng-click="addCompany(company)">
+          <div class="pv2">
+            <img class="w2" ng-src="{{company.logo}}" alt="{{company.name}}">
+            {{ company.name || '[Name Missing]' }}
+          </div>
         </a>
       </li>
     </ul>
