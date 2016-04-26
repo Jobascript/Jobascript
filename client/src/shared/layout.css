@@ -1,21 +1,26 @@
 /*@import './sidebar/sidebar.css';*/
-.jbs-flex {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-}
 
-.jbs-flex-i {
-  flex-basis: none;
+/* https://philipwalton.github.io/solved-by-flexbox/demos/holy-grail/ */
+.jbs-flex,
+.jbs-flex-body{
+  display: flex;
+  flex-direction: column;
 }
 
 .jbs-flex-side {
-  flex-basis: 32rem;
-  flex-grow: 1;
-  max-height: 100vh;
+  order: -1;
 }
 
-.jbs-flex-main {
-  flex-grow: 2;
-  padding-left: 2rem;
+@media (min-width: 768px) {
+  .jbs-flex-body {
+    flex-direction: row;
+    flex: 1;
+  }
+  .jbs-flex-main {
+    flex: 1;
+  }
+  .jbs-flex-side {
+    /* 12em is the width of the columns */
+    flex: 0 0 24em;
+  }
 }

@@ -9,7 +9,8 @@ var paths = {
   client: {
     src: './client/src/',
     dest: './client/dist/',
-    scripts: './client/src/**/*.js'
+    scripts: './client/src/**/*.js',
+    styles: './client/src/**/*.css'
   },
   server: {
     scripts: './server/**/*.js',
@@ -23,7 +24,7 @@ gulp.task('clean', function() {
 
 // tests
 gulp.task('test-server', function () {
-  return gulp.src([paths.server.test, '!./spec/server/test.js'], {read: false})
+  return gulp.src([paths.server.test, '!./spec/server/test.js', '!./spec/server/apiSpec.js'], {read: false})
   .pipe(mocha());
   // .once('error', function () {
   //     process.exit(1);
@@ -63,7 +64,7 @@ gulp.task('watch', function() {
   // client
   gulp.watch(paths.client.src + '**/*', ['lint-client', 'build-client']);
   // server
-  gulp.watch(paths.server.scripts, ['lint-server', 'test-server']);
+  gulp.watch([paths.server.scripts, paths.server.scripts], ['lint-server', 'test-server']);
 });
 
 gulp.task('default', ['watch', 'lint-server', 'test-server', 'lint-client', 'build-client']);
