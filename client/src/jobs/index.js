@@ -1,4 +1,6 @@
-var job = angular.module('jobascript.jobs', ['jobascript.company', 'ngSanitize', 'ngAnimate']);
+var job = angular.module('jobascript.jobs', ['jobascript.company', 'ngSanitize']);
+
+
 
 job.config(require('./routes.js'));
 
@@ -8,5 +10,4 @@ job.filter('renderHTMLCorrectly', require('./filter.js'));
 
 require('./styles.css');
 require('angular-sanitize');
-require('angular-animate');
 module.exports = job;

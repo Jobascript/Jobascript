@@ -1,7 +1,5 @@
-// eslint-disable-next-line no-unused-vars
 module.exports = function ($http) {
    // remove comment and use $http later
-  var apiKey = '291d984046483ad333ac5978886bb9ad';
   function getJobs(company) {
     return $http({
       method: 'GET',
@@ -21,6 +19,3 @@ module.exports = function ($http) {
     getJobs: getJobs
   };
 };
-
-
-//api call https://authenticjobs.com/api/?api_key=291d984046483ad333ac5978886bb9ad&method=aj.jobs.search&company=adultswim&&keywords=javascript&format=JSON
