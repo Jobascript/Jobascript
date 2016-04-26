@@ -4,11 +4,9 @@ module.exports = function ($scope, Job, currentCompany) {
   console.log(currentCompany);
   $scope.jobs = function(){
     Job.getJobs(currentCompany.name).then(function (data) {
-      console.log('this is the data', data);
       $scope.currentJobs = data.listings.listing;
       // $scope.jobDescription = $scope.currentJobs.description;
       // console.log($scope.jobDescription);
-      console.log($scope.currentJobs, 'this is jobs');
     });
   };
 

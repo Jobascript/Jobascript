@@ -7,12 +7,6 @@ module.exports = function ($http) {
       method: 'GET',
       url: '/api/jobs',
       params: { companyName: company }
-      // headers: {
-      //           'Access-Control-Allow-Origin': '*',
-      //           'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      //           // 'Access-Control-Allow-Headers': 'Content-Type, X-Requested-With',
-      //           // 'Content-Type': 'application/json'
-      // }
      })
     .then(function(resp) {
       console.log('this is the response', resp.data);

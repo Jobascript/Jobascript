@@ -5,7 +5,6 @@ module.exports = function ($stateProvider) {
     resolve: {
       currenCompany: function($stateParams, Company) {
         var companyName = $stateParams.name;
-        console.log(companyName);
       }
     },
     controller: 'JobsController',
