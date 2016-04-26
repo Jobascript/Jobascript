@@ -5,7 +5,7 @@
       <li ng-repeat="company in suggestions">
         <a class="clickable" ng-click="addCompany(company)">
           <div class="pv2 truncate">
-            <img class="w2" ng-src="{{company.logo}}" alt="{{company.name}}">
+            <img class="w2 truncate" ng-src="{{company.logo}}" alt="{{company.name}}">
             {{ company.name || '[Name Missing]' }}
           </div>
         </a>

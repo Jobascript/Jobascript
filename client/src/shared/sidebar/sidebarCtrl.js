@@ -27,8 +27,9 @@ module.exports = function ($scope, Company, companies, $http) {
 
   function addCompany(company) {
     console.log('adding: ', company);
+    var name = inflection.dasherize(angular.lowercase(company.name));
     angular.extend(company, {
-      name: inflection.dasherize(angular.lowercase(company.name)),
+      name: name.split('.').join(''), // to remove dots
       displayName: company.name
     });
 
