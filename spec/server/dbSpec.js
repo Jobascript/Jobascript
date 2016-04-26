@@ -3,7 +3,7 @@ var config = require('../common.js').config();
 var db = require('../../server/db.js')(config);
 var expect = require('chai').expect;
 
-describe('Database tests', function () {
+xdescribe('Database tests', function () {
   var company = {
     name: 'uber',
     displayName: 'Uber',
@@ -39,7 +39,7 @@ describe('Database tests', function () {
     return Promise.all(promises);
   });
   
-  describe('Add Company', function () {
+  xdescribe('Add Company', function () {
     it('Should return companyID', function () {
       db.addCompany(company, function (id) {
         expect(id).to.be.a('number');
