@@ -10,18 +10,26 @@ var app = angular.module('jobascript', [
 app.config(require('./routes.js'));
 app.run(function ($rootScope, Company, $state) {
   // listener
-  $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
+  $rootScope.$on('$stateChangeSuccess', function (event, toState) {
+    var promise = null;
 
-    console.log('$stateChangeStart ', fromState, fromParams, toState, toParams);
-    if (fromState.name !== '' && toState.name === 'home') {
+    // when company is removed && when loading up the first time
+    if (toState.name === 'home') {
       event.preventDefault();
-      return Company.getCompanies().then(function (companies) {
-        $state.go('company', {
-          name: companies[0].name,
-          id: companies[0].id
-        }, { reload: true });
+      promise = Company.getCompanies().then(function (companies) {
+        if (companies.length > 0) {
+          // load the first company in the list
+          $state.transitionTo('company', {
+            name: companies[0].name,
+            id: companies[0].id
+          }, { reload: true });
+        } else {
+          // if not company goto home
+          $state.transitionTo('home', {}, { notify: false });
+        }
       });
     }
+    return promise;
   });
 });
 
