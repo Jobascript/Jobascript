@@ -1,6 +1,8 @@
 var config = require('../common.js').config();
 var db = require('../db')(config);
 
+var inflection = require('inflection');
+
 exports.getCompanies = function (req, res) {
   var options = req.query;
 
@@ -23,8 +25,12 @@ exports.getCompany = function (req, res) {
 };
 
 exports.addCompany = function (req, res) {
-  var userCompany = req.body.name;
-  db.addCompany({ name: userCompany })
+  db.addCompany({
+    name: inflection.dasherize(req.body.name),
+    displayName: req.body.displayName,
+    domain: req.body.domain,
+    logo: req.body.logo
+  })
   .then(function (companyID) {
     res.status(200).send(companyID.toString());
   }).catch(function (err) {
