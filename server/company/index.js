@@ -1,4 +1,7 @@
-var db = require('../db');
+var config = require('../common.js').config();
+var db = require('../db')(config);
+
+var inflection = require('inflection');
 
 exports.getCompanies = function (req, res) {
   var options = req.query;
@@ -22,8 +25,12 @@ exports.getCompany = function (req, res) {
 };
 
 exports.addCompany = function (req, res) {
-  var userCompany = req.body.name;
-  db.addCompany({ name: userCompany })
+  db.addCompany({
+    name: inflection.dasherize(req.body.name),
+    displayName: req.body.displayName,
+    domain: req.body.domain,
+    logo: req.body.logo
+  })
   .then(function (companyID) {
     res.status(200).send(companyID.toString());
   }).catch(function (err) {
@@ -33,8 +40,7 @@ exports.addCompany = function (req, res) {
 };
 
 exports.removeCompany = function (req, res) {
-  var companyId = req.body.id;
-  db.removeCompany(companyId)
+  db.removeCompany(req.params.id)
   .then(function (company) {
     console.log('company ' + company + ' has been successfully removed');
     res.sendStatus(200);
