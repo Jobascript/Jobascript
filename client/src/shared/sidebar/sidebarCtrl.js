@@ -6,7 +6,11 @@ module.exports = function ($scope, Company, companies, $http, $state) {
   $scope.companies = companies;
   $scope.suggestions = [];
 
-  var findCompanies = _.debounce(function (queryStr) {
+  // methods
+  $scope.findCompanies = _.debounce(findCompanies, 200);
+  $scope.addCompany = addCompany;
+
+  function findCompanies(queryStr) {
     if (!queryStr) {
       $scope.suggestions = [];
       return;
@@ -23,7 +27,7 @@ module.exports = function ($scope, Company, companies, $http, $state) {
         return _.contains(domains, company.domain);
       });
     });
-  }, 200);
+  }
 
   function addCompany(company) {
     console.log('adding: ', company);
@@ -41,22 +45,15 @@ module.exports = function ($scope, Company, companies, $http, $state) {
       return id;
     })
     .then(refreshList)
-    .then(function () {
-      $scope.suggestions = [];
-    });
+    .then(clearSuggestions);
   }
 
-  function refreshList(id) {
+  function clearSuggestions() {
+    $scope.suggestions = [];
+  }
+
+  function refreshList() {
     $scope.companyName = '';
-    // console.log(id);
-    // Company.getCompany(id)
-    // .then(function (newCompany) {
-      // console.log('new: ', newCompany);
-      // $scope.companies.unshift(newCompany);
-      $state.reload();
-    // });
+    $state.reload();
   }
-
-  $scope.findCompanies = findCompanies;
-  $scope.addCompany = addCompany;
 };
