@@ -1,12 +1,15 @@
 /*@import './sidebar/sidebar.css';*/
 
 /* https://philipwalton.github.io/solved-by-flexbox/demos/holy-grail/ */
+
+.jbs-flex {
+  min-height: 100vh;
+}
 .jbs-flex,
 .jbs-flex-body{
   display: flex;
   flex-direction: column;
 }
-
 .jbs-flex-side {
   order: -1;
 }
@@ -18,9 +21,15 @@
   }
   .jbs-flex-main {
     flex: 1;
+    margin-left: 16em;
   }
   .jbs-flex-side {
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding-top: 70px;
+    height: 100%;
     /* 12em is the width of the columns */
-    flex: 0 0 24em;
+    flex: 0 0 16em;
   }
 }
