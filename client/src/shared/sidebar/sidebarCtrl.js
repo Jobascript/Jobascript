@@ -10,7 +10,7 @@ module.exports = function ($scope, Company, companies, $http, $state) {
   $scope.addCompany = addCompany;
 
   function suggestCompanies(queryStr) {
-    if (!queryStr) {
+    if (queryStr === '') {
       $scope.suggestions = [];
       return;
     }
