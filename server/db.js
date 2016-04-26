@@ -15,30 +15,30 @@ module.exports = function (config) {
   /* eslint-disable */
 
   // Uncomment the following to drop/create tables when restarting the server
-  if (config.dropDB) {
-    db.serialize(function() {
-      db.run('DROP TABLE IF EXISTS companies');
-      var companiesTable = [
-        'CREATE TABLE IF NOT EXISTS companies',
-        '(',
-          [
-            'id INTEGER PRIMARY KEY ASC',
-            'name TEXT UNIQUE',
-            'displayName TEXT',
-            'legalName TEXT',
-            'domain TEXT UNIQUE',
-            'description TEXT',
-            'location TEXT',
-            'foundedDate TEXT',
-            'url TEXT',
-            'logo TEXT',
-            'created TEXT'
-          ].join(', '),
-        ');'
-      ].join(' ');
-      db.run(companiesTable);
-    });
-  }
+  // if (config.dropDB) {
+  //   db.serialize(function() {
+  //     db.run('DROP TABLE IF EXISTS companies');
+  //     var companiesTable = [
+  //       'CREATE TABLE IF NOT EXISTS companies',
+  //       '(',
+  //         [
+  //           'id INTEGER PRIMARY KEY ASC',
+  //           'name TEXT UNIQUE',
+  //           'displayName TEXT',
+  //           'legalName TEXT',
+  //           'domain TEXT UNIQUE',
+  //           'description TEXT',
+  //           'location TEXT',
+  //           'foundedDate TEXT',
+  //           'url TEXT',
+  //           'logo TEXT',
+  //           'created TEXT'
+  //         ].join(', '),
+  //       ');'
+  //     ].join(' ');
+  //     db.run(companiesTable);
+  //   });
+  // }
 
   /* eslint-enable */
 
