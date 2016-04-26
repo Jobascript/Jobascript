@@ -54,7 +54,7 @@ module.exports = function ($scope, Company, companies, $http) {
       $scope.companies.unshift(newCompany);
     });
   }
-  
+
   $scope.findCompanies = findCompanies;
   $scope.addCompany = addCompany;
 };
