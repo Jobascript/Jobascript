@@ -39,15 +39,27 @@ function runScript() {
     console.log('________________________________________________');
     
     return Promise.map(companiesArray, function (richCompany) {
+      var columns = _.chain(richCompany)
+                    .pick('legalName', 'description', 'location', 'foundedDate', 'url', 'domain')
+                    .pick(function (value) {
+                      return value !== null;
+                    }).value();
+
+                    console.log(columns);
+
       return db.updateCompany({
-        domain: richCompany.domain
-      }, _.pick(richCompany, 'legalName', 'description', 'location', 'foundedDate', 'url'))
-      .then(function (changes) {
-        console.log('updated ' + changes + ' companies');
-      }, function (reason) {
-        console.log('fail: ', reason);
+        id: richCompany.id
+      }, columns)
+      .then( changes => {
+        console.log(richCompany.name, ' updated');
+      })
+      .catch(function (reason) {
+        console.log('update ' + richCompany.domain + ' fail: ', reason);
         throw new Error(reason);
       });
+    }).then( changesArr => {
+      console.log('________________________________________________');
+      console.log('updated ' + changesArr.length + ' companies');
     });
   })
   .then(function () {
@@ -62,10 +74,15 @@ function runScript() {
   });
 
   function apiLookup(company) {
-    console.log('fetching... ', company.domain);
+    console.log('fetching... ', company.name);
+
     return Company.find({
       domain: company.domain,
       company_name: company.name
+    })
+    .then(function (richCompany) {
+      richCompany.id = company.id; // replace company id with our own
+      return richCompany;
     })
     .catch(Company.QueuedError, function (err) {
       console.log(err); // Company is queued
