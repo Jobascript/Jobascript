@@ -1,5 +1,4 @@
-var config = require('../common.js').config();
-var db = require('../db')(config);
+var db = require('../db');
 
 var inflection = require('inflection');
 

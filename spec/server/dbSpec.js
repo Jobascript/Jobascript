@@ -1,7 +1,5 @@
-var config = require('../common.js').config();
-
 var Promise = require('bluebird');
-var db = require('../../server/db.js')(config);
+var db = require('../../server/db.js');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -49,6 +47,10 @@ describe('Database tests', function () {
       return db.addCompany(company);
     }));
     return Promise.join(promises);
+  });
+
+  afterEach(function () {
+    return db.clearAll();
   });
 
   describe('Get Companies', function () {

@@ -1,10 +1,12 @@
+var config = require('./common.js').config();
+
 var sqlite3 = require('sqlite3').verbose();
 var path = require('path');
 var moment = require('moment');
 var Promise = require('bluebird');
 var _ = require('underscore');
 
-module.exports = function (config) {
+// module.exports = function (config) {
   var db = new sqlite3.Database(
     path.join(__dirname, '../db/' + config.database), function (err) {
       if (err) {
@@ -241,5 +243,5 @@ module.exports = function (config) {
     return string;
   }
 
-  return db;
-};
+  module.exports = db;
+// };
