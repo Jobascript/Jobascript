@@ -13,8 +13,8 @@ db.getCompanies()
 })
 .then(function (companiesArray) {
   // console.log('arrComapy: ', companiesArray);
-  return Promise.map(companiesArray, function (richCompany) {
-    return db.updateCompany({
+  return Promise.each(companiesArray, function (richCompany) {
+    db.updateCompany({
       domain: richCompany.domain
     }, _.pick(richCompany, 'legalName', 'description', 'location', 'foundedDate', 'url'));
   });

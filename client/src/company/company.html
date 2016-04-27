@@ -1,6 +1,6 @@
 <section>
   <h1>
-    <img class="w3" ng-src="{{company.logo}}"> {{company.displayName}}
+    <img class="w3" ng-src="{{company.logo}}"> {{company.legalName || company.displayName}}
     <button class="fr btn btn-danger" ng-click="removeCompany()">Remove</button>
   </h1>
   <p class="measure">{{ company.description || 'Description Coming Soon' }}</p>
