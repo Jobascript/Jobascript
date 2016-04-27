@@ -85,7 +85,7 @@ describe('Database tests', function () {
       })
       .should.eventually.have.lengthOf(3).and.satisfy(function (companies) {
         var values = _.pluck(companies, 'name');
-        
+
         return values.length === _.intersection(values, ['apple', 'google', 'stripe']).length;
       });
     });

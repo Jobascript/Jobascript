@@ -8,21 +8,23 @@ var db = require('../server/db.js')(config);
 var Company = clearbit.Company;
 var CronJob = require('cron').CronJob;
 
-// var job = new CronJob({
-//   cronTime: '* * * * *', // At every minute.
-//   onTick: runScript,
-//   start: false,
-//   timeZone: 'America/Los_Angeles'
-// });
-// job.start();
-runScript();
+var job = new CronJob({
+  cronTime: '* * * * *', // At every minute.
+  onTick: runScript,
+  start: false,
+  timeZone: 'America/Los_Angeles'
+});
+job.start();
+
+// runScript();
+
 function runScript() {
   console.log('================================================');
   console.log('Find companies with incomplete meta data...');
   console.log('================================================');
 
   db.getCompanies({
-    filter:{
+    filter: {
       description: null
     }
   })
@@ -37,7 +39,7 @@ function runScript() {
     console.log('fetched: ', companiesArray.length);
     console.log('Start updating database...');
     console.log('________________________________________________');
-    
+
     return Promise.map(companiesArray, function (richCompany) {
       var columns = _.chain(richCompany)
                     .pick('legalName', 'description', 'location', 'foundedDate', 'url', 'domain')
@@ -45,19 +47,17 @@ function runScript() {
                       return value !== null;
                     }).value();
 
-                    console.log(columns);
-
       return db.updateCompany({
         id: richCompany.id
       }, columns)
-      .then( changes => {
+      .then(() => {
         console.log(richCompany.name, ' updated');
       })
       .catch(function (reason) {
         console.log('update ' + richCompany.domain + ' fail: ', reason);
         throw new Error(reason);
       });
-    }).then( changesArr => {
+    }).then(changesArr => {
       console.log('________________________________________________');
       console.log('updated ' + changesArr.length + ' companies');
     });
@@ -81,8 +81,9 @@ function runScript() {
       company_name: company.name
     })
     .then(function (richCompany) {
-      richCompany.id = company.id; // replace company id with our own
-      return richCompany;
+      var comWithID = richCompany;
+      comWithID.id = company.id; // replace company id with our own
+      return comWithID;
     })
     .catch(Company.QueuedError, function (err) {
       console.log(err); // Company is queued
@@ -92,6 +93,7 @@ function runScript() {
     })
     .catch(function (err) {
       console.log('Bad/invalid request, unauthorized, Clearbit error, or failed request');
+      console.log(err);
     });
   }
 }
