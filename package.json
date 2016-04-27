@@ -23,6 +23,7 @@
     "body-parser": "^1.15.0",
     "bootstrap": "^3.3.6",
     "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
     "clearbit": "^1.2.1",
     "cron": "^1.1.0",
     "css-loader": "^0.23.1",

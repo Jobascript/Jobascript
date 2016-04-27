@@ -80,7 +80,7 @@ module.exports = function (config) {
     return new Promise(function (resolve, reject) {
       stmt.get({
         $id: company.id,
-        $name: JSON.stringify(company.name)
+        $name: company.name
       }, function (error, row) {
         if (error) reject(error);
         if (!row) reject('not found');
@@ -120,11 +120,11 @@ module.exports = function (config) {
 
     return new Promise(function (resolve, reject) {
       stmt.run({
-        $name: JSON.stringify(company.name),
-        $displayName: company.displayName ? JSON.stringify(company.displayName) : null,
-        $domain: company.domain ? JSON.stringify(company.domain) : null,
-        $logo: company.logo ? JSON.stringify(company.logo) : null,
-        $created: JSON.stringify(moment().toISOString())
+        $name: String(company.name),
+        $displayName: company.displayName ? String(company.displayName) : null,
+        $domain: company.domain ? String(company.domain) : null,
+        $logo: company.logo ? String(company.logo) : null,
+        $created: moment().toISOString()
       }, function (error) {
         if (error) reject(error);
         resolve(this.lastID); // resolve with id

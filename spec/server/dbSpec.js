@@ -1,7 +1,12 @@
 var config = require('../common.js').config();
 
 var db = require('../../server/db.js')(config);
-var expect = require('chai').expect;
+var chai = require("chai");
+var chaiAsPromised = require("chai-as-promised");
+chai.use(chaiAsPromised);
+
+var expect = chai.expect;
+var should = chai.should();
 
 describe('Database tests', function () {
   var company = {
@@ -41,9 +46,8 @@ describe('Database tests', function () {
   
   describe('Add Company', function () {
     it('Should return companyID', function () {
-      db.addCompany(company, function (id) {
-        expect(id).to.be.a('number');
-      });
+      return db.addCompany(company)
+      .should.eventually.be.a('number');
     });
 
     it('Should NOT add if company already exists', function (done) {
@@ -57,33 +61,35 @@ describe('Database tests', function () {
 
   describe('Update Company', function () {
     it('Should update by name', function () {
-      db.updateCompany({name: 'stripe'}, {
-        displayName: 'Striper',
+      return db.updateCompany({name: 'stripe'}, {
+        description: 'Striper',
         url: 'https://pornhub.com'
       })
-      .then(function (changes) {
-        expect(changes).to.equal(1);
-      });
+      .should.eventually.equal(1);
     });
 
     it('Should update by id', function () {
-      db.updateCompany({id: 1}, {
-        displayName: 'Striper',
+      return db.updateCompany({id: 1}, {
+        description: 'Striper',
         url: 'https://pornhub.com'
       })
-      .then(function (changes) {
-        expect(changes).to.equal(1);
-      });
+      .should.eventually.equal(1);
+    });
+
+    it('Should update by domain', function () {
+      return db.updateCompany({domain: 'stripe.com'}, {
+        description: 'Striper',
+        url: 'https://pornhub.com'
+      })
+      .should.eventually.equal(1);
     });
 
     it('Should NOT update if id not found', function () {
-      db.updateCompany({id: 13}, {
-        displayName: 'Striper',
+      return db.updateCompany({id: 13}, {
+        description: 'Striper',
         url: 'https://pornhub.com'
       })
-      .then(function (changes) {
-        expect(changes).to.equal(0);
-      });
+      .should.eventually.equal(0);
     });
   });
 });
