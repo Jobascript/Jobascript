@@ -62,34 +62,44 @@ describe('Database tests', function () {
   describe('Update Company', function () {
     it('Should update by name', function () {
       return db.updateCompany({name: 'stripe'}, {
-        description: 'Striper',
-        url: 'https://pornhub.com'
+        description: 'Golden',
+        url: 'https://gold.com'
       })
       .should.eventually.equal(1);
     });
 
     it('Should update by id', function () {
       return db.updateCompany({id: 1}, {
-        description: 'Striper',
-        url: 'https://pornhub.com'
+        description: 'Golden',
+        url: 'https://gold.com'
       })
       .should.eventually.equal(1);
     });
 
     it('Should update by domain', function () {
       return db.updateCompany({domain: 'stripe.com'}, {
-        description: 'Striper',
-        url: 'https://pornhub.com'
+        description: 'Golden',
+        url: 'https://gold.com'
       })
       .should.eventually.equal(1);
     });
 
     it('Should NOT update if id not found', function () {
       return db.updateCompany({id: 13}, {
-        description: 'Striper',
-        url: 'https://pornhub.com'
+        description: 'Golden',
+        url: 'https://gold.com'
       })
       .should.eventually.equal(0);
+    });
+
+    it('Should NOT throw error if no arg', function () {
+      return db.updateCompany({id: 1})
+      .should.be.rejected;
+    });
+
+    it('Should NOT throw error if no company', function () {
+      return db.updateCompany()
+      .should.be.rejected;
     });
   });
 });

@@ -172,6 +172,9 @@ module.exports = function (config) {
    * @return {Promise}         resolve with number of rows changed
    */
   db.updateCompany = function (comapany, args) {
+    if (comapany === undefined) return Promise.reject('Must provide company');
+    if (args === undefined) return Promise.reject('Must provide arg');
+
     var stmt = db.prepare([
       'UPDATE companies',
       'SET ' + toSqlString(args),
