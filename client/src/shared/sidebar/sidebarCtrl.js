@@ -29,9 +29,11 @@ module.exports = function ($scope, Company, companies, $http, $state) {
 
   function addCompany(company) {
     console.log('adding: ', company);
-    var name = inflection.dasherize(angular.lowercase(company.name));
+    // Removing non-alphanumeric chars
+    console.log(company.name);
+    var name = inflection.dasherize(angular.lowercase(company.name).replace(/[^0-9a-zA-Z\s]/g, ''));
     angular.extend(company, {
-      name: name.split('.').join(''), // to remove dots
+      name: name,
       displayName: company.name
     });
 
