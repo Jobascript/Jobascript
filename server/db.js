@@ -44,23 +44,26 @@ module.exports = function (config) {
   /* eslint-enable */
 
   /**
-   * @param  {Object} options obj e.g. {size: 10}
+   * @param  {Object} options obj e.g. {size: 10}, {size:false} to get all
    * @return {Array} Array of company objects
    */
   db.getCompanies = function (options) {
-    var size = (options && options.size) || 10;
+    var size = (options && options.size !== undefined) ? options.size : 10;
     var filter = (options && options.filter) || { 1: 1 };
 
-    var stmt = db.prepare([
+    var sqlArr = [
       'SELECT * FROM companies',
       'WHERE ' + toSqlString(filter, 'AND'),
       'ORDER BY created DESC',
-      'LIMIT $size;'
-    ].join(' '));
+      'LIMIT $size',
+      ';'
+    ];
+
+    var stmt = db.prepare(sqlArr.join(' '));
 
     return new Promise(function (resolve, reject) {
       stmt.all({
-        $size: size
+        $size: size || 100
       }, function (error, companies) {
         if (error) reject(error);
         resolve(companies);

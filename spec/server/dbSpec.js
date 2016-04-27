@@ -61,6 +61,11 @@ describe('Database tests', function () {
       .should.eventually.to.have.lengthOf(1);
     });
 
+    it('Should take false as size and return all', function () {
+      return db.getCompanies({ size: false })
+      .should.eventually.to.have.lengthOf(3);
+    });
+
     it('Should take filter option', function () {
       return db.getCompanies({
         filter: {

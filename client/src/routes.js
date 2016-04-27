@@ -10,7 +10,7 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
       'sidebar@layout': {
         resolve: {
           companies: function (Company) {
-            return Company.getCompanies({ size: 20 });
+            return Company.getCompanies({ size: 100 });
           }
         },
         controller: 'sidebarCtrl',
