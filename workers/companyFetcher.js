@@ -8,15 +8,15 @@ var db = require('../server/db.js')(config);
 var Company = clearbit.Company;
 var CronJob = require('cron').CronJob;
 
-var job = new CronJob({
-  cronTime: '* * * * *', // At every minute.
-  onTick: runScript,
-  start: false,
-  timeZone: 'America/Los_Angeles'
-});
-job.start();
+// var job = new CronJob({
+//   cronTime: '* * * * *', // At every minute.
+//   onTick: runScript,
+//   start: false,
+//   timeZone: 'America/Los_Angeles'
+// });
+// job.start();
 
-// runScript();
+runScript();
 
 function runScript() {
   console.log('================================================');
