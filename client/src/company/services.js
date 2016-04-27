@@ -57,9 +57,7 @@ module.exports = function ($http) {
    * @return {Promise} resolved to ompany Object
    */
   var getCompany = function (id) {
-    return $http.get('/api/company', {
-      params: { id: id }
-    })
+    return $http.get('/api/company/' + id)
     .then(function (resp) {
       return resp.data;
     }, function (err) {

@@ -15,8 +15,7 @@ exports.getCompanies = function (req, res) {
 };
 
 exports.getCompany = function (req, res) {
-  var id = req.query.id;
-  db.getCompany({ id: id }).then(function (company) {
+  db.getCompany({ id: req.params.id }).then(function (company) {
     res.status(200).send(company);
   }).catch(function (err) {
     console.log(err);
