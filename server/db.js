@@ -191,6 +191,7 @@ module.exports = function (config) {
 
     return new Promise(function (resolve, reject) {
       stmt.run(function (error) {
+        // console.log(this.sql);
         if (error) reject(error);
         resolve(this.changes);
       });
@@ -226,8 +227,10 @@ module.exports = function (config) {
       } else if (typeof t[1] === 'string') {
         t[1] = JSON.stringify(t[1]);
       }
-      
+
       str = t[0] + operator + t[1];
+
+      // console.log(str);
 
       return str;
     }).join(' ' + joinWith + ' ');

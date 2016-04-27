@@ -8,20 +8,24 @@ var db = require('../server/db.js')(config);
 var Company = clearbit.Company;
 var CronJob = require('cron').CronJob;
 
-var job = new CronJob({
-  cronTime: '* * * * *', // At every minute.
-  onTick: runScript,
-  start: false,
-  timeZone: 'America/Los_Angeles'
-});
-job.start();
-
+// var job = new CronJob({
+//   cronTime: '* * * * *', // At every minute.
+//   onTick: runScript,
+//   start: false,
+//   timeZone: 'America/Los_Angeles'
+// });
+// job.start();
+runScript();
 function runScript() {
   console.log('================================================');
   console.log('Find companies with incomplete meta data...');
   console.log('================================================');
 
-  db.getCompanies()
+  db.getCompanies({
+    filter:{
+      description: null
+    }
+  })
   .then(function (companies) {
     console.log('Found: ', companies.length);
     console.log('Start fetching...');
@@ -33,20 +37,28 @@ function runScript() {
     console.log('fetched: ', companiesArray.length);
     console.log('Start updating database...');
     console.log('________________________________________________');
-    return Promise.each(companiesArray, function (richCompany) {
-    console.log('update company: ', richCompany.domain);
-      db.updateCompany({
+    
+    return Promise.map(companiesArray, function (richCompany) {
+      return db.updateCompany({
         domain: richCompany.domain
-      }, _.pick(richCompany, 'legalName', 'description', 'location', 'foundedDate', 'url'));
+      }, _.pick(richCompany, 'legalName', 'description', 'location', 'foundedDate', 'url'))
+      .then(function (changes) {
+        console.log('updated ' + changes + ' companies');
+      }, function (reason) {
+        console.log('fail: ', reason);
+        throw new Error(reason);
+      });
     });
-  }).catch(function (err) {
-    console.log('***=============================================');
-    console.log('*** ERROR: ', err);
-    console.log('***=============================================');
-  }).finally(function () {
+  })
+  .then(function () {
     console.log('================================================');
     console.log('Completed without error');
     console.log('================================================');
+  })
+  .catch(function (err) {
+    console.log('***=============================================');
+    console.log('*** ERROR: ', err);
+    console.log('***=============================================');
   });
 
   function apiLookup(company) {
