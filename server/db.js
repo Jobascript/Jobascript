@@ -49,7 +49,7 @@ module.exports = function (config) {
    */
   db.getCompanies = function (options) {
     var size = (options && options.size) || 10;
-    var filter = (options && options.filter) || { a: 'a' };
+    var filter = (options && options.filter) || { 1: 1 };
 
     var stmt = db.prepare([
       'SELECT * FROM companies',
@@ -216,12 +216,20 @@ module.exports = function (config) {
     var tuples = _.pairs(obj);
 
     var string = tuples.map(function (tuple) {
+      var t = tuple.slice();
+      var str;
       var operator = ' = ';
-      if (tuple[1] === null) {
-        operator = ' IS ';
-      }
 
-      return JSON.stringify(tuple[0]) + operator + JSON.stringify(tuple[1]);
+      if (t[1] === null) {
+        operator = ' IS ';
+        t[1] = String(t[1]).toUpperCase();
+      } else if (typeof t[1] === 'string') {
+        t[1] = JSON.stringify(t[1]);
+      }
+      
+      str = t[0] + operator + t[1];
+
+      return str;
     }).join(' ' + joinWith + ' ');
 
     return string;
