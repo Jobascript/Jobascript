@@ -49,7 +49,14 @@ module.exports = function (config) {
    */
   db.getCompanies = function (options) {
     var size = (options && options.size) || 10;
-    var stmt = db.prepare('SELECT * FROM companies ORDER BY created DESC LIMIT $size;');
+    var filter = (options && options.filter) || { a: 'a' };
+
+    var stmt = db.prepare([
+      'SELECT * FROM companies',
+      'WHERE ' + toSqlString(filter, 'AND'),
+      'ORDER BY created DESC',
+      'LIMIT $size;'
+    ].join(' '));
 
     return new Promise(function (resolve, reject) {
       stmt.all({
@@ -177,8 +184,8 @@ module.exports = function (config) {
 
     var stmt = db.prepare([
       'UPDATE companies',
-      'SET ' + toSqlString(args),
-      'WHERE ' + toSqlString(comapany),
+      'SET ' + toSqlString(args, ','),
+      'WHERE ' + toSqlString(comapany, 'AND'),
       ';'
     ].join(' '));
 
@@ -190,13 +197,32 @@ module.exports = function (config) {
     });
   };
 
+  /**
+   * Delete all rows in table
+   * @return {Promise} resolve to number of rows deleted
+   */
+  db.clearAll = function () {
+    return new Promise(function (resolve, reject) {
+      db.run('DELETE FROM companies WHERE 1 = 1;', function (error) {
+        if (error) reject(error);
+        resolve(this.changes);
+      });
+    });
+  };
+
   // turn obj into sql str, e.g. {a:1, b:2} => '"a"="1", "b"="2"'
-  function toSqlString(obj) {
+  // joinWith needs to be a String 'AND', 'OR' or ','
+  function toSqlString(obj, joinWith) {
     var tuples = _.pairs(obj);
 
     var string = tuples.map(function (tuple) {
-      return JSON.stringify(tuple[0]) + ' = ' + JSON.stringify(tuple[1]);
-    }).join(', ');
+      var operator = ' = ';
+      if (tuple[1] === null) {
+        operator = ' IS ';
+      }
+
+      return JSON.stringify(tuple[0]) + operator + JSON.stringify(tuple[1]);
+    }).join(' ' + joinWith + ' ');
 
     return string;
   }
