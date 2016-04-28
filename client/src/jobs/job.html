@@ -1,10 +1,10 @@
 <div>
   <ul>
-    <div ng-repeat="job in currentJobs">
-    <h3 >{{job.title}}</h3>
-    <h4>{{job.company.location.city}}</h4>
-    <li>Apply here <a ng-href='{{job.apply_url}}'>{{job.apply_url}}</a></li>
-    <li ng-bind-html='job.description'></li>
+    <div ng-repeat="job in currentJobs track by $index">
+      <h3 >{{decode(job.title)}}</h3>
+      <h4>Apply here <a ng-href='{{job.link}}' target='_blank'>{{job.link}}</a></h4>
+      <div class='description-{{$index}}' ng-click="clicked($event, $index)">Job Description</div>
+        <div class='job-compact' ng-class="{'job-uncompact': minimizeDetails[$index]}" ng-bind-html='decode(job.description) | renderHTMLCorrectly'></div>
     </div>
   </ul>
 </div>
