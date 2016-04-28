@@ -2,6 +2,10 @@
   "name": "jobascript",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "5.8.0",
+    "npm": "3.8.1"
+  },
   "main": "server/index.js",
   "scripts": {
     "test": "NODE_ENV=test mocha ./spec/server/dbSpec.js",
