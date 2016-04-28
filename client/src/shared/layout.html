@@ -1,14 +1,5 @@
 <div class="jbs-flex">
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#/">Jobascript</a>
-      </div>
-      <form class="w-60 navbar-form navbar-left" role="search">
-        <input type="text" class="db w-100 form-control b--dark-gray bg-black" placeholder="Search">
-      </form>
-    </div>
-  </nav>
+  <nav class="navbar navbar-inverse navbar-fixed-top" ui-view="topnav"></nav>
   <div class="jbs-flex-body">
     <main class="jbs-flex-main ph3" ui-view="main"></main>
     <aside class="jbs-flex-side ph3 overflow-container" ui-view="sidebar"></aside>

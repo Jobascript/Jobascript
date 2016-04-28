@@ -7,6 +7,10 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
       '@': {
         template: require('./shared/layout.html')
       },
+      'topnav@layout': {
+        controller: 'topnavCtrl',
+        template: require('./shared/topnav/topnav.html')
+      },
       'sidebar@layout': {
         resolve: {
           companies: function (Company) {
