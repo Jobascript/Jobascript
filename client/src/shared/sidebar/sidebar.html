@@ -1,19 +1,7 @@
 <div ng-blur="suggestions = []">
-  <div class="dropdown" ng-class="{ open: suggestions.length > 0 }">
-      <input type="text" class="form-control" placeholder="Filter" ng-model="companyName" ng-change="suggest(companyName)">
-    <ul class="dropdown-menu w-100">
-      <li ng-repeat="company in suggestions">
-        <a class="clickable" ng-click="addCompany(company)">
-          <div class="pv2 truncate">
-            <img class="w2 truncate" ng-src="{{company.logo}}" alt="{{company.name}}">
-            {{ company.name || '[Name Missing]' }}
-          </div>
-        </a>
-      </li>
-    </ul>
-  </div>
+  <input type="text" class="form-control" placeholder="Filter" ng-model="search">
   <ul class="nav nav-pills nav-stacked mt2">
-    <li ng-repeat="company in companies()" ui-sref-active="active"><a ui-sref="company(company)">{{ company.displayName }}</a></li>
+    <li ng-repeat="company in companies() | filter: { displayName: search } track by company.id" ui-sref-active="active"><a ui-sref="company(company)">{{ company.displayName }}</a></li>
   </ul>
 </div>
 
