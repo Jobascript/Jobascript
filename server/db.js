@@ -102,7 +102,7 @@ db.getCompanies = function (options) {
 
 /**
  * @param  {Object} args e.g. {name: 'google'} or {id: 2}
- * @return {Object} a comapany object
+ * @return {Object} a company object
  */
 db.getCompany = function (args) {
   var company = args;
@@ -201,7 +201,7 @@ db.removeCompany = function (id) {
 
 /**
  * Update a Company
- * @param  {Object} comapany The Company to be updated. e.g. {name: 'google'} or {id: 2}
+ * @param  {Object} company The Company to be updated. e.g. {name: 'google'} or {id: 2}
  * @param  {Object} args     Properties as columns
  *                           e.g. {
  *                                  description: '...',
@@ -210,14 +210,14 @@ db.removeCompany = function (id) {
  *                                }
  * @return {Promise}         resolve with number of rows changed
  */
-db.updateCompany = function (comapany, args) {
-  if (comapany === undefined) return Promise.reject('Must provide company');
+db.updateCompany = function (company, args) {
+  if (company === undefined) return Promise.reject('Must provide company');
   if (args === undefined) return Promise.reject('Must provide arg');
 
   var stmt = db.prepare([
     'UPDATE companies',
     'SET ' + toSqlString(args, ','),
-    'WHERE ' + toSqlString(comapany, 'AND'),
+    'WHERE ' + toSqlString(company, 'AND'),
     ';'
   ].join(' '));
 
