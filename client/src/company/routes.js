@@ -5,7 +5,6 @@ exports.config = function ($stateProvider) {
     resolve: {
       currentCompany: function ($stateParams, Company) {
         var companyId = $stateParams.id;
-        console.log('id: ', companyId);
         return Company.getCompany(companyId);
       }
     },

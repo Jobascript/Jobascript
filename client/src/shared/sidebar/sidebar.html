@@ -1,7 +1,7 @@
 <div ng-blur="suggestions = []">
   <div class="dropdown" ng-class="{ open: suggestions.length > 0 }">
       <input type="text" class="form-control" placeholder="Filter" ng-model="companyName" ng-change="suggest(companyName)">
-    <!-- <ul class="dropdown-menu w-100">
+    <ul class="dropdown-menu w-100">
       <li ng-repeat="company in suggestions">
         <a class="clickable" ng-click="addCompany(company)">
           <div class="pv2 truncate">
@@ -10,10 +10,10 @@
           </div>
         </a>
       </li>
-    </ul> -->
+    </ul>
   </div>
   <ul class="nav nav-pills nav-stacked mt2">
-    <li ng-repeat="company in companies" ui-sref-active="active"><a ui-sref="company(company)">{{ company.displayName }}</a></li>
+    <li ng-repeat="company in companies()" ui-sref-active="active"><a ui-sref="company(company)">{{ company.displayName }}</a></li>
   </ul>
 </div>
 

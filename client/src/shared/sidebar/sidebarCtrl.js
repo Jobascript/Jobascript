@@ -2,7 +2,7 @@ var inflection = require('inflection');
 var _ = require('underscore');
 
 module.exports = function ($scope, Company, companies, $http, $state) {
-  $scope.companies = companies;
+  $scope.companies = Company.getList;
   $scope.suggestions = [];
 
   // methods

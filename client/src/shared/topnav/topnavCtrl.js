@@ -9,7 +9,6 @@ module.exports = function ($scope, Company, $state) {
   $scope.suggest = _.debounce(suggestCompanies, 200);
   $scope.clearSuggestions = clearSuggestions;
   $scope.showSuggestions = showSuggestions;
-  $scope.addCompany = addCompany;
 
   function suggestCompanies(queryStr) {
     if (queryStr === '') {
@@ -31,27 +30,6 @@ module.exports = function ($scope, Company, $state) {
 
       $scope.suggestions = resp.data;
     });
-  }
-
-  function addCompany(company) {
-    console.log('adding: ', company);
-    // Removing non-alphanumeric chars
-    console.log(company.name);
-    var name = inflection.dasherize(angular.lowercase(company.name).replace(/[^0-9a-zA-Z\s]/g, ''));
-    angular.extend(company, {
-      name: name,
-      displayName: company.name
-    });
-
-    console.log('to be added: ', company);
-
-    Company.addCompany(company)
-    .then(function (id) {
-      console.log(company.name, ' added as id: ', id);
-      return id;
-    })
-    .then(refreshList)
-    .then(clearSuggestions);
   }
 
   function clearSuggestions() {
