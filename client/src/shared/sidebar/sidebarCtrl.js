@@ -1,20 +1,22 @@
 var inflection = require('inflection');
 var _ = require('underscore');
-var clearbitUrl = 'https://autocomplete.clearbit.com/v1/companies/suggest';
 
-module.exports = function ($scope, Company, companies, $http) {
+module.exports = function ($scope, Company, companies, $http, $state) {
   $scope.companies = companies;
   $scope.suggestions = [];
 
-  var findCompanies = _.debounce(function (queryStr) {
-    if (!queryStr) {
+  // methods
+  $scope.suggest = _.debounce(suggestCompanies, 200);
+  $scope.addCompany = addCompany;
+
+  function suggestCompanies(queryStr) {
+    if (queryStr === '') {
       $scope.suggestions = [];
       return;
     }
 
-    $http.get(clearbitUrl, {
-      params: { query: queryStr }
-    }).then(function (resp) {
+    Company.suggest(queryStr)
+    .then(function (resp) {
       var domains = $scope.companies.map(function (company) {
         return company.domain;
       });
@@ -23,12 +25,15 @@ module.exports = function ($scope, Company, companies, $http) {
         return _.contains(domains, company.domain);
       });
     });
-  }, 200);
+  }
 
   function addCompany(company) {
     console.log('adding: ', company);
+    // Removing non-alphanumeric chars
+    console.log(company.name);
+    var name = inflection.dasherize(angular.lowercase(company.name).replace(/[^0-9a-zA-Z\s]/g, ''));
     angular.extend(company, {
-      name: inflection.dasherize(angular.lowercase(company.name)),
+      name: name,
       displayName: company.name
     });
 
@@ -40,21 +45,15 @@ module.exports = function ($scope, Company, companies, $http) {
       return id;
     })
     .then(refreshList)
-    .then(function () {
-      $scope.suggestions = [];
-    });
+    .then(clearSuggestions);
   }
 
-  function refreshList(id) {
+  function clearSuggestions() {
+    $scope.suggestions = [];
+  }
+
+  function refreshList() {
     $scope.companyName = '';
-    console.log(id);
-    Company.getCompany(id)
-    .then(function (newCompany) {
-      console.log('new: ', newCompany);
-      $scope.companies.unshift(newCompany);
-    });
+    $state.reload();
   }
-
-  $scope.findCompanies = findCompanies;
-  $scope.addCompany = addCompany;
 };

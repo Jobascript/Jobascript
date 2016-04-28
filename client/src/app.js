@@ -7,7 +7,8 @@ var app = angular.module('jobascript', [
   'jobascript.comm'
 ]);
 
-app.config(require('./routes.js'));
+app.config(require('./routes.js').config);
+app.run(require('./routes.js').listen);
 
 app.controller('sidebarCtrl', require('./shared/sidebar/sidebarCtrl.js'));
 

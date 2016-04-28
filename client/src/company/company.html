@@ -1,9 +1,9 @@
 <section>
   <h1>
-    <img class="w3" ng-src="{{company.logo}}"> {{company.displayName}}
+    <img class="w3" ng-src="{{company.logo}}"> {{company.legalName || company.displayName}}
     <button class="fr btn btn-danger" ng-click="removeCompany()">Remove</button>
   </h1>
-  <p>Bacon ipsum dolor amet ribeye brisket filet mignon beef ribs frankfurter flank doner boudin pork chop rump turkey kielbasa. Kevin brisket jowl pork chop, drumstick leberkas ribeye andouille pork pig.</p>
+  <p class="measure">{{ company.description || 'Description Coming Soon' }}</p>
   <section>
     <ul class="nav nav-tabs">
       <li ui-sref-active="active"><a ui-sref="jobs()">Job Openings</a></li>

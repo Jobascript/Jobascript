@@ -18,10 +18,11 @@
   .jbs-flex-body {
     flex-direction: row;
     flex: 1;
+    padding-top: 70px;
   }
   .jbs-flex-main {
     flex: 1;
-    margin-left: 16em;
+    margin-left: 18em;
   }
   .jbs-flex-side {
     position: fixed;
@@ -29,8 +30,9 @@
     top: 0;
     padding-top: 70px;
     height: 100%;
+    width: 18em;
     /* 12em is the width of the columns */
-    flex: 0 0 16em;
+    flex: 0 0 18em;
   }
 }
 

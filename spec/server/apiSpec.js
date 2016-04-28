@@ -1,3 +1,4 @@
+var db = require('../../server/db.js');
 var server = require('../../server/index.js');
 var supertest = require('supertest');
 var expect = require('chai').expect;
@@ -5,15 +6,17 @@ var expect = require('chai').expect;
 var request = supertest.agent(server);
 
 describe('base root tests', function() {
-  it ('should respond with a 200 response code', function() {
+  it('should respond with a 200 response code', function() {
     request.get('/')
-    // .set('accept', 'text/html')
     .expect(200);
   });
 });
 
-xdescribe('/api/company route tests', function() {
-  it ('should respond with a company ID after the company was added', function(done) {
+describe('/api/company route tests', function() {
+  beforeEach(function() {
+    return db.clearAll();
+  });
+  it('should respond with a company ID after the company was added', function(done) {
     var data = {
       name: 'google'
     };
@@ -36,10 +39,10 @@ xdescribe('/api/company route tests', function() {
      });
   });
 
-  it ('should return the same company that was added', function(done) {
+  xit('should return the same company that was added', function(done) {
     var company = {name: 'google'};
     beforeEach(function() {
-      db.addCompany(company);
+      return db.addCompany(company);
     });
   //   companyHandler.__set__("db", {getCompany: function(args) {
   //     expect(args.name).to.equal('google');
@@ -58,8 +61,7 @@ xdescribe('/api/company route tests', function() {
         throw err;
       }
       // console.log('res.body', res);
-      expect(res.body.name).to.equal('google');
-      done();
+      done(expect(res.body.name).to.equal('google'));
     });
   });
 

@@ -1,4 +1,18 @@
+var clearbitUrl = 'https://autocomplete.clearbit.com/v1/companies/suggest';
+
 module.exports = function ($http) {
+  var list = [];
+
+  var suggestCompanies = function (queryStr) {
+    if (!queryStr) {
+      return Promise.reject();
+    }
+
+    return $http.get(clearbitUrl, {
+      params: { query: queryStr }
+    });
+  };
+
   // companyObj comes in form of {name: 'name'}
   var addCompany = function (companyObj) {
     return $http.post('/api/company', companyObj)
@@ -31,6 +45,7 @@ module.exports = function ($http) {
       params: options
     })
     .then(function (resp) {
+      list = resp.data;
       return resp.data;
     }, function (err) {
       console.error('err', err);
@@ -42,9 +57,7 @@ module.exports = function ($http) {
    * @return {Promise} resolved to ompany Object
    */
   var getCompany = function (id) {
-    return $http.get('/api/company', {
-      params: { id: id }
-    })
+    return $http.get('/api/company/' + id)
     .then(function (resp) {
       return resp.data;
     }, function (err) {
@@ -56,6 +69,10 @@ module.exports = function ($http) {
     getCompany: getCompany,
     getCompanies: getCompanies,
     addCompany: addCompany,
-    deleteCompany: deleteCompany
+    deleteCompany: deleteCompany,
+    suggest: suggestCompanies,
+    getList: function () {
+      return list;
+    }
   };
 };
