@@ -39,15 +39,15 @@ gulp.task('test-server',  function () {
 gulp.task('lint-client', function(){
   return gulp.src(paths.client.scripts)
   .pipe(eslint())
-  .pipe(eslint.format())
-  .pipe(eslint.failAfterError());
+  .pipe(eslint.format());
+  // .pipe(eslint.failAfterError());
 });
 
 gulp.task('lint-server', function(){
   return gulp.src(paths.server.scripts)
   .pipe(eslint())
-  .pipe(eslint.format())
-  .pipe(eslint.failAfterError());
+  .pipe(eslint.format());
+  // .pipe(eslint.failAfterError());
 });
 
 gulp.task('build-client', function() {
