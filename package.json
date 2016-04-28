@@ -4,8 +4,7 @@
   "description": "",
   "main": "server/index.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha ./spec/server/dbSpec.js",
-    "start": "node ./server/index.js"
+    "test": "NODE_ENV=test mocha ./spec/server/dbSpec.js"
   },
   "repository": {
     "type": "git",
