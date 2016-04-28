@@ -1,7 +1,7 @@
 exports.config = function ($stateProvider) {
   $stateProvider.state('company', {
     parent: 'home',
-    url: '/company/:name/:id',
+    url: '/company/:id/:name',
     resolve: {
       currentCompany: function ($stateParams, Company) {
         var companyId = $stateParams.id;
