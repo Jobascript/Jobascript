@@ -4,7 +4,7 @@ var webpack = require('gulp-webpack');
 var del = require('del');
 var eslint = require('gulp-eslint');
 var watch = require('gulp-watch');
-var mocha = require('gulp-mocha');
+var mocha = require('gulp-spawn-mocha');
 var gulpSequence = require('gulp-sequence');
 
 var paths = {
@@ -27,13 +27,12 @@ gulp.task('clean', function() {
 // tests
 gulp.task('test-server',  function () {
   return gulp.src([paths.server.test, '!./spec/server/test.js', '!./spec/server/apiSpec.js'], {read: false})
-  .pipe(mocha());
-  // .once('error', function () {
-  //     process.exit(1);
-  //   })
-  // .once('end', function () {
-  //   process.exit();
-  // });
+  .pipe(mocha({
+    env: {'NODE_ENV': 'test'}
+  }))
+  .once('error', function () {
+    process.exit(1);
+  });
 });
 
 // lint
