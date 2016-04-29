@@ -10,20 +10,17 @@ module.exports = function ($scope, Job, currentCompany) {
     e.innerHTML = input;
     return e.childNodes.length === 0 ? '' : e.childNodes[0].nodeValue.replace(/\<br \/\>/g, '');
   };
-  $scope.jobs = function () {
-    Job.getJobs(currentCompany.name).then(function (data) {
-      $scope.currentJobs = data.rss.channel.item;
-      if (!Array.isArray($scope.currentJobs)) {
-        $scope.currentJobs = [$scope.currentJobs];
-        $scope.currentJobs[0].isCompact = true;
-      }
-      console.log(data);
-      $scope.currentJobs.forEach(function (job) {
-        job.isCompact = true;
-      });
-      console.log($scope.currentJobs, 'currentjobs');
-      console.log('raw data', data);
+  Job.getJobs(currentCompany.name).then(function (data) {
+    $scope.currentJobs = data.rss.channel.item;
+    if (!Array.isArray($scope.currentJobs)) {
+      $scope.currentJobs = [$scope.currentJobs];
+      $scope.currentJobs[0].isCompact = true;
+    }
+    console.log(data);
+    $scope.currentJobs.forEach(function (job) {
+      job.isCompact = true;
     });
-  };
+    console.log($scope.currentJobs, 'currentjobs');
+    console.log('raw data', data);
+  });
 };
-$scope.jobs(currentCompany.name);
