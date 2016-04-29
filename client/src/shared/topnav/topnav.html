@@ -3,10 +3,10 @@
     <a class="navbar-brand" href="#/">Jobascript</a>
   </div>
   <div class="w-60 navbar-form navbar-left dropdown" ng-class="{ open: suggestions.length > 0 }">
-    <input type="text" class="db w-100 form-control b--dark-gray bg-black" placeholder="Search" ng-model="companyName" ng-change="suggest(companyName)" ng-blur="clearSuggestions()" ng-focus="showSuggestions()">
+    <input type="text" class="db w-100 form-control b--dark-gray bg-black" placeholder="Search" ng-model="companyName" ng-change="suggest(companyName)">
     <ul class="dropdown-menu w-100">
       <li ng-repeat="company in suggestions">
-        <a class="clickable">
+        <a class="clickable" ng-click="navToCompany(company)">
           <div class="pv2 truncate">
             <img class="w2 truncate" ng-src="{{company.logo}}" alt="{{company.name}}">
             {{ company.name || '[Name Missing]' }}

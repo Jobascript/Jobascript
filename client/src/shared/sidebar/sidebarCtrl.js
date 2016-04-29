@@ -26,13 +26,13 @@ module.exports = function ($scope, Company, companies) {
 
   // function addCompany(company) {
   //   console.log('adding: ', company);
-  //   // Removing non-alphanumeric chars
-  //   console.log(company.name);
-  //   var name = inflection.dasherize(angular.lowercase(company.name).replace(/[^0-9a-zA-Z\s]/g, ''));
-  //   angular.extend(company, {
-  //     name: name,
-  //     displayName: company.name
-  //   });
+    // // Removing non-alphanumeric chars
+    // console.log(company.name);
+    // var name = inflection.dasherize(angular.lowercase(company.name).replace(/[^0-9a-zA-Z\s]/g, ''));
+    // angular.extend(company, {
+    //   name: name,
+    //   displayName: company.name
+    // });
 
   //   console.log('to be added: ', company);
 

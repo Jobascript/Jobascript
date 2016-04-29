@@ -1,0 +1,5 @@
+@media (min-width: 768px) {
+  .navbar .navbar-form .w-100 {
+    width: 100%;
+  }
+}

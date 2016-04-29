@@ -5,7 +5,13 @@ exports.config = function ($stateProvider) {
     resolve: {
       currentCompany: function ($stateParams, Company) {
         var companyId = $stateParams.id;
-        return Company.getCompany(companyId);
+        return Company.getCompany(companyId)
+        .then(function (company) {
+          if ($stateParams.name !== company.name) {
+            $stateParams.name = company.name;
+          }
+          return company;
+        });
       }
     },
     views: {
