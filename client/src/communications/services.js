@@ -45,10 +45,12 @@ module.exports = function ($http) { // remove comment and use $http later
     gapi.client.load('gmail', 'v1').then(function(){
       console.log('7.success: Building request ')
       var request = gapi.client.gmail.users.messages.list({
-        'userId': 'me'
+        'userId': 'me',
+        'labelIds': 'INBOX',
+        'maxResults': 10
       });
       console.log('request: ', request);
-      request.then(function(resp) {
+      request.execute(function(resp) {
       console.log('8.success: sending request');
       console.log('resp: ', resp);
       })
