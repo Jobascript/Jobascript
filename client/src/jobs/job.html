@@ -3,6 +3,7 @@
     <div ng-repeat="job in currentJobs track by $index">
       <h3 >{{decode(job.title)}}</h3>
       <h4>Apply here <a ng-href='{{job.link}}' target='_blank'>{{job.link}}</a></h4>
+      <div class='job.publish'>Posted On {{decode(job.pubDate)}}</div>
       <div class='description-{{$index}}' ng-click="clicked($event, $index)">Job Description</div>
         <div class='job-compact' ng-class="{'job-uncompact': minimizeDetails[$index]}" ng-bind-html='decode(job.description) | renderHTMLCorrectly'></div>
     </div>
