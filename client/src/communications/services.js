@@ -31,7 +31,9 @@ module.exports = function ($http) { // remove comment and use $http later
       console.log('4.success: User has authorized client');
       // If a callback is not provided, a promise is returned.
       console.log('5.success: Loading the client library interface to Gmail API')
-      loadGmailApi();
+      loadGmailApi().then(function(resp){
+        console.log('loading messages: ', resp);
+      });
       console.log('Loading call has returned')
     } else {
       // Show auth UI, allowing the user to initiate authorization by
@@ -46,85 +48,44 @@ module.exports = function ($http) { // remove comment and use $http later
   * is loaded.
   */
   function loadGmailApi() {
-    console.log('6.success: Request to access gmail api granted')
-    gapi.client.load('gmail', 'v1').then(function(){
-      console.log('7.success: Building request ')
-      var request = gapi.client.gmail.users.messages.list({
-        'userId': 'me',
-        'labelIds': 'INBOX',
-        'maxResults': 10
+    return new Promise(function(resolve, reject) {
+      var messages = [];
+      console.log('6.success: Request to access gmail api granted')
+      gapi.client.load('gmail', 'v1').then(function(){
+        console.log('7.success: Building request ')
+        var request = gapi.client.gmail.users.messages.list({
+          'userId': 'me',
+          'labelIds': 'INBOX',
+          'maxResults': 10
+        });
+        console.log('request: ', request);
+        request.execute(function(resp) {
+        console.log('8.success: sending request');
+        console.log('resp: ', resp);
+
+
+        resp.messages.forEach(function(v){
+          var messageRequest = gapi.client.gmail.users.messages.get({
+            'userId': 'me',
+            'id': v.id
+          });
+          messageRequest.execute(function(messageResp) {
+           console.log('9.success: message retrieved');
+           var message = messageResp;
+           console.log("message body: ", message);
+           messages.push(message);
+           if(messages.length === resp.messages.length) {
+            resolve(messages);
+           }
+          })
+
+
+        })
+        })
       });
-      console.log('request: ', request);
-      request.execute(function(resp) {
-      console.log('8.success: sending request');
-      console.log('resp: ', resp);
-      })
     });
-    //gapi.client.load('gmail', 'v1', listMessages('me', 'github', appendPre));
   }
 
-
-  // function listMessages(userId, query, callback) {
-  //   console.log('inside list messages');
-  //   // what is the format of result?
-  //   var getPageOfMessages = function (request, result) {
-  //     console.log('inside getPageofMessages');
-  //     request.execute(function (resp) {
-  //       result = result.concat(resp.messages);
-  //       var nextPageToken = resp.nextPageToken;
-  //       if (nextPageToken) {
-  //         request = gapi.client.gmail.users.messages.list({
-  //           userId: userId,
-  //           pageToken: nextPageToken,
-  //           q: query
-  //         });
-  //         getPageOfMessages(request, result);
-  //       } else {
-  //         callback(result);
-  //       }
-  //     });
-  //   };
-  //   var initialRequest = gapi.client.gmail.users.messages.list({
-  //     user: userId,
-  //     q: query
-  //   });
-  //   getPageOfMessages(initialRequest, []);
-  // }
-/**
-  * Print all Labels in the authorized user's inbox. If no labels
-  * are found an appropriate message is printed.
-  */
-  // function listLabels() {
-  //   console.log('listing label');
-  //   var request = gapi.client.gmail.users.labels.list({
-  //         'userId': 'me'
-  //       });
-  //   request.execute(function (resp) {
-  //     var labels = resp.labels;
-  //     appendPre('Labels:');
-  //     if (labels && labels.length > 0) {
-  //       console.log('has labels');
-  //       for (var i = 0; i < labels.length; i++) {
-  //         var label = labels[i];
-  //         appendPre(label.name);
-  //       }
-  //     } else {
-  //       console.log('has no labels');
-  //       appendPre('No Labels found.');
-  //     }
-  //   });
-  // }
-/**
-  * Append a pre element to the body containing the given message
-  * as its text node.
-  *
-  * @param {string} message Text to be placed in pre element.
-  */
-  function appendPre(message) {
-    var pre = document.getElementById('output');
-    var textContent = document.createTextNode(message + '\n');
-    pre.appendChild(textContent);
-  }
 
   var getEmails = function () {
     return [1, 2, 3, 4];
