@@ -2,12 +2,14 @@
   "extends": "airbnb-base/legacy",
   "env": {
     "node": true,
+    "mocha": true,
     "es6": true
   },
   "rules": {
     "no-console": 0,
     "func-names": 0,
     "vars-on-top": 0,
-    "no-use-before-define": ["error", { "functions": false }]
+    "no-use-before-define": ["error", { "functions": false }],
+    "no-shadow": 0
   }
 }

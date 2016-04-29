@@ -2,9 +2,14 @@
   "name": "jobascript",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "5.8.0",
+    "npm": "3.8.1"
+  },
   "main": "server/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=test mocha ./spec/server/dbSpec.js",
+    "postinstall": "gulp build-client"
   },
   "repository": {
     "type": "git",
@@ -19,10 +24,13 @@
   "dependencies": {
     "angular": "^1.5.5",
     "angular-ui-router": "^0.2.18",
+    "bluebird": "^3.3.5",
     "body-parser": "^1.15.0",
     "bootstrap": "^3.3.6",
     "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
     "clearbit": "^1.2.1",
+    "cron": "^1.1.0",
     "css-loader": "^0.23.1",
     "del": "^2.2.0",
     "eslint": "^2.8.0",
