@@ -1,0 +1,28 @@
+.job.publish {
+  font-size: 45px;
+}
+.job-compact {
+  /*max-height: 0px;*/
+  display: none;
+}
+
+.job {
+  max-width: 50px;
+
+}
+
+/*.job-uncompact {
+  display: block;
+  opacity: 1;
+  transition: opacity 0.5s;
+}*/
+
+.fade {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.description {
+  font-weight: bold;
+  font-size: 15px;
+}

@@ -9,6 +9,7 @@
   "main": "server/index.js",
   "scripts": {
     "test": "NODE_ENV=test mocha ./spec/server/dbSpec.js",
+    "test-client": "NODE_ENV=test mocha ./spec/client/",
     "postinstall": "gulp build-client"
   },
   "repository": {
@@ -23,6 +24,7 @@
   "homepage": "https://github.com/Jobascript/Jobascript#readme",
   "dependencies": {
     "angular": "^1.5.5",
+    "angular-sanitize": "^1.5.5",
     "angular-ui-router": "^0.2.18",
     "bluebird": "^3.3.5",
     "body-parser": "^1.15.0",
@@ -61,5 +63,9 @@
     "tachyons": "^4.0.0-beta.23",
     "underscore": "^1.8.3",
     "url-loader": "^0.5.7"
+  },
+  "devDependencies": {
+    "request-promise": "^3.0.0",
+    "xml2json": "^0.9.0"
   }
 }

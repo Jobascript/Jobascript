@@ -1,6 +1,3 @@
-@import './topnav/topnav.css';
-
-/* https://philipwalton.github.io/solved-by-flexbox/demos/holy-grail/ */
 
 .jbs-flex {
   min-height: 100vh;
@@ -35,8 +32,15 @@
     flex: 0 0 18em;
   }
 }
-
 /* helpers */
 .clickable {
   cursor: pointer;
+}
+.jbs-flex-main {
+  flex-grow: 2;
+  padding-left: 2rem;
+}
+.description {
+  font-weight: bold;
+  font-size: 15px;
 }
