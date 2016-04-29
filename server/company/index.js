@@ -14,8 +14,21 @@ exports.getCompanies = function (req, res) {
 };
 
 exports.getCompany = function (req, res) {
-  db.getCompany({ id: req.params.id }).then(function (company) {
+  var type = req.query.type || 'id'; // can be 'id' or 'domain'
+  var params = {};
+
+  if (type === 'id') {
+    params = { id: req.params.id };
+  } else if (type === 'domain') {
+    params = { domain: req.params.id };
+  } else {
+    res.sendStatus(400);
+  }
+
+  db.getCompany(params).then(function (company) {
     res.status(200).send(company);
+  }, function () {
+    res.sendStatus(404);
   }).catch(function (err) {
     console.log(err);
     res.sendStatus(500);

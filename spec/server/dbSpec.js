@@ -53,6 +53,14 @@ xdescribe('Database tests', function () {
     return db.clearAll();
   });
 
+  describe('Get a Company', function () {
+    it('should accept domain', function () {
+      return db.getCompany({
+        domain: 'google.com'
+      }).should.eventually.have.property('name', 'google');
+    });
+  });
+
   describe('Get Companies', function () {
     it('Should return an array of companies', function () {
       return db.getCompanies().should.eventually.be.a('array');

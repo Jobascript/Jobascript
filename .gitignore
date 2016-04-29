@@ -4,3 +4,4 @@ client/dist/*
 .grunt
 bower_components
 db/*
+.ssh

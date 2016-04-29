@@ -1,12 +1,17 @@
 exports.config = function ($stateProvider) {
   $stateProvider.state('company', {
     parent: 'home',
-    url: '/company/:name/:id',
+    url: '/company/:id/:name',
     resolve: {
       currentCompany: function ($stateParams, Company) {
         var companyId = $stateParams.id;
-        console.log('id: ', companyId);
-        return Company.getCompany(companyId);
+        return Company.getCompany(companyId)
+        .then(function (company) {
+          if ($stateParams.name !== company.name) {
+            $stateParams.name = company.name;
+          }
+          return company;
+        });
       }
     },
     views: {

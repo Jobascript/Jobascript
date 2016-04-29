@@ -1,4 +1,5 @@
 var clearbitUrl = 'https://autocomplete.clearbit.com/v1/companies/suggest';
+var _ = require('underscore');
 
 module.exports = function ($http) {
   var list = [];
@@ -56,14 +57,35 @@ module.exports = function ($http) {
    * @param  {Number} company id
    * @return {Promise} resolved to ompany Object
    */
-  var getCompany = function (id) {
-    return $http.get('/api/company/' + id)
+  var getCompany = function (id, domainAsID) {
+    var type = domainAsID ? 'domain' : 'id';
+
+    return $http.get('/api/company/' + id, {
+      params: {
+        type: type
+      }
+    })
     .then(function (resp) {
       return resp.data;
     }, function (err) {
       console.error('err', err);
+      return Promise.reject(err);
     });
   };
+
+  var unfollow = function (company) {
+    list = _.reject(list, function (com) {
+      return com.id === company.id;
+    });
+  };
+
+  var follow = function (company) {
+    list.push(company);
+  };
+
+  function getList() {
+    return list;
+  }
 
   return {
     getCompany: getCompany,
@@ -71,9 +93,9 @@ module.exports = function ($http) {
     addCompany: addCompany,
     deleteCompany: deleteCompany,
     suggest: suggestCompanies,
-    getList: function () {
-      return list;
-    }
+    follow: follow,
+    unfollow: unfollow,
+    getList: getList
   };
 };
 

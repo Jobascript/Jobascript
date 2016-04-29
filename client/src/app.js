@@ -11,6 +11,7 @@ var app = angular.module('jobascript', [
 app.config(require('./routes.js').config);
 app.run(require('./routes.js').listen);
 
+app.controller('topnavCtrl', require('./shared/topnav/topnavCtrl.js'));
 app.controller('sidebarCtrl', require('./shared/sidebar/sidebarCtrl.js'));
 
 require('angular-ui-router');

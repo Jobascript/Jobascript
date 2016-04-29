@@ -101,8 +101,8 @@ db.getCompanies = function (options) {
 };
 
 /**
- * @param  {Object} args e.g. {name: 'google'} or {id: 2}
- * @return {Object} a comapany object
+ * @param  {Object} args e.g. {name: 'google'} or {id: 2} or {domain: 'google.com'}
+ * @return {Object} a company object
  */
 db.getCompany = function (args) {
   var company = args;
@@ -112,6 +112,8 @@ db.getCompany = function (args) {
     stmt = db.prepare('SELECT * FROM companies WHERE id = $id;');
   } else if (company.name) {
     stmt = db.prepare('SELECT * FROM companies WHERE name = $name;');
+  } else if (company.domain) {
+    stmt = db.prepare('SELECT * FROM companies WHERE domain = $domain;');
   } else {
     return Promise.reject('arg must include either an id or name property');
   }
@@ -119,7 +121,8 @@ db.getCompany = function (args) {
   return new Promise(function (resolve, reject) {
     stmt.get({
       $id: company.id,
-      $name: company.name
+      $name: company.name,
+      $domain: company.domain
     }, function (error, row) {
       if (error) reject(error);
       if (!row) reject('not found');
@@ -201,7 +204,7 @@ db.removeCompany = function (id) {
 
 /**
  * Update a Company
- * @param  {Object} comapany The Company to be updated. e.g. {name: 'google'} or {id: 2}
+ * @param  {Object} company The Company to be updated. e.g. {name: 'google'} or {id: 2}
  * @param  {Object} args     Properties as columns
  *                           e.g. {
  *                                  description: '...',
@@ -210,14 +213,14 @@ db.removeCompany = function (id) {
  *                                }
  * @return {Promise}         resolve with number of rows changed
  */
-db.updateCompany = function (comapany, args) {
-  if (comapany === undefined) return Promise.reject('Must provide company');
+db.updateCompany = function (company, args) {
+  if (company === undefined) return Promise.reject('Must provide company');
   if (args === undefined) return Promise.reject('Must provide arg');
 
   var stmt = db.prepare([
     'UPDATE companies',
     'SET ' + toSqlString(args, ','),
-    'WHERE ' + toSqlString(comapany, 'AND'),
+    'WHERE ' + toSqlString(company, 'AND'),
     ';'
   ].join(' '));
 
