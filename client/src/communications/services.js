@@ -37,9 +37,7 @@ module.exports = function () {
   function loadGmailApi() {
     return new Promise(function(resolve, reject) {
       var messages = [];
-      console.log('6.success: Request to access gmail api granted')
       gapi.client.load('gmail', 'v1').then(function(){
-        console.log('7.success: Building request ')
         var request = gapi.client.gmail.users.messages.list({
           'userId': 'me',
           'labelIds': 'INBOX',
@@ -53,9 +51,7 @@ module.exports = function () {
               'id': v.id
             });
             messageRequest.execute(function(messageResp) {
-             console.log('9.success: message retrieved');
              var message = messageResp;
-             console.log("message body: ", message);
              messages.push(message);
              if(messages.length === resp.messages.length) {
               resolve(messages);
