@@ -101,7 +101,7 @@ db.getCompanies = function (options) {
 };
 
 /**
- * @param  {Object} args e.g. {name: 'google'} or {id: 2}
+ * @param  {Object} args e.g. {name: 'google'} or {id: 2} or {domain: 'google.com'}
  * @return {Object} a company object
  */
 db.getCompany = function (args) {
@@ -112,6 +112,8 @@ db.getCompany = function (args) {
     stmt = db.prepare('SELECT * FROM companies WHERE id = $id;');
   } else if (company.name) {
     stmt = db.prepare('SELECT * FROM companies WHERE name = $name;');
+  } else if (company.domain) {
+    stmt = db.prepare('SELECT * FROM companies WHERE domain = $domain;');
   } else {
     return Promise.reject('arg must include either an id or name property');
   }
@@ -119,7 +121,8 @@ db.getCompany = function (args) {
   return new Promise(function (resolve, reject) {
     stmt.get({
       $id: company.id,
-      $name: company.name
+      $name: company.name,
+      $domain: company.domain
     }, function (error, row) {
       if (error) reject(error);
       if (!row) reject('not found');
