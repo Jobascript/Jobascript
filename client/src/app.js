@@ -4,7 +4,8 @@ var app = angular.module('jobascript', [
   'ui.router',
   'jobascript.company',
   'jobascript.jobs',
-  'jobascript.comm'
+  'jobascript.comm',
+  'jobascript.news'
 ]);
 
 app.config(require('./routes.js').config);
@@ -16,6 +17,7 @@ require('angular-ui-router');
 require('./company');
 require('./jobs');
 require('./communications');
+require('./news');
 
 // style
 require('bootstrap/dist/css/bootstrap.css');

@@ -49,3 +49,4 @@ exports.removeCompany = function (req, res) {
     res.sendStatus(500);
   });
 };
+

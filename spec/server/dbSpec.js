@@ -11,7 +11,7 @@ var should = chai.should();
 
 var _ = require('underscore');
 
-describe('Database tests', function () {
+xdescribe('Database tests', function () {
   var company = {
     name: 'uber',
     displayName: 'Uber',
