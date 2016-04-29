@@ -1,11 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 module.exports = function ($http) { // remove comment and use $http later
   var CLIENT_ID = '647322278471-06e71cofl2ddsauer9rtoopfpokgo4pm.apps.googleusercontent.com';
-  var SCOPES = ['https://www.googleapis.com/auth/gmail.compose'];
+  var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 
   var checkAuth = function () {
+
     console.log('1: Initiating auth process');
     console.log('2: Requesting authorization status from google');
+
     gapi.auth.authorize({
       client_id: CLIENT_ID,
       scope: SCOPES.join(' '),
@@ -17,9 +19,12 @@ module.exports = function ($http) { // remove comment and use $http later
   * @param {Object} authResult Authorization result.
   */
   function handleAuthResult(authResult) {
+
     console.log('3: Authorization status result received');
+    console.log('4: Auth Result: ', authResult);
 
     var authorizeDiv = document.getElementById('authorize-div');
+
     if (authResult && !authResult.error) {
       // Hide auth UI, then load client library.
       authorizeDiv.style.display = 'none';
