@@ -12,6 +12,7 @@ module.exports = function getJobs(req, res) {
    })
    .catch(function(err) {
     console.log('error in index.js job', err);
+    res.sendStatus(500);
   });
 };
 

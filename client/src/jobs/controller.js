@@ -25,5 +25,5 @@ module.exports = function ($scope, Job, currentCompany) {
       console.log('raw data', data);
     });
   };
-  $scope.jobs(currentCompany.name);
 };
+$scope.jobs(currentCompany.name);
