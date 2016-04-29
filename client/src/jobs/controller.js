@@ -2,15 +2,15 @@ module.exports = function ($scope, Job, currentCompany) {
   $scope.currentJobs = [];
   $scope.jobDescription = '';
 
-  $scope.clicked = function(job) {
+  $scope.clicked = function (job) {
     job.isCompact = !job.isCompact;
   };
-  $scope.decode = function htmlDecode(input){
+  $scope.decode = function htmlDecode(input) {
     var e = document.createElement('div');
     e.innerHTML = input;
-    return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue.replace(/\<br \/\>/g, '');
+    return e.childNodes.length === 0 ? '' : e.childNodes[0].nodeValue.replace(/\<br \/\>/g, '');
   };
-  $scope.jobs = function(){
+  $scope.jobs = function () {
     Job.getJobs(currentCompany.name).then(function (data) {
       $scope.currentJobs = data.rss.channel.item;
       if (!Array.isArray($scope.currentJobs)) {
@@ -18,7 +18,7 @@ module.exports = function ($scope, Job, currentCompany) {
         $scope.currentJobs[0].isCompact = true;
       }
       console.log(data);
-      $scope.currentJobs.forEach(function(job) {
+      $scope.currentJobs.forEach(function (job) {
         job.isCompact = true;
       });
       console.log($scope.currentJobs, 'currentjobs');

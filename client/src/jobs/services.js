@@ -5,12 +5,12 @@ module.exports = function ($http) {
       method: 'GET',
       url: '/api/jobs',
       params: { companyName: company }
-     })
-    .then(function(resp) {
+    })
+    .then(function (resp) {
       console.log('this is the response', resp.data);
       return resp.data;
     })
-    .catch(function(caught) {
+    .catch(function (caught) {
       console.log('error in services js ', caught);
     });
   }
