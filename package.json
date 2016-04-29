@@ -54,6 +54,7 @@
     "inflection": "^1.10.0",
     "mocha": "^2.4.5",
     "moment": "^2.13.0",
+    "pg-promise": "^4.0.4",
     "request": "^2.72.0",
     "request-promise": "^3.0.0",
     "rewire": "^2.5.1",
