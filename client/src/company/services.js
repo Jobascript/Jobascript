@@ -57,12 +57,19 @@ module.exports = function ($http) {
    * @param  {Number} company id
    * @return {Promise} resolved to ompany Object
    */
-  var getCompany = function (id) {
-    return $http.get('/api/company/' + id)
+  var getCompany = function (id, domainAsID) {
+    var type = domainAsID ? 'domain' : 'id';
+
+    return $http.get('/api/company/' + id, {
+      params: {
+        type: type
+      }
+    })
     .then(function (resp) {
       return resp.data;
     }, function (err) {
       console.error('err', err);
+      return Promise.reject(err);
     });
   };
 

@@ -19,21 +19,34 @@ module.exports = function ($scope, Company, $state) {
 
     var companyExist = currentList[found];
 
-    // if not found try add to DB
+    // if not found try find it in DB
     if (!companyExist) {
+      Company.getCompany(company.domain, true)
+      .then(function (dbcompany) {
+        console.log('found, ', dbcompany);
+        return dbcompany.id;
+      }, function () {
+        // not found in DB too, add to DB
+        // Removing non-alphanumeric chars
+        var name = inflection
+        .dasherize(
+          angular
+          .lowercase(company.name)
+          .replace(/[^0-9a-zA-Z\s]/g, '')
+        );
 
-      // Removing non-alphanumeric chars
-      var name = inflection.dasherize(angular.lowercase(company.name).replace(/[^0-9a-zA-Z\s]/g, ''));
-      angular.extend(company, {
-        name: name,
-        displayName: company.name
-      });
+        angular.extend(company, {
+          name: name,
+          displayName: company.name
+        });
 
-      Company.addCompany(company)
-      .then(function (id) {
+        console.log('not found, adding...', company);
+        return Company.addCompany(company);
+      }).then(function (id) {
         $state.go('company', { id: id });
+      }).catch(function (why) {
+        console.log('shit: ', why);
       });
-
     } else {
       $state.go('company', companyExist);
     }
