@@ -3,6 +3,7 @@ var parser = require('xml2json');
 var cheerio = require('cheerio');
 var html2json = require('html2json').html2json;
 
+
 exports.getJobs = function(req, res) {
   console.log(req.query.companyName);
   var companyName = req.query.companyName;
@@ -19,6 +20,11 @@ exports.getJobs = function(req, res) {
     console.log('error in index.js job', err);
     res.sendStatus(500);
   });
+}
+
+exports.getJobListing = function(req, res) {
+  console.log('req listing from index.js', req.query.jobListing);
+  res.send('hurro george');
 };
 
 exports.getJobListing = function(req, res) {
@@ -95,8 +101,3 @@ exports.getMultipleJobs = function(req, res) {
 //http://www.monster.com/jobs/search/
 //?kwdv=48 <== computer science job
 //?kwdv=46 <== software development
-
-//github jobs
-//https://jobs.github.com/
-//positions?description <== job search parameters
-//&location= // <==
