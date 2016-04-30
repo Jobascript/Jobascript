@@ -5,7 +5,7 @@
         {{new.title}}
       </a>
       <div>{{new.pubDate}}</div>
-      <div>{{new.contentSnippet}}</div>
+      <div ng-bind-html="new.content"></div>
     </li>
   </ul>
   <div></div>
