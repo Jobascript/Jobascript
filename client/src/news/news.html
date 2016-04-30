@@ -1,12 +1,10 @@
 <div>
-  <ul>
-    <li ng-repeat="new in news">
-      <a href="{{new.link}}" target="_blank">
-        {{new.title}}
-      </a>
-      <div>{{new.pubDate}}</div>
-      <div ng-bind-html="new.content"></div>
-    </li>
-  </ul>
+  <form ng-submit="filter()">
+    <input type="text" placeholder="News Topic" ng-model="newsFilter"/>
+    <input type="submit" value="Search News">
+  </form>
+  <div ng-repeat="new in news">
+    <div ng-bind-html="new.contentHTML"></div>
+  </div>
   <div></div>
 </div>
