@@ -1,5 +1,6 @@
 module.exports = function ($scope, Job, currentCompany) {
   $scope.currentJobs = [];
+  $scope.jobSkills = [];
   $scope.jobDescription = '';
 
   $scope.clicked = function (job) {

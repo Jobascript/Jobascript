@@ -1,5 +1,5 @@
-  module.exports = function ($sce) {
-    return function (stringToParse) {
-      return $sce.trustAsHtml(stringToParse);
+  module.exports = function () {
+    return function (searchString) {
+      // console.log(searchString);
     };
   };
