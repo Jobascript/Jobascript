@@ -9,9 +9,17 @@ module.exports = function ($scope, Comm, currentCompany) {
   }
 
   $scope.emails = [];
-  Comm.getEmails(currentCompany).then(function (emails) {
-    $scope.emails = emails;
-  });
+  // need to check auth first
+  
 
-  $scope.auth = Comm.checkAuth;
+  $scope.auth = function() {
+    console.log('check auth');
+    Comm.checkAuth().then(function () {
+      console.log('get emails');
+      Comm.getEmails(currentCompany).then(function (emails) {
+        console.log('emails here: ', emails);
+        $scope.emails = emails;
+      });
+    });
+  };
 };

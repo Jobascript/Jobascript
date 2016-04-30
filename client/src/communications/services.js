@@ -7,28 +7,34 @@ module.exports = function () { // remove comment and use $http later
   /* globals gapi */
 
   var checkAuth = function () {
-    gapi.auth.authorize({
-      client_id: CLIENT_ID,
-      scope: SCOPES.join(' '),
-      immediate: false }, handleAuthResult);
+    return new Promise(function(resolve, reject) {
+      gapi.auth.authorize({
+        client_id: CLIENT_ID,
+        scope: SCOPES.join(' '),
+        immediate: false 
+      }, resolve );
+    });
   };
 /**
   * Handle response from authorization server.
   *
   * @param {Object} authResult Authorization result.
   */
-  function handleAuthResult(authResult) {
-    var button = document.getElementById('authorize-div');
-    if (authResult && !authResult.error) {
-      button.style.display = 'none';
-      getMessages().then(function (resp) {
-        messages = resp;
-        return messages;
-      });
-    } else {
-      button.style.display = 'inline';
-    }
+ /* function handleAuthResult(authResult) {
+    return new Promise(function (resolve) {
+      var button = document.getElementById('authorize-div');
+      if (authResult && !authResult.error) {
+        button.style.display = 'none';
+        getEmails().then(function (resp) {
+          messages = resp;
+          return messages;
+        });
+      } else {
+        button.style.display = 'inline';
+      }
+    });
   }
+  */
 /**
   * Load Gmail API client library. List labels once client library
   * is loaded.
@@ -70,7 +76,7 @@ module.exports = function () { // remove comment and use $http later
           q: 'from: ' + currentCompany.name
         });
         request.execute(function (resp) {
-          resolve(resp);
+          resolve(resp.messages);
         });
       });
     });
