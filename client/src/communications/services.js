@@ -32,7 +32,7 @@ module.exports = function ($http) { // remove comment and use $http later
       console.log('4.success: User has authorized client');
       // If a callback is not provided, a promise is returned.
       console.log('5.success: Loading the client library interface to Gmail API')
-      loadGmailApi().then(function(resp){
+      getMessages().then(function(resp){
         messages = resp;
         console.log('loading messages array', messages);
         return messages;
@@ -50,7 +50,7 @@ module.exports = function ($http) { // remove comment and use $http later
   * Load Gmail API client library. List labels once client library
   * is loaded.
   */
-  function loadGmailApi() {
+  function getMessages() {
     return new Promise(function(resolve, reject) {
       var messages = [];
       console.log('6.success: Request to access gmail api granted')
@@ -58,7 +58,7 @@ module.exports = function ($http) { // remove comment and use $http later
         console.log('7.success: Building request ')
         var request = gapi.client.gmail.users.messages.list({
           'userId': 'me',
-          'labelIds': 'INBOX',
+          'q': 'from: info@twitter.com',
           'maxResults': 10
         });
         console.log('request: ', request);
