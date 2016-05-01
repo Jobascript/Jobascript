@@ -42,7 +42,7 @@ describe('Database tests', function () {
     }
   ];
 
-  beforeEach(function (done) {
+  before(function (done) {
     var promises = [];
     promises.push(db.clearAll());
     promises.concat(companies.map(function (com) {
@@ -60,8 +60,10 @@ describe('Database tests', function () {
     });
   });
 
-  after(function () {
-    return db.clearAll();
+  after(function (done) {
+    return db.clearAll().then(function () {
+      done();
+    });
   });
 
   describe('Get a Company', function () {
@@ -141,6 +143,15 @@ describe('Database tests', function () {
   });
 
   describe('Update Company', function () {
+    beforeEach(function (done) {
+      db.clearAll().then(function () {
+        db.addCompany(companies[0]).then(function (id) {
+          ID = id;
+          done();
+        });
+      });
+    });
+
     it('Should update by name', function () {
       return db.updateCompany({ name: 'stripe' }, {
         description: 'Golden',

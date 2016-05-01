@@ -65,23 +65,6 @@ module.exports = function (db) {
     ].join(' ');
     /* eslint-enable */
 
-    // return Companies.getCompany({ domain: company.domain })
-    // .then(function () {
-    //   return Promise.reject('Company already exists');
-    // }, function (resultError) {
-    //   if (resultError.received === 0) {
-    //     return db.one(sqlStr, {
-    //       table: TABLE_NAME,
-    //       name: String(company.name),
-    //       displayName: company.displayName ? String(company.displayName) : null,
-    //       domain: company.domain ? String(company.domain) : null,
-    //       logo: company.logo ? String(company.logo) : null
-    //     });
-    //   }
-
-    //   return Promise.reject(resultError);
-    // });
-
     return db.one(sqlStr, {
       table: TABLE_NAME,
       name: String(company.name),
@@ -90,6 +73,8 @@ module.exports = function (db) {
       logo: company.logo ? String(company.logo) : null
     }).then(function (result) {
       return result.id;
+    }).catch(function (err) {
+      return Promise.reject(err);
     });
   };
 
