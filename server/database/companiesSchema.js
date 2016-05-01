@@ -1,40 +1,9 @@
-var config = require('../common.js').config();
-
-// var Promise = require('bluebird');
 var _ = require('underscore');
+var Promise = require('bluebird');
 
 const TABLE_NAME = 'companies';
 
-/* eslint-disable */
-var companiesTable = [
-  'CREATE TABLE IF NOT EXISTS ${table~}',
-  '(',
-    [
-      'name TEXT UNIQUE',
-      'displayName TEXT',
-      'legalName TEXT',
-      'domain TEXT UNIQUE',
-      'description TEXT',
-      'location TEXT',
-      'foundedDate TEXT',
-      'url TEXT',
-      'logo TEXT',
-      'created TIMESTAMP WITHOUT TIME ZONE',
-      'id SERIAL PRIMARY KEY'
-    ].join(', '),
-  ');'
-].join(' ');
-/* eslint-disable */
-
-module.exports = function(db) {
-  if (config.dropDB) {
-    db.query('DROP TABLE IF EXISTS ${table~}', {table: TABLE_NAME})
-    .then(db.query(companiesTable, {table: TABLE_NAME}))
-    .then(function (stuff) {
-      console.log('companies Table rebuilt');
-    });
-  }
-
+module.exports = function (db) {
   var Companies = {};
 
   /**
@@ -42,7 +11,7 @@ module.exports = function(db) {
    * @return {Promise} resolve to number of rows deleted
    */
   Companies.clearAll = function () {
-    return db.none('DELETE FROM ${table~};', {table: TABLE_NAME});
+    return db.none('DELETE FROM ${table~};', { table: TABLE_NAME });
   };
 
   /**
@@ -51,7 +20,7 @@ module.exports = function(db) {
    */
   Companies.getCompanies = function (options) {
     var size = (options && options.size !== undefined) ? options.size : 10;
-    var filter = (options && options.filter) || {1:1};
+    var filter = (options && options.filter) || { 1: 1 };
 
     var sqlStr = [
       'SELECT * FROM ${table~}',
@@ -68,17 +37,6 @@ module.exports = function(db) {
         return toSqlString(filter, 'AND');
       }
     });
-
-    // var stmt = db.prepare(sqlArr.join(' '));
-
-    // return new Promise(function (resolve, reject) {
-    //   stmt.all({
-    //     $size: size || 100
-    //   }, function (error, companies) {
-    //     if (error) reject(error);
-    //     resolve(companies);
-    //   });
-    // });
   };
 
   /**
@@ -107,26 +65,71 @@ module.exports = function(db) {
     ].join(' ');
     /* eslint-enable */
 
+    // return Companies.getCompany({ domain: company.domain })
+    // .then(function () {
+    //   return Promise.reject('Company already exists');
+    // }, function (resultError) {
+    //   if (resultError.received === 0) {
+    //     return db.one(sqlStr, {
+    //       table: TABLE_NAME,
+    //       name: String(company.name),
+    //       displayName: company.displayName ? String(company.displayName) : null,
+    //       domain: company.domain ? String(company.domain) : null,
+    //       logo: company.logo ? String(company.logo) : null
+    //     });
+    //   }
+
+    //   return Promise.reject(resultError);
+    // });
+
     return db.one(sqlStr, {
       table: TABLE_NAME,
       name: String(company.name),
       displayName: company.displayName ? String(company.displayName) : null,
       domain: company.domain ? String(company.domain) : null,
       logo: company.logo ? String(company.logo) : null
+    }).then(function (result) {
+      return result.id;
     });
+  };
 
-    // return new Promise(function (resolve, reject) {
-    //   stmt.run({
-    //     $name: String(company.name),
-    //     $displayName: company.displayName ? String(company.displayName) : null,
-    //     $domain: company.domain ? String(company.domain) : null,
-    //     $logo: company.logo ? String(company.logo) : null,
-    //     $created: moment().toISOString()
-    //   }, function (error) {
-    //     if (error) reject(error);
-    //     resolve(this.lastID); // resolve with id
-    //   });
-    // });
+  /**
+   * @param  {Object} args e.g. {name: 'google'} or {id: 2} or {domain: 'google.com'}
+   * @return {Object} a company object
+   */
+  Companies.getCompany = function (args) {
+    var sqlStr = 'SELECT * FROM ${table~} WHERE ${where:raw};';
+
+    return db.one(sqlStr, {
+      table: TABLE_NAME,
+      where: toSqlString(args, 'OR')
+    });
+  };
+
+  /**
+   * Update a Company
+   * @param  {Object} company The Company to be updated. e.g. {name: 'google'} or {id: 2}
+   * @param  {Object} args     Properties as columns
+   *                           e.g. {
+   *                                  description: '...',
+   *                                  legalName: '...',
+   *                                  url: '...'
+   *                                }
+   * @return {Promise}         resolve with number of rows changed
+   */
+  Companies.updateCompany = function (company, args) {
+    if (company === undefined) return Promise.reject('Must provide company');
+    if (args === undefined) return Promise.reject('Must provide arg');
+
+    var sqlStr = 'UPDATE ${table~} SET ${set:raw} WHERE ${where:raw};';
+
+    return db.result(sqlStr, {
+      table: TABLE_NAME,
+      set: toSqlString(args, ','),
+      where: toSqlString(company, 'AND')
+    }).then(function (result) {
+      return result.rowCount;
+    });
   };
 
   // turn obj into sql str, e.g. {a:1, b:2} => 'a=1, b="blah"'
@@ -137,24 +140,16 @@ module.exports = function(db) {
     var string = tuples.map(function (tuple) {
       var t = tuple.slice();
       var str;
-      var operator = ' = ';
+      var operator = '=';
 
       if (t[1] === null) {
         operator = ' IS ';
         t[1] = String(t[1]).toUpperCase();
-      } else if (typeof t[1] === 'string') {
-        var value = t[1];
-        
-        if (typeof t[1] === 'string') {
-          value = '\'' + t[1] + '\'';
-        }
-
-        t[1] = value;
+      } else {
+        t[1] = '\'' + t[1] + '\''; // single quote
       }
 
       str = t[0] + operator + t[1];
-
-      // console.log(str);
 
       return str;
     }).join(' ' + joinWith + ' ');
@@ -163,5 +158,4 @@ module.exports = function(db) {
   }
 
   return Companies;
-}
-
+};

@@ -12,6 +12,8 @@ var should = chai.should();
 var _ = require('underscore');
 
 describe('Database tests', function () {
+  var ID = '';
+
   var company = {
     name: 'uber',
     displayName: 'Uber',
@@ -40,23 +42,35 @@ describe('Database tests', function () {
     }
   ];
 
-  beforeEach(function () {
+  beforeEach(function (done) {
     var promises = [];
     promises.push(db.clearAll());
-    promises.concat(companies.map(function (company) {
-      return db.addCompany(company);
+    promises.concat(companies.map(function (com) {
+      return db.addCompany(com).then(function (id) {
+        ID = id;
+        return id;
+      });
     }));
-    return Promise.join(promises).catch(function (reason) {
+
+    Promise.all(promises).then(function () {
+      done();
+    }).catch(function (reason) {
       console.log('in test, ', reason);
-      return reason;
+      done(reason);
     });
   });
 
-  afterEach(function () {
+  after(function () {
     return db.clearAll();
   });
 
-  xdescribe('Get a Company', function () {
+  describe('Get a Company', function () {
+    it('should accept name', function () {
+      return db.getCompany({
+        name: 'google'
+      }).should.eventually.have.property('name', 'google');
+    });
+
     it('should accept domain', function () {
       return db.getCompany({
         domain: 'google.com'
@@ -109,10 +123,12 @@ describe('Database tests', function () {
     });
   });
 
-  xdescribe('Add Company', function () {
+  describe('Add Company', function () {
     it('Should return companyID', function () {
       return db.addCompany(company)
-      .should.eventually.be.a('number');
+      .should.eventually.satisfy(function (num) {
+        return !isNaN(Number(num));
+      });
     });
 
     it('Should NOT add if company already exists', function (done) {
@@ -124,7 +140,7 @@ describe('Database tests', function () {
     });
   });
 
-  xdescribe('Update Company', function () {
+  describe('Update Company', function () {
     it('Should update by name', function () {
       return db.updateCompany({ name: 'stripe' }, {
         description: 'Golden',
@@ -134,7 +150,7 @@ describe('Database tests', function () {
     });
 
     it('Should update by id', function () {
-      return db.updateCompany({ id: 1 }, {
+      return db.updateCompany({ id: ID }, {
         description: 'Golden',
         url: 'https://gold.com'
       })

@@ -6,7 +6,9 @@ var options = {
 var monitor = require('pg-monitor');
 var pgp = require('pg-promise')(options);
 
-monitor.attach(options);
+if (process.env.NODE_ENV !== 'test') {
+  monitor.attach(options);
+}
 
 var cn = {
   host: config.dbUrl, // server name or IP address;
