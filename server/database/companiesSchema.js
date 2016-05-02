@@ -54,12 +54,12 @@ module.exports = function (db) {
 
     /* eslint-disable indent */
     var sqlStr = [
-      'INSERT INTO ${table~} (name, displayName, domain, logo)',
+      'INSERT INTO ${table~} (name, display_name, domain, logo)',
       'VALUES',
       '(',
         [
           '${name}',
-          '${displayName}',
+          '${display_name}',
           '${domain}',
           '${logo}'
         ].join(', '),
@@ -70,7 +70,7 @@ module.exports = function (db) {
     return db.one(sqlStr, {
       table: TABLE_NAME,
       name: String(company.name),
-      displayName: company.displayName ? String(company.displayName) : null,
+      display_name: company.display_name ? String(company.display_name) : null,
       domain: company.domain ? String(company.domain) : null,
       logo: company.logo ? String(company.logo) : null
     }).then(function (result) {

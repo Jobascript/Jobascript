@@ -16,7 +16,7 @@ describe('Database tests', function () {
 
   var company = {
     name: 'uber',
-    displayName: 'Uber',
+    display_name: 'Uber',
     domain: 'uber.com',
     logo: 'https://logo.clearbit.com/uber.com'
   };
@@ -24,19 +24,19 @@ describe('Database tests', function () {
   var companies = [
     {
       name: 'stripe',
-      displayName: 'Stripe',
+      display_name: 'Stripe',
       domain: 'stripe.com',
       logo: 'https://logo.clearbit.com/stripe.com'
     },
     {
       name: 'apple',
-      displayName: 'Apple',
+      display_name: 'Apple',
       domain: 'apple.com',
       logo: 'https://logo.clearbit.com/apple.com'
     },
     {
       name: 'google',
-      displayName: 'Google',
+      display_name: 'Google',
       domain: 'google.com',
       logo: 'https://logo.clearbit.com/google.com'
     }
@@ -99,7 +99,7 @@ describe('Database tests', function () {
       return db.getCompanies({
         filter: {
           name: 'apple',
-          displayName: 'Apple'
+          display_name: 'Apple'
         }
       })
       .should.eventually.satisfy(function (companies) {
