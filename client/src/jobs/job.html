@@ -1,17 +1,20 @@
 <div>
-  <input type='text' placeholder='filter locations' ng-model='jobSearch'/>
-  <input type='radio' ng-model='job_relocation' ng-value='true' /> Require Relocation?
-  <input type='radio' ng-model='job_visa' ng-value='true' /> Require Visa?
-  <input type='radio' ng-model='job_remote' ng-value='true' /> Work Remotely?
+  <input type='text' class='form-control' placeholder='filter locations' ng-model='jobSearch'/>
+
+  <input type='checkbox' ng-model='job_relocation' ng-value='true' /> Require Relocation?
+  <input type='checkbox' ng-model='job_visa' ng-value='true' /> Require Visa?
+  <input type='checkbox' ng-model='job_remote' ng-value='true' /> Work Remotely?
   <button ng-click='search()'>Get Jobs With Requirements</button>
   <div ng-repeat="job in currentJobs | filter: {title: jobSearch}">
-    <li ng-click='doStuff(job.link)'>{{decode(job.title)}}</li>
+    <h3 ng-click='doStuff(job.link)'>{{decode(job.title)}}</li>
     <h4>Apply here <a ng-href='{{job.link}}' target='_blank'>{{job.link}}</a></h4>
     <div class='job.publish'>Posted On {{decode(job.pubDate)}}</div>
     <div> Required Skills
       <li ng-repeat='jobSkills in job.category track by $index'>{{jobSkills}}</li>
     </div>
     <div class='description-{{$index}}' ng-click="clicked(job)">Click here to get Job Description</div>
-    <li class='job-compact' ng-class="{'job-compact': job.isCompact}" ng-bind-html='decode(job.description)'></d>
+    <li class='job-compact' ng-class="{'job-compact': job.isCompact}" ng-bind-html='decode(job.description)'></li>
   </div>
+  <pre ng-bind-html='details[0].duties'></pre>
+  <pre ng-bind-html='currentJobs'></pre>
 </div>
