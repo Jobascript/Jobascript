@@ -4,29 +4,6 @@ var cheerio = require('cheerio');
 var html2json = require('html2json').html2json;
 
 
-exports.getJobs = function(req, res) {
-  console.log(req.query.companyName);
-  var companyName = req.query.companyName;
-  var offersRelocation = req.query.relocate;
-  var offersVisa = req.query.visa;
-  var allowsRemote = req.query.remote;
-  console.log(allowsRemote);
-  rp('https://stackoverflow.com/jobs/feed?searchTerm=' + companyName + '&offersrelocation=' + offersRelocation + '&offersvisasponsorship=' + offersVisa + '&allowsremote=' + allowsRemote)
-   .then(function(data) {
-     var json = parser.toJson(data);
-     res.send(json);
-   })
-   .catch(function(err) {
-    console.log('error in index.js job', err);
-    res.sendStatus(500);
-  });
-}
-
-exports.getJobListing = function(req, res) {
-  console.log('req listing from index.js', req.query.jobListing);
-  res.send('hurro george');
-};
-
 exports.getJobListing = function(req, res) {
   var jobPage = req.query.jobListing;
   // console.log('req listing from index.js', req.query.jobListing);
@@ -86,6 +63,10 @@ exports.getMultipleJobs = function(req, res) {
 
 };
 
+
+// JSON.stringify({
+//   data: $('title').html()
+// })
 
 // JSON.stringify({
 //   data: $('title').html()
