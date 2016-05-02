@@ -38,7 +38,7 @@ exports.getCompany = function (req, res) {
 exports.addCompany = function (req, res) {
   db.addCompany({
     name: inflection.dasherize(req.body.name),
-    displayName: req.body.displayName,
+    display_name: req.body.displayName,
     domain: req.body.domain,
     logo: req.body.logo
   })

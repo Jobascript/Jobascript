@@ -1,6 +1,6 @@
 <section>
   <h1>
-    <img class="w3" ng-src="{{company.logo}}"> {{company.legalName || company.displayName}}
+    <img class="w3" ng-src="{{company.logo}}"> {{company.legal_name || company.display_name}}
     <button class="fr btn btn-danger" ng-if="isFollowing" ng-click="unfollow()">Unfollow</button>
     <button class="fr btn btn-success" ng-if="!isFollowing" ng-click="follow()">Follow</button>
   </h1>
