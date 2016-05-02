@@ -10,13 +10,15 @@ if (process.env.NODE_ENV !== 'test') {
   monitor.attach(options);
 }
 
-var cn = {
-  host: config.dbUrl, // server name or IP address;
-  port: 5432,
-  database: config.dbName,
-  user: 'jbs',
-  password: 'abcd1234'
-};
+
+var cn = process.env.DATABASE_URL || 'postgres://jbs:abcd1234@localhost:5432/' + config.dbName;
+// var cn = {
+//   host: process.env.DATABASE_URL || 'localhost', // DB server URL;
+//   port: 5432,
+//   database: config.dbName,
+//   user: 'jbs',
+//   password: 'abcd1234'
+// };
 
 var db = pgp(cn);
 
