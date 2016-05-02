@@ -36,6 +36,8 @@ module.exports = function (db) {
       where: function () {
         return toSqlString(filter, 'AND');
       }
+    }).catch(function (err) {
+      return Promise.reject(err);
     });
   };
 
@@ -88,6 +90,8 @@ module.exports = function (db) {
     return db.one(sqlStr, {
       table: TABLE_NAME,
       where: toSqlString(args, 'OR')
+    }).catch(function (err) {
+      return Promise.reject(err);
     });
   };
 
@@ -114,6 +118,8 @@ module.exports = function (db) {
       where: toSqlString(company, 'AND')
     }).then(function (result) {
       return result.rowCount;
+    }).catch(function (err) {
+      return Promise.reject(err);
     });
   };
 

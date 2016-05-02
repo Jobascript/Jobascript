@@ -1,4 +1,4 @@
-var db = require('../db');
+var db = require('../../server/database').companiesTable;
 
 var inflection = require('inflection');
 
