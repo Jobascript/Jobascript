@@ -1,6 +1,7 @@
 var rp = require('request-promise');
 var parser = require('xml2json');
-
+var cheerio = require('cheerio');
+var html2json = require('html2json').html2json;
 
 exports.getJobs = function(req, res) {
   console.log(req.query.companyName);
@@ -18,16 +19,70 @@ exports.getJobs = function(req, res) {
     console.log('error in index.js job', err);
     res.sendStatus(500);
   });
-}
-
-exports.getJobListing = function(req, res) {
-  console.log('req listing from index.js', req.query.jobListing);
-  res.send('hurro george');
 };
 
+exports.getJobListing = function(req, res) {
+  var jobPage = req.query.jobListing;
+  // console.log('req listing from index.js', req.query.jobListing);
+  rp(jobPage)
+   .then(function(data) {
+     var $ = cheerio.load(data);
+     var pageData = [];
+     pageData.push({duties: $('div.description').text()});
+     console.log($('.jobdetail').text());
+    // console.log("Pre Results:", data);
+    // var results = html2json(data);
+    // console.log("Results:", typeof results);
+    res.send(pageData);
+  })
+  .catch(function(err) {
+    console.log('error in index.js, getJobListing', err);
+    res.sendStatus(500);
+  });
+};
+
+exports.getMultipleJobs = function(req, res) {
+  // var companyName = req.query.companyName;
+  var promise1 = rp('https://jobs.github.com/')
+  .then(function(data) {
+    var $ = cheerio.load(data);
+    var pageData = [];
+    // console.log($('.positionlist')[0].children, 'position list')
+    var jobTitle = $('.positionlist')[0].children.map(function(val) {
+      return $('.title').html();
+    });
+    console.log(jobTitle);
+    pageData.push(
+      {
+        jobTitle: jobTitle
+      }
+    );
+    res.json(pageData);
+  }).catch(function(err) {
+    console.log('err in index.js', err);
+  });
+
+
+
+};
+
+
+// JSON.stringify({
+//   data: $('title').html()
+// })
 
 // http://stackoverflow.com/jobs?
 // searchTerm=twitch&location=san+francisco&range=20&distanceUnits=Miles&
 // allowsremote=true&
 // offersrelocation=true&
 // offersvisasponsorship=true
+
+//monster search
+//http://www.monster.com/jobs/search/
+//?kwdv=48 <== computer science job
+//?kwdv=46 <== software development
+
+//github jobs
+//https://jobs.github.com/
+//positions?description <== job search parameters
+//&location= // <==
