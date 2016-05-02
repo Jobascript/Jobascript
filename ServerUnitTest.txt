@@ -1,0 +1,56 @@
+Server Unit Testing
+Identify tests from server file
+    describe company
+        getCompanies
+          input: 
+            parameters: req, res
+            req.query
+          output:
+            res.status(200).send(companies) - response success, sending companies
+            res.sendStatus(500)             - response failure, no companies matching search criteria, sending error code
+        getCompany
+          input:
+            parameters: req, res
+            req.query.type === 'id'
+            req.query.type === 'domain'
+            req.params.id
+          output:
+            res.sendStatus(400)             - response failure, no identifier, sending error code  
+            res.status(200).send(company)   - response success, sending company
+            res.sendStatus(404)             - response failure, no company matching id or domain, sending error code
+            res.sendStatus(500);            - response failure, unknown server error, sending error code
+        addCompany
+          input:
+            parameters: req, res
+            req.body.name
+            req.body.displayName
+            req.body.domain
+            req.body.logo
+          output:
+            res.status(200).send(companyId) - response success, sending id of added company 
+            res.sendStatus(500)             - response failure, unknown server error, sending error code
+        removeCompany
+          input:
+            parameters: req, res
+            req.params.id 
+          output:
+            res.sendStatus(200)             - response success, sending success code
+            res.sendStatus(404)             - response failure, company not found, sending error code
+            res.sendStatus(500)             - response failure, uknown server error, sending error code
+    describe job
+        getJobs
+          input:
+            parameters: req, res
+            req.query.companyName
+          output:
+            res.send(jobsJson)               - response success, sending jobs
+            res.sendStatus(500)              - responese failure, unknown server error, sending server error
+
+    describe news
+        getNews
+          input:
+            parameters: req, res
+            req.query.name
+          output:
+            res.send(parsedRss)             - response success, sending news
+          out: parsed rssfeed
