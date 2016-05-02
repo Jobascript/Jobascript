@@ -24,7 +24,7 @@ module.exports = function (db) {
 
     var sqlStr = [
       'SELECT * FROM ${table~}',
-      'WHERE ${where:raw}',
+      'WHERE ' + toSqlString(filter, 'AND'),
       'ORDER BY created DESC',
       'LIMIT ${size:raw}',
       ';'
@@ -32,10 +32,7 @@ module.exports = function (db) {
 
     return db.query(sqlStr, {
       table: TABLE_NAME,
-      size: size || 'ALL',
-      where: function () {
-        return toSqlString(filter, 'AND');
-      }
+      size: size || 'ALL'
     }).catch(function (err) {
       return Promise.reject(err);
     });
@@ -69,10 +66,10 @@ module.exports = function (db) {
 
     return db.one(sqlStr, {
       table: TABLE_NAME,
-      name: String(company.name),
-      display_name: company.display_name ? String(company.display_name) : null,
-      domain: company.domain ? String(company.domain) : null,
-      logo: company.logo ? String(company.logo) : null
+      name: company.name,
+      display_name: company.display_name || null,
+      domain: company.domain || null,
+      logo: company.logo || null
     }).then(function (result) {
       return result.id;
     }).catch(function (err) {
@@ -85,11 +82,10 @@ module.exports = function (db) {
    * @return {Object} a company object
    */
   Companies.getCompany = function (args) {
-    var sqlStr = 'SELECT * FROM ${table~} WHERE ${where:raw};';
+    var sqlStr = 'SELECT * FROM ${table~} WHERE ' + toSqlString(args, 'OR') + ';';
 
     return db.one(sqlStr, {
-      table: TABLE_NAME,
-      where: toSqlString(args, 'OR')
+      table: TABLE_NAME
     }).catch(function (err) {
       return Promise.reject(err);
     });
@@ -110,12 +106,11 @@ module.exports = function (db) {
     if (company === undefined) return Promise.reject('Must provide company');
     if (args === undefined) return Promise.reject('Must provide arg');
 
-    var sqlStr = 'UPDATE ${table~} SET ${set:raw} WHERE ${where:raw};';
+    var sqlStr = 'UPDATE ${table~} SET ' + toSqlString(args, ',') +
+      ' WHERE ' + toSqlString(company, 'AND') + ';';
 
     return db.result(sqlStr, {
-      table: TABLE_NAME,
-      set: toSqlString(args, ','),
-      where: toSqlString(company, 'AND')
+      table: TABLE_NAME
     }).then(function (result) {
       return result.rowCount;
     }).catch(function (err) {
@@ -137,7 +132,7 @@ module.exports = function (db) {
         operator = ' IS ';
         t[1] = String(t[1]).toUpperCase();
       } else {
-        t[1] = '\'' + t[1] + '\''; // single quote
+        t[1] = '$$' + t[1] + '$$'; // escape stuff
       }
 
       str = t[0] + operator + t[1];
