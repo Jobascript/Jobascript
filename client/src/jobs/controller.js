@@ -2,10 +2,12 @@ module.exports = function ($scope, Job, currentCompany) {
   $scope.currentJobs = [];
   $scope.jobSkills = [];
   $scope.jobDescription = '';
+  $scope.details = null;
   $scope.doStuff = function(listing) {
     console.log(listing);
     Job.getJobListing(listing).then(function (data) {
       console.log('data from getJobListing', data);
+      $scope.details = data;
     });
   };
 
@@ -34,7 +36,16 @@ module.exports = function ($scope, Job, currentCompany) {
     });
   };
   Job.getJobs(currentCompany.name).then(function (data) {
-    $scope.currentJobs = data.rss.channel.item;
+     $scope.currentJobs = data[0].jobTitle;
+    // var jobArray = data.rss.channel.item;
+    //
+    // for (var i = 0; i < jobArray.length; i++) {
+    //   console.log('jobarray[i]', jobArray[i], 'currentCompany', currentCompany.name, jobArray[i]['a10:author']['a10:name'] === currentCompany.name);
+    //   if (jobArray[i]['a10:author']['a10:name'] === currentCompany.name) {
+    //     $scope.currentJobs.push(data);
+    //   }
+    // }
+    // $scope.currentJobs = data.rss.channel.item;
     if (!Array.isArray($scope.currentJobs)) {
       $scope.currentJobs = [$scope.currentJobs];
       $scope.currentJobs[0].isCompact = true;
