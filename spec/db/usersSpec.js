@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 var Promise = require('bluebird');
 var usersTable = require('../../server/database').usersTable;
 var companiesTable = require('../../server/database').companiesTable;
@@ -5,14 +6,12 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 
-/* eslint-disable no-unused-vars */
 var expect = chai.expect;
 var should = chai.should();
 /* eslint-enable */
 
 describe('Database Users', function () {
   describe('Create Users', function () {
-    
     after(function (done) {
       usersTable.clearAll().then(function () {
         done();
