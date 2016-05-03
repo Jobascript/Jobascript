@@ -4,6 +4,8 @@
     <input type="submit" value="Search News">
   </form>
   <div ng-repeat="new in news">
-    <div ng-bind-html="new.contentHTML"></div>
+    <img src="{{new.source.enriched.url.image}}" height="42" width="42">
+    <a href="{{new.source.enriched.url.url}}">{{new.source.enriched.url.cleanedTitle}}</a>
+    <div>{{new.source.enriched.url.text}}</div>
   </div>
 </div>
