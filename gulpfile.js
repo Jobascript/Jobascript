@@ -26,7 +26,7 @@ gulp.task('clean', function() {
 
 // tests
 gulp.task('test-server',  function () {
-  return gulp.src([paths.server.test, '!./spec/server/test.js', '!./spec/server/apiSpec.js'], {read: false})
+  return gulp.src([paths.server.test, './spec/server/test.js', '!./spec/server/apiSpec.js'], {read: false})
   .pipe(mocha({
     env: {'NODE_ENV': 'test'}
   }))
