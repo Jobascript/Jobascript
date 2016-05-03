@@ -32,7 +32,7 @@ describe('Database Users', function () {
     });
   });
 
-  describe('Follow Company', function () {
+  describe('Follow and Unfollow Company', function () {
     var userID = '';
     var companyID = '';
 
@@ -59,6 +59,10 @@ describe('Database Users', function () {
 
     it('Takes userID and companyID and link them', function () {
       return usersTable.followCompany(userID, companyID).should.be.fulfilled;
+    });
+
+    it('Unfollow Company', function () {
+      return usersTable.unfollowCompany(userID, companyID).should.be.fulfilled;
     });
   });
 });

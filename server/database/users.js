@@ -59,5 +59,22 @@ module.exports = function (db) {
     });
   };
 
+  Users.unfollowCompany = function (userID, companyID) {
+    var table = 'users_companies';
+
+    var sqlStr = [
+      'DELETE FROM ${table~}',
+      'WHERE user_id=$$${userID}$$ AND company_id=$$${companyID}$$;'
+    ].join(' ');
+    
+    return db.none(sqlStr, {
+      table: table,
+      userID: Number(userID),
+      companyID: Number(companyID)
+    }).catch(function (err) {
+      return Promise.reject(err);
+    });
+  };
+
   return Users;
 };
