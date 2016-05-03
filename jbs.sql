@@ -12,6 +12,9 @@ CREATE TABLE IF NOT EXISTS companies (
   founded_date TEXT,
   url TEXT,
   logo TEXT,
+  twitter TEXT,
+  linkedin TEXT,
+  facebook TEXT,
   created TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
   id BIGSERIAL PRIMARY KEY
 );
