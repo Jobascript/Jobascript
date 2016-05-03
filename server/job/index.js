@@ -46,12 +46,16 @@ exports.getMultipleJobs = function(req, res) {
   });
   var promise2 = rp('http://api.indeed.com/ads/apisearch?publisher=9810665890415219&format=json&v=2&q=' + companyName )
     .then(function(data) {
+
       // res.json(data);
+
+      res.send(data);
     })
     .catch(function(err) {
       console.log('err in promise2 index.js', err);
       res.sendStatus(500);
     });
+
   var promise3 = rp('https://authenticjobs.com/api/?api_key=291d984046483ad333ac5978886bb9ad&format=JSON&method=aj.jobs.search&company=' + companyName)
     .then(function(data) {
       res.json(data);
