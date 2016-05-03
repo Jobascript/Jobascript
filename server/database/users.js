@@ -8,11 +8,13 @@ module.exports = function (db) {
    * Delete all rows in users_companies and users table
    */
   Users.clearAll = function () {
-    return db.none('DELETE FROM ${table~};', { table: R_TABLE_NAME })
-    .then(function () {
-      return db.none('DELETE FROM ${table~};', { table: TABLE_NAME });
+    return db.tx(function (t) {
+        return t.none('DELETE FROM ${table~};', {table: R_TABLE_NAME})
+            .then(function () {
+                return t.none('DELETE FROM ${table~};', {table: TABLE_NAME});
+            });
     });
-  };
+};
 
   /**
    * Create an user
