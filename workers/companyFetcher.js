@@ -3,7 +3,7 @@ var config = require('../server/common.js').config();
 var Promise = require('bluebird');
 var _ = require('underscore');
 var clearbit = require('clearbit')(config.clearbitKey);
-var db = require('../server/db.js')(config);
+var db = require('../server/db.js');
 
 var Company = clearbit.Company;
 var CronJob = require('cron').CronJob;
@@ -42,11 +42,20 @@ function runScript() {
 
     return Promise.map(companiesArray, function (richCompany) {
       var columns = _.chain(richCompany)
-                    .pick('legalName', 'description', 'location', 'foundedDate', 'url', 'domain')
+                    .pick('legalName', 'description', 'location', 'foundedDate', 'url', 'domain', 'twitter', 'linkedin', 'facebook')
                     .pick(function (value) {
                       return value !== null;
                     }).value();
 
+      if (columns.twitter && columns.twitter.handle) {
+        columns.twitter = columns.twitter.handle;
+      }
+      if (columns.facebook && columns.facebook.handle) {
+        columns.facebook = columns.facebook.handle;       
+      }
+      if (columns.linkedin && columns.linkedin.handle) {
+        columns.linkedin = columns.linkedin.handle;        
+      }
       return db.updateCompany({
         id: richCompany.id
       }, columns)

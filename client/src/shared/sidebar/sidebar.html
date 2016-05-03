@@ -4,4 +4,3 @@
     <li ng-repeat="company in companies() | filter: { displayName: search } track by company.id" ui-sref-active="active"><a ui-sref="company(company)">{{ company.displayName }}</a></li>
   </ul>
 </div>
-
