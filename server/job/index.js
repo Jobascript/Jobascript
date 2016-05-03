@@ -42,8 +42,8 @@ exports.getJobListing = function(req, res) {
 };
 
 exports.getMultipleJobs = function(req, res) {
-  // var companyName = req.query.companyName;
-  var promise1 = rp('https://jobs.github.com/')
+  var companyName = req.query.companyName;
+  var promise1 = rp('https://jobs.github.com/positions?description=' + companyName + '&location=' )
   .then(function(data) {
     var $ = cheerio.load(data);
     var pageData = [];
@@ -51,17 +51,24 @@ exports.getMultipleJobs = function(req, res) {
     var jobTitle = $('.positionlist')[0].children.map(function(val) {
       return $('.title').html();
     });
-    console.log(jobTitle);
     pageData.push(
       {
         jobTitle: jobTitle
       }
     );
-    res.json(pageData);
+    // res.json(pageData);
   }).catch(function(err) {
-    console.log('err in index.js', err);
+    console.log('err in promise1 index.js', err);
+    res.sendStatus(500);
   });
-
+  var promise2 = rp('http://api.indeed.com/ads/apisearch?publisher=9810665890415219&format=json&v=2&q=' + companyName )
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.log('err in promise2 index.js', err);
+      res.sendStatus(500);
+    });
 
 
 };
