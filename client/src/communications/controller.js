@@ -7,12 +7,8 @@ module.exports = function ($scope, Comm, currentCompany) {
   if (!document.getElementById('onetime')) {
     document.head.appendChild(googleScript);
   }
-
   $scope.emails = [];
-  // need to check auth first
-  
-
-  $scope.auth = function() {
+  $scope.auth = function () {
     console.log('check auth');
     Comm.checkAuth().then(function () {
       console.log('get emails');
