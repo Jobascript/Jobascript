@@ -8,6 +8,6 @@ module.exports = function (app) {
   app.delete('/api/company/:id', companyHandler.removeCompany);
   app.get('/api/companies', companyHandler.getCompanies);
   app.get('/api/news', newsHandler);
-  app.get('/api/jobs', jobHandler.getJobs);
+  app.get('/api/jobs', jobHandler.getMultipleJobs);
   app.get('/api/job', jobHandler.getJobListing);
 };
