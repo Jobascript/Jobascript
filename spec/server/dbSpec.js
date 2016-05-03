@@ -1,5 +1,5 @@
 var Promise = require('bluebird');
-var db = require('../../server/db.js');
+var db = require('../../server/database').companiesTable;
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -11,10 +11,12 @@ var should = chai.should();
 
 var _ = require('underscore');
 
-xdescribe('Database tests', function () {
+describe('Database tests', function () {
+  var ID = '';
+
   var company = {
     name: 'uber',
-    displayName: 'Uber',
+    display_name: 'Uber',
     domain: 'uber.com',
     logo: 'https://logo.clearbit.com/uber.com'
   };
@@ -22,38 +24,55 @@ xdescribe('Database tests', function () {
   var companies = [
     {
       name: 'stripe',
-      displayName: 'Stripe',
+      display_name: 'Stripe',
       domain: 'stripe.com',
       logo: 'https://logo.clearbit.com/stripe.com'
     },
     {
       name: 'apple',
-      displayName: 'Apple',
+      display_name: 'Apple',
       domain: 'apple.com',
       logo: 'https://logo.clearbit.com/apple.com'
     },
     {
       name: 'google',
-      displayName: 'Google',
+      display_name: 'Google',
       domain: 'google.com',
       logo: 'https://logo.clearbit.com/google.com'
     }
   ];
 
-  beforeEach(function () {
+  before(function (done) {
     var promises = [];
     promises.push(db.clearAll());
-    promises.concat(companies.map(function (company) {
-      return db.addCompany(company);
+    promises.concat(companies.map(function (com) {
+      return db.addCompany(com).then(function (id) {
+        ID = id;
+        return id;
+      });
     }));
-    return Promise.join(promises);
+
+    Promise.all(promises).then(function () {
+      done();
+    }).catch(function (reason) {
+      console.log('in test, ', reason);
+      done(reason);
+    });
   });
 
-  afterEach(function () {
-    return db.clearAll();
+  after(function (done) {
+    return db.clearAll().then(function () {
+      done();
+    });
   });
 
   describe('Get a Company', function () {
+    it('should accept name', function () {
+      return db.getCompany({
+        name: 'google'
+      }).should.eventually.have.property('name', 'google');
+    });
+
     it('should accept domain', function () {
       return db.getCompany({
         domain: 'google.com'
@@ -80,7 +99,7 @@ xdescribe('Database tests', function () {
       return db.getCompanies({
         filter: {
           name: 'apple',
-          displayName: 'Apple'
+          display_name: 'Apple'
         }
       })
       .should.eventually.satisfy(function (companies) {
@@ -109,7 +128,9 @@ xdescribe('Database tests', function () {
   describe('Add Company', function () {
     it('Should return companyID', function () {
       return db.addCompany(company)
-      .should.eventually.be.a('number');
+      .should.eventually.satisfy(function (num) {
+        return !isNaN(Number(num));
+      });
     });
 
     it('Should NOT add if company already exists', function (done) {
@@ -122,6 +143,15 @@ xdescribe('Database tests', function () {
   });
 
   describe('Update Company', function () {
+    beforeEach(function (done) {
+      db.clearAll().then(function () {
+        db.addCompany(companies[0]).then(function (id) {
+          ID = id;
+          done();
+        });
+      });
+    });
+
     it('Should update by name', function () {
       return db.updateCompany({ name: 'stripe' }, {
         description: 'Golden',
@@ -131,7 +161,7 @@ xdescribe('Database tests', function () {
     });
 
     it('Should update by id', function () {
-      return db.updateCompany({ id: 1 }, {
+      return db.updateCompany({ id: ID }, {
         description: 'Golden',
         url: 'https://gold.com'
       })
