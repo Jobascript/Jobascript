@@ -8,7 +8,6 @@ module.exports = function (db) {
 
   /**
    * Delete all rows in table
-   * @return {Promise} resolve to number of rows deleted
    */
   Companies.clearAll = function () {
     return db.none('DELETE FROM ${table~};', { table: TABLE_NAME });
