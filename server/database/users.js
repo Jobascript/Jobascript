@@ -1,15 +1,19 @@
 const TABLE_NAME = 'users';
+const R_TABLE_NAME = 'users_companies';
 
 module.exports = function (db) {
   var Users = {};
 
   /**
-   * Delete all rows in table
+   * Delete all rows in users_companies and users table
    */
   Users.clearAll = function () {
-    return db.none('DELETE FROM ${table~};', { table: TABLE_NAME });
+    return db.none('DELETE FROM ${table~};', { table: R_TABLE_NAME })
+    .then(function () {
+      return db.none('DELETE FROM ${table~};', { table: TABLE_NAME });
+    });
   };
-  
+
   /**
    * Create an user
    * @param  {Object} props optional: { username: 'jake' },
@@ -35,13 +39,22 @@ module.exports = function (db) {
     });
   };
 
-  Users.followCompany = function (company) {
+  Users.followCompany = function (userID, companyID) {
     var table = 'users_companies';
 
     var sqlStr = [
       'INSERT INTO ${table~}',
-      '(user_id, company_id)'
+      '(user_id, company_id)',
+      'VALUES ( ${userID}, ${companyID} );'
     ].join(' ');
+
+    return db.none(sqlStr, {
+      table: table,
+      userID: userID,
+      companyID: companyID
+    }).catch(function (err) {
+      return Promise.reject(err);
+    });
   };
 
   return Users;

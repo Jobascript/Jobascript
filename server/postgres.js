@@ -1,10 +1,5 @@
-var db = require('./database').companiesTable;
+var usersTable = require('./database').usersTable;
 
-db.getCompany({ domain: 'google.com' })
-.then(function (companyFound) {
-  console.log('found: ', companyFound);
-}, function (error) {
-  console.log('sth: ', error);
-}).catch(function (error) {
-  console.log('error', error);
+usersTable.createUser().then(function (user) {
+  console.log('user ', user);
 });
