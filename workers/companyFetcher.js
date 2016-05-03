@@ -2,6 +2,7 @@ var config = require('../server/common.js').config();
 
 var Promise = require('bluebird');
 var _ = require('underscore');
+var inflection = require('inflection');
 var clearbit = require('clearbit')(config.clearbitKey);
 var db = require('../server/database').companiesTable;
 
@@ -41,6 +42,7 @@ function runScript() {
     console.log('________________________________________________');
 
     return Promise.map(companiesArray, function (richCompany) {
+      var companyToBeInserted = {};
       var columns = _.chain(richCompany)
                     .pick(
                       'legalName',
@@ -65,9 +67,15 @@ function runScript() {
       if (columns.linkedin && columns.linkedin.handle) {
         columns.linkedin = columns.linkedin.handle;
       }
+
+      _.each(columns, function(value, camel) {
+        var underscore = inflection.underscore(camel);
+        companyToBeInserted[underscore] = value;
+      });
+
       return db.updateCompany({
         id: richCompany.id
-      }, columns)
+      }, companyToBeInserted)
       .then(() => {
         console.log(richCompany.name, ' updated');
       })
