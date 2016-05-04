@@ -34,14 +34,15 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
   });
 };
 
-exports.listen = function ($rootScope, Company, $state) {
+exports.listen = function ($rootScope, User, $state) {
   // listener
   $rootScope.$on('$stateChangeSuccess', function (event, toState) {
-    var companyList = Company.getList();
+    var companyList = User.companies();
 
     // when company is removed && when loading up the first time
     if (toState.name === 'home') {
       event.preventDefault();
+      console.log('home: ', companyList);
       if (companyList.length > 0) {
         // load the first company in the list
         $state.transitionTo('company', {

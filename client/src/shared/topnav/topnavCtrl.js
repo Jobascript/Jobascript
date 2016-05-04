@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var inflection = require('inflection');
 
-module.exports = function ($scope, Company, $state) {
+module.exports = function ($scope, Company, $state, companies) {
   $scope.suggestions = [];
   $scope.cache = [];
 
@@ -12,7 +12,7 @@ module.exports = function ($scope, Company, $state) {
   $scope.navToCompany = navToCompany;
 
   function navToCompany(company) {
-    var currentList = Company.getList();
+    var currentList = companies;
     var found = _.findLastIndex(currentList, {
       domain: company.domain
     });

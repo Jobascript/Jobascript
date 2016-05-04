@@ -3,9 +3,11 @@ module.exports = function () {
 
   function init($http) {
     var userObj = {};
+    var companiesList = [];
     return {
       getUser: getUser,
-      getCompanies: getCompanies
+      getCompanies: getCompanies,
+      companies: function () { return companiesList; }
     };
 
     function getUser() {
@@ -34,6 +36,7 @@ module.exports = function () {
       return getUser().then(function (user) {
         return $http.get('/api/user/' + user.id + '/companies')
         .then(function (resp) {
+          companiesList = resp.data;
           return resp.data;
         });
       });
