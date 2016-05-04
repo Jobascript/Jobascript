@@ -3,6 +3,13 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
 
   $stateProvider.state('layout', {
     abstract: true,
+    resolve: {
+      companies: function ($http, User) {
+        return User.getCompanies();
+        
+        // return Company.getCompanies({ size: 100 });
+      }
+    },
     views: {
       '@': {
         template: require('./shared/layout.html')
@@ -12,13 +19,6 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
         template: require('./shared/topnav/topnav.html')
       },
       'sidebar@layout': {
-        resolve: {
-          companies: function ($http, User) {
-            return User.getCompanies();
-            
-            // return Company.getCompanies({ size: 100 });
-          }
-        },
         controller: 'sidebarCtrl',
         template: require('./shared/sidebar/sidebar.html')
       }

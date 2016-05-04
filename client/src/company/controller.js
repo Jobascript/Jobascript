@@ -1,8 +1,5 @@
-var _ = require('underscore');
-
 module.exports = function ($scope, currentUser, currentCompany, Company, $state) {
   $scope.company = currentCompany;
-  $scope.isFollowing = false;
 
   // var idArray = Company.getList().map(function (com) {
   //   return com.id;
@@ -15,13 +12,13 @@ module.exports = function ($scope, currentUser, currentCompany, Company, $state)
   $scope.unfollow = unfollowCompany;
 
   function unfollowCompany() {
-    Company.unfollow(currentCompany).then(function () {
+    Company.unfollow(currentCompany, currentUser).then(function () {
       $state.reload();
     });
   }
 
   function followCompany() {
-    Company.follow(currentCompany).then(function () {
+    Company.follow(currentCompany, currentUser).then(function () {
       $state.reload();
     });
   }

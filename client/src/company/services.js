@@ -54,8 +54,9 @@ module.exports = function ($http) {
   };
 
   /**
-   * @param  {Number} company id
-   * @return {Promise} resolved to ompany Object
+   * @param  {Number}   id            company id
+   * @param  {Boolean}  domainAsID    first arg will be treated as domain if true
+   * @return {Promise}                resolved to ompany Object
    */
   var getCompany = function (id, domainAsID) {
     var type = domainAsID ? 'domain' : 'id';
@@ -73,12 +74,12 @@ module.exports = function ($http) {
     });
   };
 
-  var unfollow = function (company) {
-    // return $http.delete('/api/user/' + currentUser.id + '/companies/' + company.id);
+  var unfollow = function (company, user) {
+    return $http.delete('/api/user/' + user.id + '/companies/' + company.id);
   };
 
-  var follow = function (company) {
-    // return $http.post('/api/user/' + currentUser.id + '/companies/' + company.id);
+  var follow = function (company, user) {
+    return $http.post('/api/user/' + user.id + '/companies/' + company.id);
   };
 
   function getList() {
