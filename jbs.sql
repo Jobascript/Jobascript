@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS jobs (
   remote_ok BOOLEAN,
   relocation BOOLEAN,
   salary INT,
-  created TEXT,
+  created TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
   city TEXT,
   id BIGSERIAL PRIMARY KEY,
   company_id INT REFERENCES companies
