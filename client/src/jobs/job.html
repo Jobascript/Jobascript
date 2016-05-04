@@ -11,7 +11,6 @@
     <div> Required Skills
       <li ng-repeat='jobSkills in job.category track by $index'>{{jobSkills}}</li>
     </div>
-    <div class='description-{{$index}}' ng-click="clicked(job)">Job Description</div>
     <li class='job-compact' ng-class="{'job-compact': job.isCompact}" ng-bind-html='decode(job.description)'></li>
     <div class='description-{{$index}}' ng-click="clicked(job)">Click here to get Job Description</div>
   </div>
