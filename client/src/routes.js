@@ -4,6 +4,9 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
   $stateProvider.state('layout', {
     abstract: true,
     resolve: {
+      currentUser: function (User) {
+        return User.getUser();
+      },
       companies: function ($http, User) {
         return User.getCompanies();
       }
@@ -25,12 +28,7 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
 
   $stateProvider.state('home', {
     url: '/a',
-    parent: 'layout',
-    resolve: {
-      currentUser: function (User) {
-        return User.getUser();
-      }
-    }
+    parent: 'layout'
   });
 };
 

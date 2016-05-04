@@ -4,11 +4,6 @@ module.exports = function () {
   function init($http) {
     var userObj = {};
     var companiesList = [];
-    return {
-      getUser: getUser,
-      getCompanies: getCompanies,
-      companies: function () { return companiesList; }
-    };
 
     function getUser() {
       var userNameOrtemp = username ? { username: username } : undefined;
@@ -41,6 +36,12 @@ module.exports = function () {
         });
       });
     }
+
+    return {
+      getUser: getUser,
+      getCompanies: getCompanies,
+      companies: function () { return companiesList; }
+    };
   }
 
   function setUsername(usernameToSet) {
