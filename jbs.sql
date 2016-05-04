@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS users_companies (
 );
 
 CREATE TABLE IF NOT EXISTS jobs (
+  
   title TEXT,
   url TEXT,
   description TEXT,
