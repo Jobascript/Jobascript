@@ -14,6 +14,7 @@ module.exports = function () { // remove comment and use $http later
   };
   var getEmails = function (currentCompany) {
     return new Promise(function (resolve) {
+      var messages = [];
       gapi.client.load('gmail', 'v1').then(function () {
         var request = gapi.client.gmail.users.messages.list({
           userId: 'me',
@@ -21,7 +22,20 @@ module.exports = function () { // remove comment and use $http later
           q: 'from: ' + currentCompany.name
         });
         request.execute(function (resp) {
-          resolve(resp.messages);
+          // for each message send id to google
+          resp.messages.forEach(function (v) {
+            var messageRequest = gapi.client.gmail.users.messages.get({
+              userId: 'me',
+              id: v.id
+            });
+            messageRequest.execute(function (messageResp) {
+              var message = messageResp;
+              messages.push(message.snippet);
+              if (messages.length === resp.messages.length) {
+                resolve(messages);
+              }
+            });
+          });
         });
       });
     });
