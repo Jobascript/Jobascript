@@ -5,10 +5,11 @@
   /*max-height: 0px;*/
   display: none;
 }
-
 .job {
   max-width: 50px;
-
+}
+.form-control {
+  width: 115px;
 }
 
 /*.job-uncompact {
