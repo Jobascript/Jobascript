@@ -20,6 +20,10 @@ var req = {
       domain: 'palantir.com',
       logo: 'hello'
 };
+var options = {
+  size: '3',
+  filter: ' a '
+}
 
 describe('/company Route Tests',  function() {
   describe('Testing addCompany Method..',   function() {
@@ -42,8 +46,8 @@ describe('/company Route Tests',  function() {
         .post('/api/company')
         .send(req)
         .expect(function (res) {
+          // why does body = {}?
           console.log('DIS BE THE RESPONSE:', res.body);
-          typeof res.body === 'string'
           })
         .end(function(err,res) {
           if (err) {
@@ -115,7 +119,7 @@ describe('/company Route Tests',  function() {
   });
   describe('Testing removeCompany Method..',  function () {
     describe('Sending a valid removeCompany request: ', function () {
-      it('Should respond with a 200 status code', function () {
+      it('Should respond with a 200 status code', function (done) {
         var companyId = '01';
         request(app)
         .delete('/api/company/' + companyId)
@@ -130,8 +134,8 @@ describe('/company Route Tests',  function() {
       });
     });
     describe('Sending a valid removeCompany request when company to be removed not present: ', function () {
-      it('Should respond with a 404 status code', function () {
-        var companyId = '02';
+      it('Should respond with a 404 status code', function (done) {
+        var companyId = '10001';
         request(app)
         .delete('/api/company/' + companyId)
         .expect(404)
@@ -145,10 +149,11 @@ describe('/company Route Tests',  function() {
       });
     });
     describe('Requests with incomplete parameters: ', function () {
-      it('Should send 500 status code', function () {
-        var companyId = '03';
+      it('Should send 500 status code', function (done) {
+        // error here
+        var errorParam = 'aw';
         request(app)
-        .delete('/api/company/' + companyId)
+        .delete('/api/company/' + errorParam)
         .expect(500)
         .end(function (err, res) {
           if (err) {
@@ -160,40 +165,108 @@ describe('/company Route Tests',  function() {
       });
     });
   });
-  xdescribe('Testing getCompanies Method..', function () {
+  describe('Testing getCompanies Method..', function () {
     describe('Sending a valid getCompanies request: ', function () {
-      it('Should respond with 200 status code', function () {
-
+      it('Should respond with 200 status code', function (done) {
+        request(app)
+        .get('/api/companies')
+        .send(options)
+        .expect(200)
+        .end(function (err, res) {
+          if (err) {
+            done(err);
+          } else {
+            done();
+          }
+        });
       });
-      it('Should respond with companies', function () {
-
+      it('Should respond with companies', function (done) {
+        this.timeout(3000);
+        request(app)
+        .get('/api/companies')
+        .send(options)
+        .expect(function(res) {
+          // need more detail in how to implement test here
+          // res.body is an array
+          return res.body;
+        })
+        .end(function (err, res ) {
+          if (err) {
+            done(err);
+          } else {
+            done();
+          }
+        });
       });
     });
-    xdescribe('Requests with incomplete parameters: ', function () {
-      it('Should send 500 status code if request is missing query parameters', function () {
-
+    describe('Requests with incomplete parameters: ', function () {
+      xit('Should send 500 status code if request is missing query parameters', function (done) {
+        // db call should be returning 500 here
+        request(app)
+        .get('/api/companies')
+        .send(options)
+        .expect(500)
+        .end(function(err, res) {
+          if (err) {
+            done(err);
+          } else {
+            done();
+          }
+        });
       });
     });
   });
-  xdescribe('Testing getCompany Method..', function () {
+  describe('Testing getCompany Method..', function () {
     describe('Sending a valid getCompany request: ', function () {
       it('Should respond with company, sending a 200 status code', function () {
-
+        // should add first then remove
+        var companyId = '2';
+        request(app)
+        .get('/api/company' + companyId)
+        .expect(200)
+        .end(function(err,res) {
+          if (err) {
+            done(err);
+          } else {
+            done();
+          }
+        });
       });
-      it('Should respond with a 404 status code if no company matching id or domain is present', function () {
-
+      it('Should respond with a 404 status code if no company matching id is present', function () {
+        var companyId = '2444';
+        request(app)
+        .get('/api/company' + companyId)
+        .expect(404)
+        .end(function(err,res) {
+          if(err) {
+            done(err);
+          } else {
+            done();
+          }
+        });
+      });
+      xit('Should respond with a 404 status code if no company matching domain is present', function () {
+        // not sure how to input domain into get request
       });
     });
     describe('Requests with incomplete parameters: ', function () {
       it('Should respond with a 400 status code if query type is undefined (neither id nor domain)', function () {
-
+        request(app)
+        .get('/api/company')
+        .expect(400)
+        .end(function(err,res) {
+          if (err) {
+            done(err);
+          } else {
+            done();
+          }
+        });
       });
     });
-    describe('Sending an invalid getCompany request: ', function () {
+    xdescribe('Sending an invalid getCompany request: ', function () {
       it('Should respond with a 500 status code if ...', function () {
-
+        // not sure  here what this error is actually describing
       });
     });
   });
 });
-
