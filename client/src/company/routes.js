@@ -3,7 +3,7 @@ exports.config = function ($stateProvider) {
     parent: 'home',
     url: '/company/:id/:name',
     resolve: {
-      currentCompany: function ($stateParams, Company) {
+      currentCompany: function ($stateParams, Company, currentUser) {
         var companyId = $stateParams.id;
         return Company.getCompany(companyId)
         .then(function (company) {

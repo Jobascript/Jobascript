@@ -1,6 +1,6 @@
 var _ = require('underscore');
 
-module.exports = function ($scope, currentCompany, Company, $state) {
+module.exports = function ($scope, currentUser, currentCompany, Company, $state) {
   $scope.company = currentCompany;
   $scope.isFollowing = false;
 

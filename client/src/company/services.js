@@ -1,7 +1,7 @@
 var clearbitUrl = 'https://autocomplete.clearbit.com/v1/companies/suggest';
 var _ = require('underscore');
 
-module.exports = function ($http, User) {
+module.exports = function ($http) {
   var list = [];
 
   var suggestCompanies = function (queryStr) {
@@ -74,11 +74,11 @@ module.exports = function ($http, User) {
   };
 
   var unfollow = function (company) {
-    return $http.delete('/api/user/' + User.currentUser().id + '/companies/' + company.id);
+    // return $http.delete('/api/user/' + currentUser.id + '/companies/' + company.id);
   };
 
   var follow = function (company) {
-    return $http.post('/api/user/' + User.currentUser().id + '/companies/' + company.id);
+    // return $http.post('/api/user/' + currentUser.id + '/companies/' + company.id);
   };
 
   function getList() {

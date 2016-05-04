@@ -27,7 +27,12 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
 
   $stateProvider.state('home', {
     url: '/a',
-    parent: 'layout'
+    parent: 'layout',
+    resolve: {
+      currentUser: function (User) {
+        return User.getUser();
+      }
+    }
   });
 };
 
