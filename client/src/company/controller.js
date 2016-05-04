@@ -14,12 +14,16 @@ module.exports = function ($scope, currentCompany, Company, $state) {
   $scope.unfollow = unfollowCompany;
 
   function unfollowCompany() {
-    Company.unfollow(currentCompany);
-    $state.go('company', Company.getList()[0], { reload: false });
+    Company.unfollow(currentCompany).then(function () {
+      $scope.isFollowing = false;
+      $state.reload();
+    });
   }
 
   function followCompany() {
-    Company.follow(currentCompany);
-    $scope.isFollowing = true;
+    Company.follow(currentCompany).then(function () {
+      $scope.isFollowing = true;
+      $state.reload();
+    });
   }
 };

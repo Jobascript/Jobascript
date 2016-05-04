@@ -3,14 +3,6 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
 
   $stateProvider.state('layout', {
     abstract: true,
-    resolve: {
-      user: function ($http) {
-        return $http.post('/api/user').then(function (resp) {
-          console.log('user created: ', resp.data);
-          return resp.data;
-        });
-      }
-    },
     views: {
       '@': {
         template: require('./shared/layout.html')
@@ -21,8 +13,12 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
       },
       'sidebar@layout': {
         resolve: {
-          companies: function (Company) {
-            return Company.getCompanies({ size: 100 });
+          companies: function ($http, User) {
+            return $http.get('/api/user/' + User.currentUser().id + '/companies')
+            .then(function (resp) {
+              return resp.data;
+            });
+            // return Company.getCompanies({ size: 100 });
           }
         },
         controller: 'sidebarCtrl',

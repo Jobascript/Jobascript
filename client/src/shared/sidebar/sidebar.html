@@ -1,6 +1,6 @@
 <div ng-blur="suggestions = []">
   <input type="text" class="form-control" placeholder="Filter" ng-model="search">
   <ul class="nav nav-pills nav-stacked mt2">
-    <li ng-repeat="company in companies() | filter: { display_name: search } track by company.id" ui-sref-active="active"><a ui-sref="company(company)">{{ company.display_name }}</a></li>
+    <li ng-repeat="company in companies | filter: { display_name: search } track by company.id" ui-sref-active="active"><a ui-sref="company(company)">{{ company.display_name }}</a></li>
   </ul>
 </div>

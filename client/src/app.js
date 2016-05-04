@@ -8,6 +8,18 @@ var app = angular.module('jobascript', [
   'jobascript.news'
 ]);
 
+app.provider('User', require('./shared/UserProvider.js'));
+
+app.config(function (UserProvider) {
+  // UserProvider.setUserName('jake');
+});
+
+app.run(function (User) {
+  User.fetch().then(function (user) {
+    console.log('user created: ', user);
+  });
+});
+
 app.config(require('./routes.js').config);
 app.run(require('./routes.js').listen);
 
