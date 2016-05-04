@@ -49,7 +49,6 @@ CREATE TABLE IF NOT EXISTS news (
 );
 
 CREATE TABLE IF NOT EXISTS jobs (
-  
   title TEXT,
   url TEXT,
   description TEXT,
