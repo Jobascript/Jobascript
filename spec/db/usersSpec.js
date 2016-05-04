@@ -25,7 +25,7 @@ describe('Database Users', function () {
       done();
     });
   });
-  
+
   after(function (done) {
     usersTable.clearAll().then(function () {
       return companiesTable.clearAll();
@@ -34,7 +34,7 @@ describe('Database Users', function () {
     });
   });
 
-  describe('Create Users', function () {
+  describe('Create and Retreive Users', function () {
     it('Should add anonymous user and return user obj', function () {
       return usersTable.createUser()
       .then(function (user) {
@@ -46,6 +46,16 @@ describe('Database Users', function () {
     it('Should add user with username', function () {
       return usersTable.createUser({ username: 'dummy' })
       .should.eventually.have.property('username', 'dummy');
+    });
+
+    it('Get user by username', function () {
+      return usersTable.getUser({ username: 'dummy' })
+      .should.eventually.have.property('username', 'dummy');
+    });
+
+    it('Get user by id', function () {
+      return usersTable.getUser({ id: userID })
+      .should.eventually.have.property('username');
     });
   });
 

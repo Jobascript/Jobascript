@@ -11,12 +11,21 @@ var app = angular.module('jobascript', [
 app.provider('User', require('./shared/UserProvider.js'));
 
 app.config(function (UserProvider) {
-  // UserProvider.setUserName('jake');
+  // localStorage
+  var username = localStorage.getItem('user');
+  console.log('from localStorage: ', username);
+
+  if (username) {
+    UserProvider.setUsername(username);
+  }
 });
 
 app.run(function (User) {
   User.fetch().then(function (user) {
     console.log('user created: ', user);
+    localStorage.setItem('user', user.username);
+  }, function (user) {
+    console.log('user: ', user);
   });
 });
 

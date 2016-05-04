@@ -18,12 +18,12 @@ module.exports = function () {
     }
   }
 
-  function setUserName(usernameToSet) {
+  function setUsername(usernameToSet) {
     username = usernameToSet;
   }
 
   return {
     $get: init,
-    setUserName: setUserName
+    setUsername: setUsername
   };
 };
