@@ -22,11 +22,8 @@ module.exports = function () {
           localStorage.setItem('user', userObj.username);
           return resp.data;
         }, function (resp) {
-          if (resp.status === 302) {
-            return resp.data;
-          } else {
-            return Promise.reject(resp.data);
-          }
+          // 302 (Found) - user already exists
+          return (resp.status === 302) ? resp.data : Promise.reject(resp.data);
         });
       }
 

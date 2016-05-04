@@ -6,8 +6,6 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
     resolve: {
       companies: function ($http, User) {
         return User.getCompanies();
-        
-        // return Company.getCompanies({ size: 100 });
       }
     },
     views: {

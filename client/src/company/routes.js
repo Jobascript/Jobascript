@@ -15,12 +15,13 @@ exports.config = function ($stateProvider) {
 
           company.isFollowing = false;
 
+          // check if the current user is following this company
           _.each(companies, function (userCom) {
             if (userCom.id === company.id) {
               company.isFollowing = true;
             }
           });
-          
+
           return company;
         });
       }

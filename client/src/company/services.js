@@ -1,5 +1,4 @@
 var clearbitUrl = 'https://autocomplete.clearbit.com/v1/companies/suggest';
-var _ = require('underscore');
 
 module.exports = function ($http) {
   var list = [];
@@ -97,4 +96,3 @@ module.exports = function ($http) {
     getList: getList
   };
 };
-
