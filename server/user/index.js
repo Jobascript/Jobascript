@@ -8,6 +8,7 @@ exports.followCompany = function (req, res) {
   if (!userID || !companyID) {
     res.status(400).send('user ID and company ID is required');
   }
+  
   db.followCompany(userID, companyID).then(function () {
     res.sendStatus(200);
   }, function (reason) {

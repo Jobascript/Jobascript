@@ -66,13 +66,34 @@ module.exports = function (db) {
       'DELETE FROM ${table~}',
       'WHERE user_id=$$${userID}$$ AND company_id=$$${companyID}$$;'
     ].join(' ');
-    
+
     return db.none(sqlStr, {
       table: table,
       userID: Number(userID),
       companyID: Number(companyID)
     }).catch(function (err) {
       return Promise.reject(err);
+    });
+  };
+
+  Users.getCompanies = function (userID) {
+    var obj = {
+      companiesTable: 'companies',
+      joinTable: 'users_companies',
+      userID: Number(userID)
+    };
+
+    var sqlStr = [
+      'SELECT ${companiesTable~}.*',
+      'FROM ${joinTable~}',
+      'INNER JOIN ${companiesTable~}',
+      'ON company_id = ${companiesTable~}.id',
+      'AND user_id = $$${userID}$$',
+      'ORDER BY ${joinTable~}.created;'
+    ].join(' ');
+
+    return db.many(sqlStr, obj).catch(function (err) {
+      Promise.reject(err);
     });
   };
 
