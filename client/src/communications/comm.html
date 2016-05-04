@@ -1,11 +1,11 @@
 <section>
 <script src="https://apis.google.com/js/client.js"></script>
   <div>
-    <button  id='authorize-button' ng-click='auth()'>Get Emails</button>
+    <button  id='authorize-button' ng-click='auth()'>Auth + Emails</button>
   </div>
   <div>
     <ul>
-      <li ng-repeat="message in emails">{{message}}</li>
+      <li ng-repeat="message in emails track by $index">{{message}}</li>
     </ul>
   </div>
 </section>
