@@ -4,16 +4,41 @@ module.exports = function () {
   function init($http) {
     var userObj = {};
     return {
-      fetch: getUser,
-      currentUser: function () { return userObj; }
+      getUser: getUser,
+      getCompanies: getCompanies
     };
 
     function getUser() {
-      var temp = username ? { username: username } : undefined;
-      return $http.post('/api/user', temp).then(function (resp) {
-        userObj = resp.data;
-        console.log('fetch a usr ', userObj);
-        return resp.data;
+      var userNameOrtemp = username ? { username: username } : undefined;
+      var promise;
+
+      if (userObj.username) {
+        promise = Promise.resolve(userObj);
+      } else {
+        promise = $http.post('/api/user', userNameOrtemp)
+        .then(function (resp) {
+          userObj = resp.data;
+          console.log('fetch a usr ', userObj);
+          localStorage.setItem('user', userObj.username);
+          return resp.data;
+        }, function (resp) {
+          if (resp.status === 302) {
+            return resp.data;
+          } else {
+            return Promise.reject(resp.data);
+          }
+        });
+      }
+
+      return promise;
+    }
+
+    function getCompanies() {
+      return getUser().then(function (user) {
+        return $http.get('/api/user/' + user.id + '/companies')
+        .then(function (resp) {
+          return resp.data;
+        });
       });
     }
   }

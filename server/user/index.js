@@ -50,13 +50,17 @@ exports.createUser = function (req, res) {
   db.createUser(user).then(function (newUser) {
     res.status(201).send(newUser);
   }, function (reason) {
-    if (reason.indexOf('duplicate') !== -1) {
-      res.status(409).send(reason);
-    } else {
-      res.status(500).send(reason);
+    if (reason.detail.indexOf('already exists') === -1) {
+      return Promise.reject();
     }
+    return user;
   })
-  .catch(function () {
-    res.sendStatus(500);
+  .then(db.getUser)
+  .then(function (existingUser) {
+    console.log('existingUser ', existingUser);
+    res.status(302).send(existingUser);
+  })
+  .catch(function (err) {
+    res.status(500).send(err);
   });
 };

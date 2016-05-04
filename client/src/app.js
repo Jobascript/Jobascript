@@ -20,15 +20,6 @@ app.config(function (UserProvider) {
   }
 });
 
-app.run(function (User) {
-  User.fetch().then(function (user) {
-    console.log('user created: ', user);
-    localStorage.setItem('user', user.username);
-  }, function (user) {
-    console.log('user: ', user);
-  });
-});
-
 app.config(require('./routes.js').config);
 app.run(require('./routes.js').listen);
 

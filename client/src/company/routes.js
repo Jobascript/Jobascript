@@ -26,7 +26,7 @@ exports.config = function ($stateProvider) {
 exports.listen = function ($rootScope, $state) {
   $rootScope.$on('$stateChangeSuccess', function (event, toState) {
     if (toState.name === 'company') {
-      $state.go('jobs', {}, { relative: toState });
+      // $state.go('jobs', {}, { relative: toState });
     }
   });
 };

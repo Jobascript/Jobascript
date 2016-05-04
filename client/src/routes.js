@@ -14,10 +14,8 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
       'sidebar@layout': {
         resolve: {
           companies: function ($http, User) {
-            return $http.get('/api/user/' + User.currentUser().id + '/companies')
-            .then(function (resp) {
-              return resp.data;
-            });
+            return User.getCompanies();
+            
             // return Company.getCompanies({ size: 100 });
           }
         },
