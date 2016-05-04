@@ -3,6 +3,14 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
 
   $stateProvider.state('layout', {
     abstract: true,
+    resolve: {
+      user: function ($http) {
+        return $http.post('/api/user').then(function (resp) {
+          console.log('user created: ', resp.data);
+          return resp.data;
+        });
+      }
+    },
     views: {
       '@': {
         template: require('./shared/layout.html')

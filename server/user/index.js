@@ -45,10 +45,10 @@ exports.getCompanies = function (req, res) {
 };
 
 exports.createUser = function (req, res) {
-  var user = req.body;
+  var user = req.body.username ? req.body : null;
 
   db.createUser(user).then(function (newUser) {
-    res.status(201).send(String(newUser.id));
+    res.status(201).send(newUser);
   }, function (reason) {
     if (reason.indexOf('duplicate') !== -1) {
       res.status(409).send(reason);
