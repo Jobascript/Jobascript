@@ -67,7 +67,16 @@ describe('/company Route Tests',  function() {
         request(app)
         .post('/api/company')
         .send(req)
-        .expect(200, done);
+        .expect(function (res) {
+          typeof res.body === 'string'
+          })
+        .end(function(err,res) {
+          if (err) {
+            done(err);
+          } else {
+            done();
+          }
+        })
       });
     });
     xdescribe('Requests with incomplete parameters:', function() {
