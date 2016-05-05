@@ -4,9 +4,9 @@ module.exports = function ($stateProvider) {
     url: '/communications',
     resolve: {
       emails: function (Comm) {
-        return Comm.getEmails(function(emails) {
+        return Comm.getEmails(function (emails) {
           return emails;
-        }, function(err) {
+        }, function (err) {
           console.log('not authorize: ', err);
           return [];
         });
@@ -14,7 +14,6 @@ module.exports = function ($stateProvider) {
     },
     onEnter: function () {
       var googleScript = document.createElement('script');
-      
       googleScript.setAttribute('src', 'https://apis.google.com/js/client.js');
       googleScript.setAttribute('id', 'onetime');
 

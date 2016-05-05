@@ -25,6 +25,7 @@ xdescribe('base root tests', function() {
 });
 
 
+<<<<<<< 969b3270ef9acfb3aa720528df69f717f5dcfe2b
 xdescribe('/company Route Tests',  function() {
   describe('Testing addCompany Method..',   function() {
     describe('Sending a valid addCompany request: ',  function() {
@@ -50,6 +51,7 @@ xdescribe('/company Route Tests',  function() {
       });
     });
   });
+<<<<<<< 969b3270ef9acfb3aa720528df69f717f5dcfe2b
   describe('Testing removeCompany Method..',  function () {
     describe('Sending a valid removeCompany request: ', function () {
       it('Should respond with a 200 status code', function () {
@@ -67,6 +69,7 @@ xdescribe('/company Route Tests',  function() {
       });
     });
   });
+<<<<<<< 969b3270ef9acfb3aa720528df69f717f5dcfe2b
   describe('Testing getCompanies Method..', function () {
     describe('Sending a valid getCompanies request: ', function () {
       it('Should respond with 200 status code', function () {
@@ -82,6 +85,7 @@ xdescribe('/company Route Tests',  function() {
       });
     });
   });
+<<<<<<< 969b3270ef9acfb3aa720528df69f717f5dcfe2b
   describe('Testing getCompany Method..', function () {
     describe('Sending a valid getCompany request: ', function () {
       it('Should respond with company, sending a 200 status code', function () {
@@ -104,3 +108,70 @@ xdescribe('/company Route Tests',  function() {
   });
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//   it ('should respond with a 200 status code to show that the company was added', function(done) {
+//     var data =  {
+//       id: 1,
+//       name: "google",
+//       created: "2016-04-23T00:22:40.510Z"
+//     };
+//     companyHandler.__set__("db", {getCompany: function(args) {
+//       expect(args.name).to.equal('google');
+//       var returnPromised = new Promise(function(resolve, reject) {
+//         setTimeout(function() {
+//           resolve(data);
+//         }, 0);
+//       });
+//     }
+//   });
+//     request.get('/company')
+//     .set('accept', 'application/json')
+//     .query({name: 'google'})
+//     .end(function(err, res) {
+//       if (err) {
+//         throw err;
+//       }
+//       expect(res.body).to.deep.equal(data);
+//       done();
+//     });
+//   });
+
+//   it ('should respond with a 200 after a company has been successfully deleted', function(done) {
+//     request.delete('company')
+//     .delete('/company')
+//     .set('accept', 'application/json')
+//     .send({id: 2})
+//     // .expect(200)
+//     .expect(function(res) {
+//       console.log(res);
+//     })
+//     .end(function(err, res) {
+//       if (err) {
+//         throw err;
+//       }
+//       done();
+//     });
+//   });
+// });
+>>>>>>> scaffolding for tests done

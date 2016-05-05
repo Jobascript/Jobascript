@@ -7,6 +7,7 @@ Identify tests from server file
             req.query
           output:
             res.status(200).send(companies) - response success, sending companies
+            // perhaps need a 404
             res.sendStatus(500)             - response failure, no companies matching search criteria, sending error code
         getCompany
           input:
