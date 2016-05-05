@@ -12,7 +12,6 @@ module.exports = function () { // remove comment and use $http later
       }, resolve);
     });
   };
-  
   var messages = [];
   var getEmails = function (currentCompany) {
     return new Promise(function (resolve) {
@@ -45,28 +44,17 @@ module.exports = function () { // remove comment and use $http later
     });
   };
 
-  var getheader = function(headers, headerName) {
+  var getheader = function (headers, headerName) {
     var header = '';
-    headers.forEach(function(element) {
+    headers.forEach(function (element) {
       if (element.name === headerName) {
         header = element.value;
       }
     });
     return header;
-  }
+  };
   return {
     getEmails: getEmails,
     checkAuth: checkAuth
   };
 };
-
-
-function getHeader(headers, index) {
-        var header = '';
-        $.each(headers, function(){
-          if(this.name === index){
-            header = this.value;
-          }
-        });
-        return header;
-      }
