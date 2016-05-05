@@ -114,7 +114,7 @@ module.exports = function (db) {
       'INNER JOIN ${companiesTable~}',
       'ON company_id = ${companiesTable~}.id',
       'AND user_id = $$${userID}$$',
-      'ORDER BY ${joinTable~}.created;'
+      'ORDER BY ${joinTable~}.created DESC;'
     ].join(' ');
 
     return db.many(sqlStr, obj).catch(function (err) {
