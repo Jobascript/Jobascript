@@ -5,27 +5,50 @@
 npm install 
 ```
 
+### Postgres
+
+Create DB User
+``` bash
+createuser -P jbs
+```
+
+Create DB
+``` bash
+createdb jobascript.dev jbs
+```
+
+Building schema
+
+``` bash
+psql -f ./jbs.sql jobascript.dev jbs
+```
+
 ### Build
 Calling gulp will use webpack to bundle your files, in the dist folder, and automatically lint your files.
 ``` bash
 gulp
 ```
 
-### Rebuild Database
-In some case you might need to rebuild the DB, change `dropDB` to `true` in `env.json`
+### Debug
+Change `debug` to `true` in `env.json`
 ``` json
 {
   "development": {
-    "database": "dev.sqlite3",
-    "dropDB": false
+    "dbName": "jobascript.dev",
+    "dropDB": false,
+    "debug": true,
+    "clearbitKey": "98d8c9be83606358bfc9453ac48a127f"
   },
   "production": {
-    "database": "prod.sqlite3",
-    "dropDB": false
+    "dbName": "jobascript",
+    "dropDB": false,
+    "debug": false,
+    "clearbitKey": "98d8c9be83606358bfc9453ac48a127f"
   },
   "test": {
-    "database": "test.sqlite3",
-    "dropDB": true
+    "dbName": "jobascript.test",
+    "debug": false,
+    "dropDB": false
   }
 }
 ```
