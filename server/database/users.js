@@ -9,12 +9,12 @@ module.exports = function (db) {
    */
   Users.clearAll = function () {
     return db.tx(function (t) {
-        return t.none('DELETE FROM ${table~};', {table: R_TABLE_NAME})
-            .then(function () {
-                return t.none('DELETE FROM ${table~};', {table: TABLE_NAME});
-            });
+      return t.none('DELETE FROM ${table~};', { table: R_TABLE_NAME })
+      .then(function () {
+        return t.none('DELETE FROM ${table~};', { table: TABLE_NAME });
+      });
     });
-};
+  };
 
   /**
    * Create an user
@@ -40,7 +40,7 @@ module.exports = function (db) {
       return Promise.reject(err);
     });
   };
-  
+
   /**
    * Retreive an user
    * @param  {Object} args  { username: 'jake' } OR { id: 7231 }
@@ -48,17 +48,17 @@ module.exports = function (db) {
    */
   Users.getUser = function (args) {
     if (!args) return Promise.reject('must provide args');
-    
+
     var sqlStr = 'SELECT * FROM ${table~}';
-    
+
     if (args.username) {
-      sqlStr += 'WHERE username=$$' + args.username + '$$';
+      sqlStr += ' WHERE username=$$' + args.username + '$$';
     } else if (args.id) {
-      sqlStr += 'WHERE id=$$' + args.id + '$$';
+      sqlStr += ' WHERE id=$$' + args.id + '$$';
     } else {
       return Promise.reject('must provide id or username');
     }
-    
+
     return db.one(sqlStr, {
       table: TABLE_NAME
     }).catch(function (err) {

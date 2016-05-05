@@ -55,9 +55,10 @@ exports.createUser = function (req, res) {
     }
     return user;
   })
-  .then(db.getUser)
+  .then(db.getUser, function (err) {
+    res.status(500).send(err);
+  })
   .then(function (existingUser) {
-    console.log('existingUser ', existingUser);
     res.status(302).send(existingUser);
   })
   .catch(function (err) {
