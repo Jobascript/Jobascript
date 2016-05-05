@@ -3,6 +3,14 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
 
   $stateProvider.state('layout', {
     abstract: true,
+    resolve: {
+      currentUser: function (User) {
+        return User.getUser();
+      },
+      companies: function ($http, User) {
+        return User.getCompanies();
+      }
+    },
     views: {
       '@': {
         template: require('./shared/layout.html')
@@ -12,11 +20,6 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
         template: require('./shared/topnav/topnav.html')
       },
       'sidebar@layout': {
-        resolve: {
-          companies: function (Company) {
-            return Company.getCompanies({ size: 100 });
-          }
-        },
         controller: 'sidebarCtrl',
         template: require('./shared/sidebar/sidebar.html')
       }
@@ -29,14 +32,15 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
   });
 };
 
-exports.listen = function ($rootScope, Company, $state) {
+exports.listen = function ($rootScope, User, $state) {
   // listener
   $rootScope.$on('$stateChangeSuccess', function (event, toState) {
-    var companyList = Company.getList();
+    var companyList = User.companies();
 
     // when company is removed && when loading up the first time
     if (toState.name === 'home') {
       event.preventDefault();
+      console.log('home: ', companyList);
       if (companyList.length > 0) {
         // load the first company in the list
         $state.transitionTo('company', {

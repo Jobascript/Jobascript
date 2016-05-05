@@ -1,9 +1,6 @@
 var clearbitUrl = 'https://autocomplete.clearbit.com/v1/companies/suggest';
-var _ = require('underscore');
 
 module.exports = function ($http) {
-  var list = [];
-
   var suggestCompanies = function (queryStr) {
     if (!queryStr) {
       return Promise.reject();
@@ -46,7 +43,6 @@ module.exports = function ($http) {
       params: options
     })
     .then(function (resp) {
-      list = resp.data;
       return resp.data;
     }, function (err) {
       console.error('err', err);
@@ -54,8 +50,9 @@ module.exports = function ($http) {
   };
 
   /**
-   * @param  {Number} company id
-   * @return {Promise} resolved to ompany Object
+   * @param  {Number}   id            company id
+   * @param  {Boolean}  domainAsID    first arg will be treated as domain if true
+   * @return {Promise}                resolved to ompany Object
    */
   var getCompany = function (id, domainAsID) {
     var type = domainAsID ? 'domain' : 'id';
@@ -73,19 +70,13 @@ module.exports = function ($http) {
     });
   };
 
-  var unfollow = function (company) {
-    list = _.reject(list, function (com) {
-      return com.id === company.id;
-    });
+  var unfollow = function (company, user) {
+    return $http.delete('/api/user/' + user.id + '/companies/' + company.id);
   };
 
-  var follow = function (company) {
-    list.push(company);
+  var follow = function (company, user) {
+    return $http.post('/api/user/' + user.id + '/companies/' + company.id);
   };
-
-  function getList() {
-    return list;
-  }
 
   return {
     getCompany: getCompany,
@@ -94,8 +85,6 @@ module.exports = function ($http) {
     deleteCompany: deleteCompany,
     suggest: suggestCompanies,
     follow: follow,
-    unfollow: unfollow,
-    getList: getList
+    unfollow: unfollow
   };
 };
-

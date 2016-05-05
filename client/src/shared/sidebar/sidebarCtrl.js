@@ -1,3 +1,3 @@
-module.exports = function ($scope, Company) {
-  $scope.companies = Company.getList;
+module.exports = function ($scope, companies) {
+  $scope.companies = companies;
 };

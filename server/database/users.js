@@ -9,12 +9,12 @@ module.exports = function (db) {
    */
   Users.clearAll = function () {
     return db.tx(function (t) {
-        return t.none('DELETE FROM ${table~};', {table: R_TABLE_NAME})
-            .then(function () {
-                return t.none('DELETE FROM ${table~};', {table: TABLE_NAME});
-            });
+      return t.none('DELETE FROM ${table~};', { table: R_TABLE_NAME })
+      .then(function () {
+        return t.none('DELETE FROM ${table~};', { table: TABLE_NAME });
+      });
     });
-};
+  };
 
   /**
    * Create an user
@@ -41,6 +41,31 @@ module.exports = function (db) {
     });
   };
 
+  /**
+   * Retreive an user
+   * @param  {Object} args  { username: 'jake' } OR { id: 7231 }
+   * @return {Promise}      resolve to an user object
+   */
+  Users.getUser = function (args) {
+    if (!args) return Promise.reject('must provide args');
+
+    var sqlStr = 'SELECT * FROM ${table~}';
+
+    if (args.username) {
+      sqlStr += ' WHERE username=$$' + args.username + '$$';
+    } else if (args.id) {
+      sqlStr += ' WHERE id=$$' + args.id + '$$';
+    } else {
+      return Promise.reject('must provide id or username');
+    }
+
+    return db.one(sqlStr, {
+      table: TABLE_NAME
+    }).catch(function (err) {
+      return Promise.reject(err);
+    });
+  };
+
   Users.followCompany = function (userID, companyID) {
     var table = 'users_companies';
 
@@ -56,6 +81,44 @@ module.exports = function (db) {
       companyID: companyID
     }).catch(function (err) {
       return Promise.reject(err);
+    });
+  };
+
+  Users.unfollowCompany = function (userID, companyID) {
+    var table = 'users_companies';
+
+    var sqlStr = [
+      'DELETE FROM ${table~}',
+      'WHERE user_id=$$${userID}$$ AND company_id=$$${companyID}$$;'
+    ].join(' ');
+
+    return db.none(sqlStr, {
+      table: table,
+      userID: Number(userID),
+      companyID: Number(companyID)
+    }).catch(function (err) {
+      return Promise.reject(err);
+    });
+  };
+
+  Users.getCompanies = function (userID) {
+    var obj = {
+      companiesTable: 'companies',
+      joinTable: 'users_companies',
+      userID: Number(userID)
+    };
+
+    var sqlStr = [
+      'SELECT ${companiesTable~}.*',
+      'FROM ${joinTable~}',
+      'INNER JOIN ${companiesTable~}',
+      'ON company_id = ${companiesTable~}.id',
+      'AND user_id = $$${userID}$$',
+      'ORDER BY ${joinTable~}.created;'
+    ].join(' ');
+
+    return db.many(sqlStr, obj).catch(function (err) {
+      Promise.reject(err);
     });
   };
 
