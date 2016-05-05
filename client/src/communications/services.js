@@ -12,9 +12,10 @@ module.exports = function () { // remove comment and use $http later
       }, resolve);
     });
   };
+  
+  var messages = [];
   var getEmails = function (currentCompany) {
     return new Promise(function (resolve) {
-      var messages = [];
       gapi.client.load('gmail', 'v1').then(function () {
         var request = gapi.client.gmail.users.messages.list({
           userId: 'me',
@@ -29,8 +30,11 @@ module.exports = function () { // remove comment and use $http later
               id: v.id
             });
             messageRequest.execute(function (messageResp) {
-              var message = messageResp;
-              messages.push(message.snippet);
+              // here message is an array
+              var headers = messageResp.payload.headers;
+              // before pushing, extract relevant data to send to view
+
+              messages.push(headers);
               if (messages.length === resp.messages.length) {
                 resolve(messages);
               }
@@ -41,8 +45,28 @@ module.exports = function () { // remove comment and use $http later
     });
   };
 
+  var getheader = function(headers, headerName) {
+    var header = '';
+    headers.forEach(function(element) {
+      if (element.name === headerName) {
+        header = element.value;
+      }
+    });
+    return header;
+  }
   return {
     getEmails: getEmails,
     checkAuth: checkAuth
   };
 };
+
+
+function getHeader(headers, index) {
+        var header = '';
+        $.each(headers, function(){
+          if(this.name === index){
+            header = this.value;
+          }
+        });
+        return header;
+      }
