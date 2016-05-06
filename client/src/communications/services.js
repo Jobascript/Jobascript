@@ -50,9 +50,7 @@ module.exports = function () { // remove comment and use $http later
               message.subject = getHeader(headers, 'Subject');
               // before pushing, extract relevant data to send to view
               // here a string is being sent
-              messages.push('From: ' + message.from
-                         + ' Date: ' + message.date 
-                         + ' Subject: ' + message.subject);
+              messages.push(message);
               if (messages.length === resp.messages.length) {
                 resolve(messages);
               }
