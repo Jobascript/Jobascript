@@ -6,8 +6,8 @@ module.exports = function ($stateProvider) {
     template: require('./comm.html')
   });
   $stateProvider.state('email', {
-    parent: 'company',
-    url: '/messages',
+    parent: 'comm',
+    url: '/messages/:message_id',
     controller: 'CommController',
     template: require('./mail.html')
   });
