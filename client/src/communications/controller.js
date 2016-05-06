@@ -1,4 +1,4 @@
-module.exports = function ($scope, Comm, currentCompany) {
+module.exports = function ($scope, $state, Comm, currentCompany) {
   console.log(currentCompany);
 
   var googleScript = document.createElement('script');
