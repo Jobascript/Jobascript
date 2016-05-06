@@ -4,6 +4,7 @@ var inflection = require('inflection');
 module.exports = function ($scope, Company, $state, companies) {
   $scope.suggestions = [];
   $scope.cache = [];
+  $scope.isFresh = companies.length === 0;
 
   // methods
   $scope.suggest = _.debounce(suggestCompanies, 200);
@@ -48,9 +49,10 @@ module.exports = function ($scope, Company, $state, companies) {
         console.log('shit: ', why);
       });
     } else {
-      $state.go('company', companyExist);
+      $state.go('company', companyExist, { reload: true });
     }
 
+    $scope.isFresh = false;
     $scope.companyName = '';
     clearSuggestions(false);
   }
