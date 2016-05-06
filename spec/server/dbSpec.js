@@ -13,6 +13,7 @@ var _ = require('underscore');
 
 describe('Database tests', function () {
   var ID = '';
+  var comName = '';
 
   var company = {
     name: 'uber',
@@ -48,6 +49,7 @@ describe('Database tests', function () {
     promises.concat(companies.map(function (com) {
       return db.addCompany(com).then(function (id) {
         ID = id;
+        comName = com.name;
         return id;
       });
     }));
@@ -69,8 +71,8 @@ describe('Database tests', function () {
   describe('Get a Company', function () {
     it('should accept name', function () {
       return db.getCompany({
-        name: 'google'
-      }).should.eventually.have.property('name', 'google');
+        name: comName
+      }).should.eventually.have.property('name', comName);
     });
 
     it('should accept domain', function () {

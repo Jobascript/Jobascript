@@ -1,3 +1,6 @@
+var Promise = require('bluebird');
+var helpers = require('./helpers.js');
+
 const TABLE_NAME = 'users';
 const R_TABLE_NAME = 'users_companies';
 
@@ -62,6 +65,50 @@ module.exports = function (db) {
     return db.one(sqlStr, {
       table: TABLE_NAME
     }).catch(function (err) {
+      return Promise.reject(err);
+    });
+  };
+
+  // check user is temp
+
+  Users.updateUser = function (userID, args) {
+    /* eslint-disable no-multi-spaces */
+    // check to see if user exisit
+    var checkIDSql        = 'SELECT id FROM ${table~} WHERE id=$$${user_id}$$;';
+    // check username collision
+    var checkUsernameSql  = 'SELECT id FROM ${table~} WHERE username=$$${username}$$;';
+    var updateSql         = 'UPDATE ${table~} SET ' + helpers.toSqlString(args, ',') +
+                            ' WHERE id=$$${user_id}$$;';
+    /* eslint-enable */
+
+    return db.tx(function (t) {
+      var tasks = [];
+      
+      var checkIfUserExists = t.one(checkIDSql, {
+        table: TABLE_NAME,
+        user_id: Number(userID)
+      });
+
+      tasks.push(checkIfUserExists);
+      
+      if (args.username) {
+        var checkIfUsernameCollision = t.none(checkUsernameSql, {
+          table: TABLE_NAME,
+          username: args.username
+        });
+        tasks.push(checkIfUsernameCollision);
+      }
+
+      var doUpdate = t.none(updateSql, {
+        table: TABLE_NAME,
+        user_id: Number(userID)
+      });
+      
+      tasks.push(doUpdate);
+
+      return t.batch(tasks);
+    })
+    .catch(function (err) {
       return Promise.reject(err);
     });
   };

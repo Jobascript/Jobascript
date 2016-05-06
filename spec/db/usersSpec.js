@@ -59,6 +59,17 @@ describe('Database Users', function () {
     });
   });
 
+  describe('Update a user', function () {
+    it('Should update user by column', function () {
+      var columns = {
+        username: 'lol'
+      };
+
+      return usersTable.updateUser(userID, columns)
+      .should.eventually.be.fulfilled;
+    });
+  });
+
   describe('Follow and Unfollow Company', function () {
     it('Takes userID and companyID and link them', function () {
       return usersTable.followCompany(userID, companyID).should.be.fulfilled;
