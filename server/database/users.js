@@ -78,7 +78,7 @@ module.exports = function (db) {
       return res.temp;
     });
   };
-  
+
   // return userid
   Users.updateUser = function (userID, args) {
     var columns = args;

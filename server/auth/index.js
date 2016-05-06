@@ -48,10 +48,10 @@ exports.signup = function (req, res) {
   });
 };
 
-exports.login = function (req, res) {
-  var username = req.body.username;
-  var password = req.body.password;
-};
+// exports.login = function (req, res) {
+//   var username = req.body.username;
+//   var password = req.body.password;
+// };
 
 
 function makeHash(password) {
@@ -63,11 +63,11 @@ function makeHash(password) {
   });
 }
 
-function checkHash(password, hash) {
-  return new Promise(function (resolve, reject) {
-    bcrypt.compare(password, hash, function(err, res) {
-      if (err) reject(err);
-      resolve(res);
-    });
-  });
-}
+// function checkHash(password, hash) {
+//   return new Promise(function (resolve, reject) {
+//     bcrypt.compare(password, hash, function(err, res) {
+//       if (err) reject(err);
+//       resolve(res);
+//     });
+//   });
+// }
