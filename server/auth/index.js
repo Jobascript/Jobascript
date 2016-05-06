@@ -1,5 +1,6 @@
 var db = require('../../server/database').usersTable;
 var bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
 var Promise = require('bluebird');
 
 exports.signup = function (req, res) {
@@ -22,8 +23,15 @@ exports.signup = function (req, res) {
   }, function (reason) {
     res.status(422).send(reason);
   })
-  .then(function () {
-    res.send(201); // success
+  .then(function (userObj) {
+    return new Promise(function (resolve, reject) {
+      console.log('?????getting token for', userObj);
+      jwt.sign(userObj.username, 'CrazyPrivateKey', {}, function (err, token) {
+        console.log('got token!!>>>> ', token);
+        if (err) reject(err);
+        resolve(token);
+      });
+    });
   }, function (results) {
     // (about results[1]) the middle db promise in tx is to check username collision
     var usernameTaken = !!results[1];
@@ -31,9 +39,18 @@ exports.signup = function (req, res) {
     if (usernameTaken) {
       res.status(409).send('username taken');
     }
-  }).catch(function (err) {
+  })
+  .then(function (tkn) {
+    res.status(201).send(tkn); // success
+  })
+  .catch(function (err) {
     res.status(500).send(err);
   });
+};
+
+exports.login = function (req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
 };
 
 

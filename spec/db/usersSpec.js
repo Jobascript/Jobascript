@@ -82,8 +82,8 @@ describe('Database Users', function () {
 
     it('Updated user is not a temp user', function () {
       return usersTable.updateUser(uid, { username: 'myusername' })
-      .then(function (id) {
-        return usersTable.isUserTemp(id)
+      .then(function (user) {
+        return usersTable.isUserTemp(user.id)
         .should.eventually.be.fulfilled.and.be.false;
       });
     });

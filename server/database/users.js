@@ -88,11 +88,11 @@ module.exports = function (db) {
 
     /* eslint-disable no-multi-spaces */
     // check to see if user exisit
-    var checkIDSql        = 'SELECT id FROM ${table~} WHERE id=$$${user_id}$$;';
+    var checkIDSql        = 'SELECT * FROM ${table~} WHERE id=$$${user_id}$$;';
     // check username collision
-    var checkUsernameSql  = 'SELECT id FROM ${table~} WHERE username=$$${username}$$;';
+    var checkUsernameSql  = 'SELECT * FROM ${table~} WHERE username=$$${username}$$;';
     var updateSql         = 'UPDATE ${table~} SET ' + helpers.toSqlString(columns, ',') +
-                            ' WHERE id=$$${user_id}$$;';
+                            ' WHERE id=$$${user_id}$$ RETURNING id, username;';
     /* eslint-enable */
 
     return db.tx(function (t) {
@@ -113,7 +113,7 @@ module.exports = function (db) {
         tasks.push(checkIfUsernameCollision);
       }
 
-      var doUpdate = t.none(updateSql, {
+      var doUpdate = t.one(updateSql, {
         table: TABLE_NAME,
         user_id: Number(userID)
       });
@@ -123,7 +123,7 @@ module.exports = function (db) {
       return t.batch(tasks);
     })
     .then(function (res) {
-      return res[0].id;
+      return res[2];
     })
     .catch(function (err) {
       return Promise.reject(err);
