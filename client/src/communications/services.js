@@ -44,12 +44,15 @@ module.exports = function () { // remove comment and use $http later
             messageRequest.execute(function (messageResp) {
               // here message is an array
               var headers = messageResp.payload.headers;
-              var date = getHeader(headers, 'Date');
-              var sender = getHeader(headers, 'From');
-              var subject = getHeader(headers, 'Subject');
+              var message = {};
+              message.date = getHeader(headers, 'Date');
+              message.from = getHeader(headers, 'From');
+              message.subject = getHeader(headers, 'Subject');
               // before pushing, extract relevant data to send to view
-
-              messages.push('Date: ' + date + ' From: ' + sender + ' Subject: ' + subject);
+              // here a string is being sent
+              messages.push('From: ' + message.from
+                         + ' Date: ' + message.date 
+                         + ' Subject: ' + message.subject);
               if (messages.length === resp.messages.length) {
                 resolve(messages);
               }
