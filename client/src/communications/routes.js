@@ -10,5 +10,5 @@ module.exports = function ($stateProvider) {
     url: '/mail',
     controller: 'CommController',
     template: require('./mail.html');
-  })
+  });
 };
