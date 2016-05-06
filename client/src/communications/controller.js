@@ -18,4 +18,7 @@ module.exports = function ($scope, Comm, currentCompany) {
       });
     });
   };
+  $scope.email = function(message) {
+    console.log(message);
+  };
 };
