@@ -18,10 +18,8 @@ module.exports = function ($scope, $state, Comm, currentCompany) {
       });
     });
   };
-  $scope.email = function(message) {
-    console.log(message);
-  };
-  $scope.changeState = function() {
+  $scope.changeState = function(message) {
     $state.go('email');
+    console.log(message);
   }
 };
