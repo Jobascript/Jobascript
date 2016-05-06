@@ -81,5 +81,13 @@ describe('Database Users', function () {
       .should.eventually.be.an('array')
       .and.have.lengthOf(1);
     });
+
+    it('follow_on as date of follow', function () {
+      return usersTable.getCompanies(userID)
+      .should.eventually.satisfy(function (array) {
+        var company = array[0];
+        return expect(company).to.have.property('followed_on');
+      });
+    });
   });
 });

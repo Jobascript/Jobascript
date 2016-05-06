@@ -109,7 +109,7 @@ module.exports = function (db) {
     };
 
     var sqlStr = [
-      'SELECT ${companiesTable~}.*',
+      'SELECT ${companiesTable~}.*, ${joinTable~}.created AS followed_on',
       'FROM ${joinTable~}',
       'INNER JOIN ${companiesTable~}',
       'ON company_id = ${companiesTable~}.id',
