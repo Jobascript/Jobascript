@@ -8,7 +8,9 @@
   </div>
   <div>
     <ul>
-      <li ng-repeat="message in emails track by $index">{{message}}</li>
+      <li ng-repeat="message in emails track by $index">
+        <button>{{message}}</button>
+      </li>
     </ul>
   </div>
 </section>
