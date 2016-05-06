@@ -70,31 +70,45 @@ module.exports = function (db) {
   };
 
   // check user is temp
+  Users.isUserTemp = function (userID) {
+    var sqlStr = 'SELECT temp FROM users WHERE id=$$${user_id}$$';
 
+    return db.one(sqlStr, { user_id: Number(userID) })
+    .then(function (res) {
+      return res.temp;
+    });
+  };
+  
+  // return userid
   Users.updateUser = function (userID, args) {
+    var columns = args;
+    if (columns.username) {
+      columns.temp = false; // for sign up
+    }
+
     /* eslint-disable no-multi-spaces */
     // check to see if user exisit
     var checkIDSql        = 'SELECT id FROM ${table~} WHERE id=$$${user_id}$$;';
     // check username collision
     var checkUsernameSql  = 'SELECT id FROM ${table~} WHERE username=$$${username}$$;';
-    var updateSql         = 'UPDATE ${table~} SET ' + helpers.toSqlString(args, ',') +
+    var updateSql         = 'UPDATE ${table~} SET ' + helpers.toSqlString(columns, ',') +
                             ' WHERE id=$$${user_id}$$;';
     /* eslint-enable */
 
     return db.tx(function (t) {
       var tasks = [];
-      
+
       var checkIfUserExists = t.one(checkIDSql, {
         table: TABLE_NAME,
         user_id: Number(userID)
       });
 
       tasks.push(checkIfUserExists);
-      
-      if (args.username) {
+
+      if (columns.username) {
         var checkIfUsernameCollision = t.none(checkUsernameSql, {
           table: TABLE_NAME,
-          username: args.username
+          username: columns.username
         });
         tasks.push(checkIfUsernameCollision);
       }
@@ -103,10 +117,13 @@ module.exports = function (db) {
         table: TABLE_NAME,
         user_id: Number(userID)
       });
-      
+
       tasks.push(doUpdate);
 
       return t.batch(tasks);
+    })
+    .then(function (res) {
+      return res[0].id;
     })
     .catch(function (err) {
       return Promise.reject(err);

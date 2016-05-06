@@ -60,6 +60,8 @@ describe('Database Users', function () {
   });
 
   describe('Update a user', function () {
+    var uid = '';
+
     it('Should update user by column', function () {
       var columns = {
         username: 'lol'
@@ -67,6 +69,23 @@ describe('Database Users', function () {
 
       return usersTable.updateUser(userID, columns)
       .should.eventually.be.fulfilled;
+    });
+
+    it('New user is a temp user', function () {
+      return usersTable.createUser()
+      .then(function (user) {
+        uid = user.id;
+        return usersTable.isUserTemp(uid)
+        .should.eventually.be.fulfilled.and.be.true;
+      });
+    });
+
+    it('Updated user is not a temp user', function () {
+      return usersTable.updateUser(uid, { username: 'myusername' })
+      .then(function (id) {
+        return usersTable.isUserTemp(id)
+        .should.eventually.be.fulfilled.and.be.false;
+      });
     });
   });
 
