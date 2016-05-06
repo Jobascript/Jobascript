@@ -21,4 +21,7 @@ module.exports = function ($scope, $state, Comm, currentCompany) {
   $scope.email = function(message) {
     console.log(message);
   };
+  $scope.changeState = function() {
+    $state.go('email');
+  }
 };
