@@ -5,4 +5,10 @@ module.exports = function ($stateProvider) {
     controller: 'CommController',
     template: require('./comm.html')
   });
+  $stateProvider.state('email' {
+    parent: 'comm',
+    url: '/mail',
+    controller: 'CommController',
+    template: require('./mail.html');
+  })
 };
