@@ -64,6 +64,7 @@ module.exports = function () { // remove comment and use $http later
 
   return {
     getEmails: getEmails,
-    checkAuth: checkAuth
+    checkAuth: checkAuth,
+    getHeader: getHeader
   };
 };
