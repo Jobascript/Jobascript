@@ -20,31 +20,31 @@ exports.signup = function (req, res) {
       username: username,
       password: hashedPassword
     });
-  }, function (reason) {
-    res.status(422).send(reason);
   })
   .then(function (userObj) {
-    return new Promise(function (resolve, reject) {
-      console.log('?????getting token for', userObj);
-      jwt.sign(userObj.username, 'CrazyPrivateKey', {}, function (err, token) {
-        console.log('got token!!>>>> ', token);
-        if (err) reject(err);
-        resolve(token);
-      });
-    });
+    return genToken(userObj);
   }, function (results) {
     // (about results[1]) the middle db promise in tx is to check username collision
     var usernameTaken = !!results[1];
 
     if (usernameTaken) {
-      res.status(409).send('username taken');
+      return 'username taken';
+    } else {
+      return results;
     }
   })
   .then(function (tkn) {
     res.status(201).send(tkn); // success
   })
-  .catch(function (err) {
-    res.status(500).send(err);
+  .catch(function (reason) {
+    if (reason === 'username taken') {
+      res.status(409).send('username taken');
+    } else if (reason === 'user is already registered') {
+      res.status(422).send(reason);
+    } else {
+      res.sendStatus(500);
+      console.log(reason);
+    }
   });
 };
 
@@ -72,7 +72,8 @@ exports.login = function (req, res) {
     if (reason === 'wrong password' || reason === 'user not found') {
       res.sendStatus(401); // wrong password
     } else {
-      res.status(500).send(reason);
+      res.sendStatus(500);
+      console.log(reason);
     }
   });
 };
