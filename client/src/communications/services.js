@@ -16,13 +16,13 @@ module.exports = function () { // remove comment and use $http later
   };
 
   var getHTMLPart = function (arr) {
-    for(var x = 0; x <= arr.length; x++) {
-      if(typeof arr[x].parts === 'undefined') {
-        if(arr[x].mimeType = 'text/html') {
+    for (var x = 0; x <= arr.length; x++) {
+      if (typeof arr[x].parts === 'undefined') {
+        if (arr[x].mimeType === 'text/html') {
           return arr[x].body.data;
         }
       } else {
-          return getHTMLPart(arr[x].parts);
+        return getHTMLPart(arr[x].parts);
       }
     }
     return '';
@@ -34,7 +34,7 @@ module.exports = function () { // remove comment and use $http later
     } else {
       encodedBody = getHTMLPart(message.parts);
     }
-    encodedBody = encodedBody.replace(/-/g, '+').replace(/_/g,'/')
+    encodedBody = encodedBody.replace(/-/g, '+').replace(/_/g, '/')
     .replace(/\s/g, '');
     return decodeURIComponent(escape(window.atob(encodedBody)));
   };

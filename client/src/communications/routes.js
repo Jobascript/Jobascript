@@ -5,7 +5,7 @@ module.exports = function ($stateProvider) {
     parent: 'company',
     url: '/communications',
     controller: 'CommController',
-    template: require('./comm.html')})
+    template: require('./comm.html') })
   .state('email', {
     resolve: {
       message: function ($stateParams) {
@@ -30,20 +30,17 @@ module.exports = function ($stateProvider) {
     parent: 'comm',
     url: '/messages/:message_id',
     controller: function ($scope, $state, Comm, message) {
-    var current = {};
-    console.log('message: ', message);
-    var headers = message.payload.headers;
-    var body = message.result.payload.parts[1];
-    console.log('body: ', body);
-    var bodydata = body.body.data;
-    var finalbodydata = bodydata.replace(/-/g, '+').replace(/_/g, '/').replace(/\s/g, '');
-    var realfinalbodydata = decodeURIComponent(escape(window.atob(finalbodydata)));
-    console.log(realfinalbodydata);
-    current.date = Comm.getHeader(headers, 'Date');
-    current.from = Comm.getHeader(headers, 'From');
-    current.subject = Comm.getHeader(headers, 'Subject');
-    current.body = realfinalbodydata;
-    $scope.message = current;
+      var current = {};
+      var headers = message.payload.headers;
+      var body = message.result.payload.parts[1];
+      var bodydata = body.body.data;
+      var finalbodydata = bodydata.replace(/-/g, '+').replace(/_/g, '/').replace(/\s/g, '');
+      var realfinalbodydata = decodeURIComponent(escape(window.atob(finalbodydata)));
+      current.date = Comm.getHeader(headers, 'Date');
+      current.from = Comm.getHeader(headers, 'From');
+      current.subject = Comm.getHeader(headers, 'Subject');
+      current.body = realfinalbodydata;
+      $scope.message = current;
     },
     template: require('./mail.html')
   });
