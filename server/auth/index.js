@@ -58,18 +58,22 @@ exports.login = function (req, res) {
     userFounded = user;
     return checkHash(password, user.password);
   }, function () {
-    res.sendStatus(401); // user not found by that username
+    return 'user not found'; // user not found by that username
   })
   .then(function (isPasswordMatched) {
+    console.log('password match? ', isPasswordMatched);
     return isPasswordMatched ? genToken(userFounded) : Promise.reject('wrong password');
   })
   .then(function (token) {
     res.status(200).send(token);
-  }, function () {
-    res.statusStatus(401); // wrong password
   })
-  .catch(function (err) {
-    res.status(500).send(err);
+  .catch(function (reason) {
+    console.log('password check result>>>> ', reason);
+    if (reason === 'wrong password' || reason === 'user not found') {
+      res.sendStatus(401); // wrong password
+    } else {
+      res.status(500).send(reason);
+    }
   });
 };
 
@@ -95,7 +99,7 @@ function makeHash(password) {
 
 function checkHash(password, hash) {
   return new Promise(function (resolve, reject) {
-    bcrypt.compare(password, hash, function(err, res) {
+    bcrypt.compare(password, hash, function (err, res) {
       if (err) reject(err);
       resolve(res);
     });
