@@ -1,12 +1,12 @@
 module.exports = function ($stateProvider) {
   /* globals gapi */
-  $stateProvider.state('comm', {
+  $stateProvider
+  .state('comm', {
     parent: 'company',
     url: '/communications',
     controller: 'CommController',
-    template: require('./comm.html')
-  });
-  $stateProvider.state('email', {
+    template: require('./comm.html')})
+  .state('email', {
     resolve: {
       message: function ($stateParams) {
         return new Promise(function (resolve, reject) {
@@ -15,9 +15,8 @@ module.exports = function ($stateProvider) {
             userId: 'me',
             id: $stateParams.message_id
           });
-          console.log(messageRequest);
+          console.log('messageRequest');
           messageRequest.execute(function (messageResp) {
-              console.log(messageResp);
             if (messageResp) {
               console.log(messageResp);
               resolve(messageResp);
@@ -31,8 +30,10 @@ module.exports = function ($stateProvider) {
     },
     parent: 'comm',
     url: '/messages/:message_id',
-    controller: function(message) {
-      console.log(message);
+    controller: function ($scope, $state, message) {
+      $scope.changeState = function () {
+        $state.go('email', message);
+      };
     },
     template: require('./mail.html')
   });

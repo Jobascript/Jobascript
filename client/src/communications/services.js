@@ -37,7 +37,6 @@ module.exports = function () { // remove comment and use $http later
         request.execute(function (resp) {
           // for each message send id to google
           resp.messages.forEach(function (v) {
-            console.log(v.id);
             var messageRequest = gapi.client.gmail.users.messages.get({
               userId: 'me',
               id: v.id
@@ -46,6 +45,7 @@ module.exports = function () { // remove comment and use $http later
               // here message is an array
               var headers = messageResp.payload.headers;
               var message = {};
+              message.id = v.id;
               message.date = getHeader(headers, 'Date');
               message.from = getHeader(headers, 'From');
               message.subject = getHeader(headers, 'Subject');

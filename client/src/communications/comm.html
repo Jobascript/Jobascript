@@ -1,5 +1,6 @@
 <section>
 <script src="https://apis.google.com/js/client.js"></script>
+<ui-view
   <div>
     <button id='authorize-button' ng-click='auth()'>Auth + Emails</button>
     <button id='previous'> < </button>
@@ -8,9 +9,10 @@
   </div>
   <div>
     <ul>
-      <li ng-repeat="message in emails track by $index">
-        <button ng-click=' changeState(message)'>{{message}}</button>
+      <li ng-repeat="message in emails track by $index" ui-sref-active="active" ng-click=''>
+        <a ui-sref='email({message_id: message.id})'>{{message.subject}}</a>
       </li>
     </ul>
   </div>
+  </ui-view>
 </section>
