@@ -23,6 +23,7 @@ app.config(function (UserProvider) {
 app.config(require('./routes.js').config);
 app.run(require('./routes.js').listen);
 
+app.directive('authWidget', require('./shared/topnav/authDirective.js'));
 app.controller('topnavCtrl', require('./shared/topnav/topnavCtrl.js'));
 app.controller('sidebarCtrl', require('./shared/sidebar/sidebarCtrl.js'));
 
