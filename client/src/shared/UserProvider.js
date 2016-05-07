@@ -1,5 +1,4 @@
 module.exports = function () {
-  var username = null;
   var token = null;
 
   return {
@@ -39,12 +38,20 @@ module.exports = function () {
     function createTempUser() {
       return $http.post('/api/user')
       .then(function (resp) {
-        userObj = resp.data;
-        console.log('created a temp usr: ', userObj);
+        // token
+        saveToken(resp.data);
+        console.log('created a temp usr, token: ', resp.data);
         return resp.data;
       }, function (resp) {
         // 302 (Found) - user already exists
         return (resp.status === 302) ? resp.data : Promise.reject(resp.data);
+      })
+      .then(function (newUserToken) {
+        return fetchUserByToken(newUserToken);
+      })
+      .then(function (newUser) {
+        userObj = newUser;
+        return newUser;
       })
       .catch(function (reason) {
         console.log('failed creating a new user: ', reason);
@@ -74,23 +81,26 @@ module.exports = function () {
         user.id = curUser.id;
         return $http.post('/api/signup', user)
         .then(function (resp) {
-          localStorage.setItem('token', resp.data);
+          saveToken(resp.data);
           return resp.data;
         });
       });
     }
 
     function logout() {
-      localStorage.removeItem('user');
       localStorage.removeItem('token');
     }
 
     function login(user) {
       return $http.post('/api/login', user)
       .then(function (resp) {
-        localStorage.setItem('token', resp.data);
+        saveToken(resp.data);
         return resp.data;
       });
+    }
+
+    function saveToken(tokenToSave) {
+      localStorage.setItem('token', tokenToSave);
     }
   }
 

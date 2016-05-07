@@ -24,6 +24,7 @@
   "homepage": "https://github.com/Jobascript/Jobascript#readme",
   "dependencies": {
     "angular": "^1.5.5",
+    "angular-jwt": "0.0.9",
     "angular-sanitize": "^1.5.5",
     "angular-ui-router": "^0.2.18",
     "axios": "^0.11.0",

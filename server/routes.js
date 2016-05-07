@@ -9,7 +9,7 @@ module.exports = function (app) {
   app.post('/api/signup', auth.signup); // signup
   app.post('/api/login', auth.login); // login
   app.get('/api/verify/:token', auth.verify); // verify token
-  
+
   // user
   app.post('/api/user', userHandler.createUser);
 
