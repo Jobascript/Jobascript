@@ -11,14 +11,20 @@ var app = angular.module('jobascript', [
 
 app.provider('User', require('./shared/UserProvider.js'));
 
-app.config(function (UserProvider) {
-  // localStorage
-  var token = localStorage.getItem('token');
-  console.log('from localStorage: ', token);
+app.config(function (UserProvider, $httpProvider, jwtInterceptorProvider) {
+  jwtInterceptorProvider.tokenGetter = function () {
+    // localStorage
+    var token = localStorage.getItem('token');
+    console.log('from localStorage: ', token);
 
-  if (token) {
-    UserProvider.setToken(token);
-  }
+    if (token) {
+      UserProvider.setToken(token);
+    }
+
+    return token;
+  };
+
+  $httpProvider.interceptors.push('jwtInterceptor');
 });
 
 app.config(require('./routes.js').config);
