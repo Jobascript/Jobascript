@@ -47,21 +47,24 @@ exports.getCompanies = function (req, res) {
 exports.createUser = function (req, res) {
   var user = req.body.username ? req.body : null;
 
-  db.createUser(user).then(function (newUser) {
+  db.createUser(user)
+  .then(function (newUser) {
     res.status(201).send(newUser);
   }, function (reason) {
     if (reason.detail.indexOf('already exists') === -1) {
-      return Promise.reject();
+      return Promise.reject('already exists');
     }
-    return user;
+    return Promise.reject();
   })
-  .then(db.getUser, function (err) {
-    res.status(500).send(err);
-  })
+  .then(db.getUser)
   .then(function (existingUser) {
     res.status(302).send(existingUser);
   })
-  .catch(function (err) {
-    res.status(500).send(err);
+  .catch(function (reason) {
+    if (reason === 'already exists') {
+      res.status(302).send(reason);
+    } else {
+      res.status(500).send(reason);
+    }
   });
 };

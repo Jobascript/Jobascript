@@ -27,29 +27,37 @@ module.exports = function () {
 
       if (userObj) {
         promise = Promise.resolve(userObj);
+      } else if (token) {
+        promise = fetchUserByToken(token);
       } else {
-        if(token) {
-          login();
-        }
-        // var userNameOrtemp = username ? { username: username } : undefined;
-        // promise = $http.post('/api/user', userNameOrtemp)
-        // .then(function (resp) {
-        //   userObj = resp.data;
-        //   console.log('fetch a usr ', userObj);
-        //   localStorage.setItem('user', userObj.username);
-        //   return resp.data;
-        // }, function (resp) {
-        //   // 302 (Found) - user already exists
-        //   return (resp.status === 302) ? resp.data : Promise.reject(resp.data);
-        // });
+        promise = createTempUser();
       }
 
       return promise;
     }
 
-    // function fetchUser(token) {
-    //   return $http.get('/api/user')
-    // }
+    function createTempUser() {
+      return $http.post('/api/user')
+      .then(function (resp) {
+        userObj = resp.data;
+        console.log('created a temp usr: ', userObj);
+        return resp.data;
+      }, function (resp) {
+        // 302 (Found) - user already exists
+        return (resp.status === 302) ? resp.data : Promise.reject(resp.data);
+      })
+      .catch(function (reason) {
+        console.log('failed creating a new user: ', reason);
+        return reason;
+      });
+    }
+
+    function fetchUserByToken(userToken) {
+      return $http.get('/api/verify/' + userToken)
+      .then(function (resp) {
+        return resp.data;
+      });
+    }
 
     function getCompanies() {
       return getUser().then(function (user) {
@@ -66,6 +74,7 @@ module.exports = function () {
         user.id = curUser.id;
         return $http.post('/api/signup', user)
         .then(function (resp) {
+          localStorage.setItem('token', resp.data);
           return resp.data;
         });
       });
@@ -79,6 +88,7 @@ module.exports = function () {
     function login(user) {
       return $http.post('/api/login', user)
       .then(function (resp) {
+        localStorage.setItem('token', resp.data);
         return resp.data;
       });
     }

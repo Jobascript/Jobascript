@@ -28,19 +28,32 @@ module.exports = function (db) {
    */
   Users.createUser = function (props) {
     var user = props || false;
-    var sqlStr = [
+
+    var queryUserSql = [
+      'SELECT * FROM ${table~}',
+      'WHERE ' + (user ? helpers.toSqlString(user) : 'true=false') + ';'
+    ].join(' ');
+
+    var insertSql = [
       'INSERT INTO ${table~}',
       !!user ? '(username)' : '(temp)',
       'VALUES (',
       '${username}',
-      ') RETURNING id, username, created;'
+      ') RETURNING id, username, created, temp;'
     ].join(' ');
 
-    return db.one(sqlStr, {
-      table: TABLE_NAME,
-      username: !!user ? user.username : true
-    }).catch(function (err) {
-      return Promise.reject(err);
+    return db.tx(function (t) {
+      return t.batch([
+        db.none(queryUserSql, {
+          table: TABLE_NAME
+        }),
+        db.one(insertSql, {
+          table: TABLE_NAME,
+          username: !!user ? user.username : true
+        })
+      ]);
+    }).then(function (results) {
+      return results.pop();
     });
   };
 
@@ -79,7 +92,7 @@ module.exports = function (db) {
     });
   };
 
-  // return userid
+  // return user
   Users.updateUser = function (userID, args) {
     var columns = args;
     if (columns.username) {
@@ -123,7 +136,7 @@ module.exports = function (db) {
       return t.batch(tasks);
     })
     .then(function (res) {
-      return res[2];
+      return res.pop(); // result from last operation
     })
     .catch(function (err) {
       return Promise.reject(err);

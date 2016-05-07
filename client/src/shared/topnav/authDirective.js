@@ -20,8 +20,7 @@ module.exports = function (User, $state) {
         if ($scope.isSignupMode) {
           User.signup($scope.user).then(function (token) {
             console.log('Full user created, token: ', token);
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', $scope.user.username);
+            // localStorage.setItem('user', $scope.user.username);
             $scope.user.username = '';
             $scope.user.password = '';
             // $state.reload();
