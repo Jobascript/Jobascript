@@ -16,12 +16,12 @@
       <div class="panel-footer cf" ng-show="isSignupMode">
         <button type="submit" class="btn btn-success fr">Signup</button>
         <span>Have an account?
-        <a class="clickable" ng-click="isSignupMode = false">goto Login</a></span>
+        <a class="clickable" ng-click="toggleMode()">goto Login</a></span>
       </div>
       <div class="panel-footer cf" ng-show="!isSignupMode">
-        <button type="submit" class="btn btn-success fl">Login</button>
+        <button type="submit" class="btn btn-primary fl">Login</button>
         <span class="fr">No account?
-        <a class="clickable" ng-click="isSignupMode = true">Signup</a></span>
+        <a class="clickable" ng-click="toggleMode()">Signup</a></span>
       </div>
     </form>
   </div>

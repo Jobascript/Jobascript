@@ -26,12 +26,14 @@ exports.signup = function (req, res) {
   }, function (results) {
     // (about results[1]) the middle db promise in tx is to check username collision
     var usernameTaken = !!results[1];
-
+    var reason = null;
     if (usernameTaken) {
-      return 'username taken';
+      reason = 'username taken';
     } else {
-      return results;
+      reason = results;
     }
+
+    return Promise.reject(reason);
   })
   .then(function (tkn) {
     res.status(201).send(tkn); // success
@@ -58,7 +60,7 @@ exports.login = function (req, res) {
     userFounded = user;
     return checkHash(password, user.password);
   }, function () {
-    return 'user not found'; // user not found by that username
+    return Promise.reject('user not found'); // user not found by that username
   })
   .then(function (isPasswordMatched) {
     console.log('password match? ', isPasswordMatched);
@@ -70,7 +72,7 @@ exports.login = function (req, res) {
   .catch(function (reason) {
     console.log('password check result>>>> ', reason);
     if (reason === 'wrong password' || reason === 'user not found') {
-      res.sendStatus(401); // wrong password
+      res.sendStatus(401);
     } else {
       res.sendStatus(500);
       console.log(reason);

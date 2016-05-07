@@ -9,24 +9,30 @@ module.exports = function (User, $state) {
         username: '',
         password: ''
       };
+
+      $scope.toggleMode = function () {
+        $scope.isSignupMode = !$scope.isSignupMode;
+      };
+
       $scope.signupOrLogin = function () {
-        console.log('form submit');
-        if (!$scope.isSignupMode) {
+        console.log('$scope.isSignupMode', $scope.isSignupMode);
+        console.log('form submit', $scope.isSignupMode ? 'signup' : 'login');
+        if ($scope.isSignupMode) {
+          User.signup($scope.user).then(function (token) {
+            console.log('Full user created, token: ', token);
+            localStorage.setItem('token', token);
+            localStorage.setItem('user', $scope.user.username);
+            $scope.user.username = '';
+            $scope.user.password = '';
+            // $state.reload();
+            $scope.isAuth = true;
+          })
+          .catch(function (reason) {
+            console.log('signup failed: ', reason);
+          });
+        } else {
           login();
-          return;
         }
-        User.signup($scope.user).then(function (token) {
-          console.log('Full user created, token: ', token);
-          localStorage.setItem('token', token);
-          localStorage.setItem('user', $scope.user.username);
-          $scope.user.username = '';
-          $scope.user.password = '';
-          // $state.reload();
-          $scope.isAuth = true;
-        })
-        .catch(function (reason) {
-          console.log('login failed: ', reason);
-        });
       };
 
       $scope.logout = function () {
@@ -41,8 +47,8 @@ module.exports = function (User, $state) {
         .then(function (token) {
           console.log('login succuess', token);
         })
-        .catch(function () {
-          console.log('login fail');
+        .catch(function (reason) {
+          console.log('login fail', reason);
         });
       }
     }
