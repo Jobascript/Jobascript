@@ -10,18 +10,17 @@ module.exports = function ($stateProvider) {
     resolve: {
       message: function ($stateParams) {
         return new Promise(function (resolve, reject) {
-          console.log('in promise');
+          console.log('new promise');
           var messageRequest = gapi.client.gmail.users.messages.get({
             userId: 'me',
             id: $stateParams.message_id
           });
-          console.log('messageRequest');
           messageRequest.execute(function (messageResp) {
             if (messageResp) {
-              console.log(messageResp);
+              console.log('promise resolved');
               resolve(messageResp);
             } else {
-              console.log('rejected');
+              console.log('promise rejected');
               reject();
             }
           });
@@ -32,13 +31,18 @@ module.exports = function ($stateProvider) {
     url: '/messages/:message_id',
     controller: function ($scope, $state, Comm, message) {
     var current = {};
-
+    console.log('message: ', message);
     var headers = message.payload.headers;
-    var body = Comm.getBody(message.payload);
+    var body = message.result.payload.parts[1];
+    console.log('body: ', body);
+    var bodydata = body.body.data;
+    var finalbodydata = bodydata.replace(/-/g, '+').replace(/_/g, '/').replace(/\s/g, '');
+    var realfinalbodydata = decodeURIComponent(escape(window.atob(finalbodydata)));
+    console.log(realfinalbodydata);
     current.date = Comm.getHeader(headers, 'Date');
     current.from = Comm.getHeader(headers, 'From');
     current.subject = Comm.getHeader(headers, 'Subject');
-    current.body = body;
+    current.body = realfinalbodydata;
     $scope.message = current;
     },
     template: require('./mail.html')
