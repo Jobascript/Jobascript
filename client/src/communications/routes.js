@@ -10,14 +10,19 @@ module.exports = function ($stateProvider) {
     resolve: {
       message: function ($stateParams) {
         return new Promise(function (resolve, reject) {
+          console.log('in promise');
           var messageRequest = gapi.client.gmail.users.messages.get({
             userId: 'me',
             id: $stateParams.message_id
           });
+          console.log(messageRequest);
           messageRequest.execute(function (messageResp) {
+              console.log(messageResp);
             if (messageResp) {
+              console.log(messageResp);
               resolve(messageResp);
             } else {
+              console.log('rejected');
               reject();
             }
           });
@@ -26,7 +31,9 @@ module.exports = function ($stateProvider) {
     },
     parent: 'comm',
     url: '/messages/:message_id',
-    controller: 'CommController',
+    controller: function(message) {
+      console.log(message);
+    },
     template: require('./mail.html')
   });
 };
