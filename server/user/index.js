@@ -1,4 +1,5 @@
 var db = require('../../server/database').usersTable;
+var auth = require('../auth');
 
 exports.followCompany = function (req, res) {
   var userID = req.params.user_id;
@@ -6,14 +7,14 @@ exports.followCompany = function (req, res) {
 
   if (!userID || !companyID) {
     res.status(400).send('user ID and company ID is required');
+    return;
   }
 
   db.followCompany(userID, companyID).then(function () {
     res.sendStatus(200);
-  }, function (reason) {
-    res.status(406).send(reason);
-  }).catch(function (err) {
-    res.status(500).send(err);
+  }).catch(function (reason) {
+    res.sendStatus(500);
+    console.log('follow failed: ', reason);
   });
 };
 
@@ -23,11 +24,10 @@ exports.unfollowCompany = function (req, res) {
 
   db.unfollowCompany(userID, companyID).then(function () {
     res.sendStatus(200);
-  }, function (reason) {
-    res.status(500).send(reason);
   })
-  .catch(function (err) {
-    res.status(500).send(err);
+  .catch(function (reason) {
+    res.sendStatus(500);
+    console.log('unfollow failed: ', reason);
   });
 };
 
@@ -36,11 +36,10 @@ exports.getCompanies = function (req, res) {
 
   db.getCompanies(userID).then(function (companies) {
     res.status(200).send(companies);
-  }, function (reason) {
-    res.status(500).send(reason);
   })
-  .catch(function (err) {
-    res.status(500).send(err);
+  .catch(function (reason) {
+    res.sendStatus(500);
+    console.log('getCompanies failed: ', reason);
   });
 };
 
@@ -49,20 +48,19 @@ exports.createUser = function (req, res) {
 
   db.createUser(user)
   .then(function (newUser) {
-    res.status(201).send(newUser);
-  }, function (reason) {
-    if (reason.detail.indexOf('already exists') === -1) {
-      return Promise.reject('already exists');
-    }
-    return Promise.reject();
-  })
-  .then(db.getUser)
-  .then(function (existingUser) {
-    res.status(302).send(existingUser);
+    auth.genToken({
+      username: newUser.username,
+      temp: newUser.temp
+    }).then(function (tkn) {
+      res.status(201).send(tkn);
+    });
+  }, function () {
+    return Promise.reject('already exists');
   })
   .catch(function (reason) {
     if (reason === 'already exists') {
       res.status(302).send(reason);
+      console.log('createUser failed: ', reason);
     } else {
       res.status(500).send(reason);
     }

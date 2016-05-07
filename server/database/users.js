@@ -92,7 +92,7 @@ module.exports = function (db) {
     });
   };
 
-  // return user
+  // return user - id, username, temp
   Users.updateUser = function (userID, args) {
     var columns = args;
     if (columns.username) {
@@ -105,7 +105,7 @@ module.exports = function (db) {
     // check username collision
     var checkUsernameSql  = 'SELECT * FROM ${table~} WHERE username=$$${username}$$;';
     var updateSql         = 'UPDATE ${table~} SET ' + helpers.toSqlString(columns, ',') +
-                            ' WHERE id=$$${user_id}$$ RETURNING id, username;';
+                            ' WHERE id=$$${user_id}$$ RETURNING *;';
     /* eslint-enable */
 
     return db.tx(function (t) {

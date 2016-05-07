@@ -12,8 +12,6 @@ module.exports = function (app) {
   
   // user
   app.post('/api/user', userHandler.createUser);
-  // get without param will create new user
-  // get with param will retreive user
 
   // users companies
   app.get('/api/user/:user_id/companies', userHandler.getCompanies);

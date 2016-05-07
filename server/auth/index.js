@@ -9,7 +9,8 @@ var SECRET = 'CrazyPrivateKey';
 module.exports = {
   signup: signup,
   login: login,
-  verify: verify
+  verify: verify,
+  genToken: genToken
 };
 
 function verify(req, res) {
@@ -51,7 +52,10 @@ function signup(req, res) {
     });
   })
   .then(function (userObj) {
-    return genToken(userObj);
+    return genToken({
+      username: userObj.username,
+      temp: userObj.temp
+    });
   }, function (results) {
     // (about results[1]) the middle db promise in tx is to check username collision
     var usernameTaken = !!results[1];
@@ -93,7 +97,10 @@ function login(req, res) {
   })
   .then(function (isPasswordMatched) {
     console.log('password match? ', isPasswordMatched);
-    return isPasswordMatched ? genToken(userFounded) : Promise.reject('wrong password');
+    return isPasswordMatched ? genToken({
+      username: userFounded.username,
+      temp: userFounded.temp
+    }) : Promise.reject('wrong password');
   })
   .then(function (token) {
     res.status(200).send(token);
