@@ -13,10 +13,15 @@ app.provider('User', require('./shared/UserProvider.js'));
 app.config(function (UserProvider) {
   // localStorage
   var username = localStorage.getItem('user');
+  var token = localStorage.getItem('token');
   console.log('from localStorage: ', username);
 
   if (username) {
     UserProvider.setUsername(username);
+  }
+
+  if (token) {
+    UserProvider.setToken(token);
   }
 });
 

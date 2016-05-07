@@ -1,5 +1,6 @@
 module.exports = function () {
   var username;
+  var token;
 
   function init($http) {
     var userObj = {};
@@ -47,8 +48,20 @@ module.exports = function () {
       });
     }
 
+    function logout() {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+    }
+
+    function login(user) {
+      return $http.post();
+    }
+
     return {
+      isAuth: function () { return !!token; },
       signup: signup,
+      login: login,
+      logout: logout,
       getUser: getUser,
       getCompanies: getCompanies,
       companies: function () { return companiesList; }
@@ -59,8 +72,13 @@ module.exports = function () {
     username = usernameToSet;
   }
 
+  function setToken(tokenToSet) {
+    token = tokenToSet;
+  }
+
   return {
     $get: init,
-    setUsername: setUsername
+    setUsername: setUsername,
+    setToken: setToken
   };
 };
