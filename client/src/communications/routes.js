@@ -30,10 +30,13 @@ module.exports = function ($stateProvider) {
     },
     parent: 'comm',
     url: '/messages/:message_id',
-    controller: function ($scope, $state, message) {
-      $scope.changeState = function () {
-        $state.go('email', message);
-      };
+    controller: function ($scope, $state, Comm, message) {
+    var headers = message.payload.headers;
+    var current = {};
+    current.date = Comm.getHeader(headers, 'Date');
+    current.from = Comm.getHeader(headers, 'From');
+    current.subject = Comm.getHeader(headers, 'Subject');
+    $scope.message = current;
     },
     template: require('./mail.html')
   });
