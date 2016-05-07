@@ -3,7 +3,36 @@ var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var Promise = require('bluebird');
 
-exports.signup = function (req, res) {
+var SECRET = 'CrazyPrivateKey';
+
+// API
+module.exports = {
+  signup: signup,
+  login: login,
+  verify: verify
+};
+
+function verify(req, res) {
+  verifyToken(req.params.token)
+  .then(function (user) {
+    res.status(200).send(user);
+  })
+  .catch(function (reason) {
+    console.log('token failed: ', reason);
+    res.sendStatus(401);
+  });
+}
+
+function verifyToken(token) {
+  return new Promise(function (resolve, reject) {
+    jwt.verify(token, SECRET, function (err, decoded) {
+      if (err) reject(err);
+      resolve(decoded);
+    });
+  });
+}
+
+function signup(req, res) {
   var username = req.body.username;
   var password = req.body.password;
   var userID = req.body.id;
@@ -48,9 +77,9 @@ exports.signup = function (req, res) {
       console.log(reason);
     }
   });
-};
+}
 
-exports.login = function (req, res) {
+function login(req, res) {
   var username = req.body.username;
   var password = req.body.password;
   var userFounded = null;
@@ -78,12 +107,12 @@ exports.login = function (req, res) {
       console.log(reason);
     }
   });
-};
+}
 
 function genToken(userObj) {
   return new Promise(function (resolve, reject) {
     console.log('?????getting token for', userObj);
-    jwt.sign(userObj.username, 'CrazyPrivateKey', {}, function (err, token) {
+    jwt.sign(userObj.username, SECRET, {}, function (err, token) {
       console.log('got token!!>>>> ', token);
       if (err) reject(err);
       resolve(token);

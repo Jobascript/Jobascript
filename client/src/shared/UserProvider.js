@@ -1,32 +1,55 @@
 module.exports = function () {
-  var username;
-  var token;
+  var username = null;
+  var token = null;
+
+  return {
+    $get: init,
+    setUsername: setUsername,
+    setToken: setToken
+  };
 
   function init($http) {
-    var userObj = {};
+    var userObj = null;
     var companiesList = [];
+
+    return {
+      isAuth: function () { return !!token; },
+      signup: signup,
+      login: login,
+      logout: logout,
+      getUser: getUser,
+      getCompanies: getCompanies,
+      companies: function () { return companiesList; }
+    };
 
     function getUser() {
       var promise;
 
-      if (userObj.username) {
+      if (userObj) {
         promise = Promise.resolve(userObj);
       } else {
-        var userNameOrtemp = username ? { username: username } : undefined;
-        promise = $http.post('/api/user', userNameOrtemp)
-        .then(function (resp) {
-          userObj = resp.data;
-          console.log('fetch a usr ', userObj);
-          localStorage.setItem('user', userObj.username);
-          return resp.data;
-        }, function (resp) {
-          // 302 (Found) - user already exists
-          return (resp.status === 302) ? resp.data : Promise.reject(resp.data);
-        });
+        if(token) {
+          login();
+        }
+        // var userNameOrtemp = username ? { username: username } : undefined;
+        // promise = $http.post('/api/user', userNameOrtemp)
+        // .then(function (resp) {
+        //   userObj = resp.data;
+        //   console.log('fetch a usr ', userObj);
+        //   localStorage.setItem('user', userObj.username);
+        //   return resp.data;
+        // }, function (resp) {
+        //   // 302 (Found) - user already exists
+        //   return (resp.status === 302) ? resp.data : Promise.reject(resp.data);
+        // });
       }
 
       return promise;
     }
+
+    // function fetchUser(token) {
+    //   return $http.get('/api/user')
+    // }
 
     function getCompanies() {
       return getUser().then(function (user) {
@@ -59,16 +82,6 @@ module.exports = function () {
         return resp.data;
       });
     }
-
-    return {
-      isAuth: function () { return !!token; },
-      signup: signup,
-      login: login,
-      logout: logout,
-      getUser: getUser,
-      getCompanies: getCompanies,
-      companies: function () { return companiesList; }
-    };
   }
 
   function setUsername(usernameToSet) {
@@ -78,10 +91,4 @@ module.exports = function () {
   function setToken(tokenToSet) {
     token = tokenToSet;
   }
-
-  return {
-    $get: init,
-    setUsername: setUsername,
-    setToken: setToken
-  };
 };
