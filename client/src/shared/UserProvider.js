@@ -37,7 +37,15 @@ module.exports = function () {
       });
     }
 
+    function signup(user) {
+      return getUser().then(function (curUser) {
+        user.id = curUser.id;
+        return $http.post('/api/signup', user);
+      });
+    }
+
     return {
+      signup: signup,
       getUser: getUser,
       getCompanies: getCompanies,
       companies: function () { return companiesList; }

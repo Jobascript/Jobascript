@@ -1,6 +1,18 @@
 <li class="dropdown" ng-class="{open: isOpen}">
   <a class="clickable" ng-click="isOpen = !isOpen">Login</a>
-  <div class="dropdown-menu">
-    signup here!!!
-  </div>
+  <form novalidate class="dropdown-menu panel panel-default pv0" ng-submit="signup()">
+    <div class="panel-body" style="min-width: 320px;">
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" class="form-control" placeholder="Email" ng-model="user.username">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" placeholder="Password" ng-model="user.password">
+      </div>
+    </div>
+    <div class="panel-footer">
+      <button type="submit" class="btn btn-success btn-block">Signup</button>
+    </div>
+  </form>
 </li>
