@@ -4,7 +4,7 @@
   }
 }
 
-.jbs-animate {
+/*.jbs-animate {
   transition: all 0.2s;
 }
 
@@ -39,25 +39,5 @@
 
 .jbs-fresh .jbs-fresh-center .navbar-form {
   float: none;
-  width: 100%;
-}
-
-
-/*.jbs-fresh-start > .navbar-form {
-  left: 50%;
-  margin-left: -30%;
-  margin-top: 40%;
-}
-.jbs-fresh-start > .navbar-header {
-  position: absolute;
-  top: 20%;
-  left: 0;
-  width: 100%;
-  display: block;
-}
-
-.jbs-fresh-start > .navbar-header > .navbar-brand {
-  text-align: center;
-  display: block;
   width: 100%;
 }*/

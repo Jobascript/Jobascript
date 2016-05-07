@@ -6,12 +6,12 @@ module.exports = function () {
     var companiesList = [];
 
     function getUser() {
-      var userNameOrtemp = username ? { username: username } : undefined;
       var promise;
 
       if (userObj.username) {
         promise = Promise.resolve(userObj);
       } else {
+        var userNameOrtemp = username ? { username: username } : undefined;
         promise = $http.post('/api/user', userNameOrtemp)
         .then(function (resp) {
           userObj = resp.data;
@@ -40,7 +40,10 @@ module.exports = function () {
     function signup(user) {
       return getUser().then(function (curUser) {
         user.id = curUser.id;
-        return $http.post('/api/signup', user);
+        return $http.post('/api/signup', user)
+        .then(function (resp) {
+          return resp.data;
+        });
       });
     }
 

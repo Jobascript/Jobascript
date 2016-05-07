@@ -11,6 +11,10 @@ module.exports = function (User) {
         console.log('form submit');
         User.signup($scope.user).then(function (token) {
           console.log('Full user created, token: ', token);
+          localStorage.setItem('token', token);
+          localStorage.setItem('user', $scope.user.username);
+          $scope.user.username = '';
+          $scope.user.password = '';
         })
         .catch(function (reason) {
           console.log('login failed: ', reason);
