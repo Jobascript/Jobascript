@@ -48,11 +48,41 @@ exports.signup = function (req, res) {
   });
 };
 
-// exports.login = function (req, res) {
-//   var username = req.body.username;
-//   var password = req.body.password;
-// };
+exports.login = function (req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  var userFounded = null;
 
+  db.getUser({ username: username })
+  .then(function (user) {
+    userFounded = user;
+    return checkHash(password, user.password);
+  }, function () {
+    res.sendStatus(401); // user not found by that username
+  })
+  .then(function (isPasswordMatched) {
+    return isPasswordMatched ? genToken(userFounded) : Promise.reject('wrong password');
+  })
+  .then(function (token) {
+    res.status(200).send(token);
+  }, function () {
+    res.statusStatus(401); // wrong password
+  })
+  .catch(function (err) {
+    res.status(500).send(err);
+  });
+};
+
+function genToken(userObj) {
+  return new Promise(function (resolve, reject) {
+    console.log('?????getting token for', userObj);
+    jwt.sign(userObj.username, 'CrazyPrivateKey', {}, function (err, token) {
+      console.log('got token!!>>>> ', token);
+      if (err) reject(err);
+      resolve(token);
+    });
+  });
+}
 
 function makeHash(password) {
   return new Promise(function (resolve, reject) {
@@ -63,11 +93,11 @@ function makeHash(password) {
   });
 }
 
-// function checkHash(password, hash) {
-//   return new Promise(function (resolve, reject) {
-//     bcrypt.compare(password, hash, function(err, res) {
-//       if (err) reject(err);
-//       resolve(res);
-//     });
-//   });
-// }
+function checkHash(password, hash) {
+  return new Promise(function (resolve, reject) {
+    bcrypt.compare(password, hash, function(err, res) {
+      if (err) reject(err);
+      resolve(res);
+    });
+  });
+}

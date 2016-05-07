@@ -1,6 +1,6 @@
 module.exports = function (User, $state) {
   return {
-    template: require('./signup.html'),
+    template: require('./signup-login.html'),
     controller: function ($scope) {
       $scope.isAuth = User.isAuth();
       $scope.isSignupMode = false;
@@ -9,10 +9,10 @@ module.exports = function (User, $state) {
         username: '',
         password: ''
       };
-      $scope.signup = function () {
+      $scope.signupOrLogin = function () {
         console.log('form submit');
         if (!$scope.isSignupMode) {
-          $scope.login();
+          login();
           return;
         }
         User.signup($scope.user).then(function (token) {
@@ -35,7 +35,7 @@ module.exports = function (User, $state) {
         $scope.isAuth = false;
       };
 
-      $scope.login = function () {
+      function login() {
         console.log('logging in...');
         User.login($scope.user)
         .then(function (token) {
@@ -44,7 +44,7 @@ module.exports = function (User, $state) {
         .catch(function () {
           console.log('login fail');
         });
-      };
+      }
     }
   };
 };

@@ -54,7 +54,10 @@ module.exports = function () {
     }
 
     function login(user) {
-      return $http.post();
+      return $http.post('/api/login', user)
+      .then(function (resp) {
+        return resp.data;
+      });
     }
 
     return {

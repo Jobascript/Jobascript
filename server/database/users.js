@@ -181,7 +181,7 @@ module.exports = function (db) {
       'ORDER BY ${joinTable~}.created DESC;'
     ].join(' ');
 
-    return db.many(sqlStr, obj).catch(function (err) {
+    return db.manyOrNone(sqlStr, obj).catch(function (err) {
       Promise.reject(err);
     });
   };

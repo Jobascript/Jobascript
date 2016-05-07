@@ -1,7 +1,7 @@
 <li class="dropdown" ng-class="{open: isOpen}" ng-if="!isAuth">
   <a class="clickable" ng-click="isOpen = !isOpen">Login</a>
   <div class="dropdown-menu pv0">
-    <form novalidate class="panel panel-default ma0" ng-submit="signup()">
+    <form novalidate class="panel panel-default ma0" ng-submit="signupOrLogin()">
       <div class="panel-body" style="min-width: 320px;">
         <h4>{{isSignupMode ? 'Create account' : 'Login'}}</h4>
         <div class="form-group">
