@@ -31,11 +31,14 @@ module.exports = function ($stateProvider) {
     parent: 'comm',
     url: '/messages/:message_id',
     controller: function ($scope, $state, Comm, message) {
-    var headers = message.payload.headers;
     var current = {};
+
+    var headers = message.payload.headers;
+    var body = Comm.getBody(message.payload);
     current.date = Comm.getHeader(headers, 'Date');
     current.from = Comm.getHeader(headers, 'From');
     current.subject = Comm.getHeader(headers, 'Subject');
+    current.body = body;
     $scope.message = current;
     },
     template: require('./mail.html')
