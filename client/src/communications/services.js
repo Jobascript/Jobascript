@@ -14,6 +14,31 @@ module.exports = function () { // remove comment and use $http later
     });
     return header;
   };
+
+  var getBody = function (message) {
+    var encodedBody = '';
+    if (typeof message.parts === 'undefined') {
+      encodedBody = message.body.data;
+    } else {
+      encodedBody = getHTMLPart(message.parts);
+    }
+    encodedBody = encodedBody.replace(/-/g, '+').replace(/_/g,'/')
+    .replace(/\s/g, '');
+    return decodeURIComponent(escape(window.atob(encodedBody)));
+  };
+
+  var getHTMLPart = function (arr) {
+    for(var x = 0; x <= arr.length; x++) {
+      if(typeof arr[x].parts === 'undefined') {
+        if(arr[x].mimeType = 'text/html') {
+          return arr[x].body.data;
+        }
+      } else {
+          return getHTMLPart(arr[x].parts);
+      }
+    }
+    return '';
+  };
   // ===============================================
   // ===============================================
   var checkAuth = function () {
@@ -65,6 +90,8 @@ module.exports = function () { // remove comment and use $http later
   return {
     getEmails: getEmails,
     checkAuth: checkAuth,
-    getHeader: getHeader
+    getHeader: getHeader,
+    getBody: getBody,
+    getHTMLPart: getHTMLPart
   };
 };
