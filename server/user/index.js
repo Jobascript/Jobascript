@@ -32,6 +32,7 @@ exports.unfollowCompany = function (req, res) {
 };
 
 exports.getCompanies = function (req, res) {
+  console.log('from jwt >>>> ', req.user);
   var userID = req.params.user_id;
 
   db.getCompanies(userID).then(function (companies) {
