@@ -1,9 +1,12 @@
-var parser = require('rss-parser');
+var db = require('../server/database').newsTable;
 
 module.exports = function (req, res) {
-  var name = req.query.name;
+  var options = req.query;
 
-  parser.parseURL('https://news.google.com/news/section?output=rss&q=' + name, function (err, parsed) {
-    res.send(parsed);
-  });
+  db.getNews(options).then(function (news) {
+    res.status(200).send(news);
+  }).catch(function (err) {
+    console.log(err);
+    res.sendStatus(500);
+  })
 };

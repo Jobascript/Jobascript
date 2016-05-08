@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS users_companies;
+DROP TABLE IF EXISTS news;
 DROP TABLE IF EXISTS companies;
 DROP TABLE IF EXISTS users;
 
@@ -31,4 +32,15 @@ CREATE TABLE IF NOT EXISTS users_companies (
   company_id INT REFERENCES companies,
   created TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (user_id, company_id)
+);
+
+CREATE TABLE IF NOT EXISTS news (
+  id BIGSERIAL PRIMARY KEY,
+  title TEXT,
+  snippet TEXT,
+  url TEXT UNIQUE,
+  image_url TEXT,
+  date_written DATE,
+  author TEXT,
+  company_id INT REFERENCES companies
 );
