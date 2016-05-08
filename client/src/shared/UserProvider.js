@@ -59,7 +59,7 @@ module.exports = function () {
     }
 
     function fetchUserByToken(userToken) {
-      return $http.get('/api/verify/' + userToken)
+      return $http.get('/api/user/' + userToken)
       .then(function (resp) {
         USER = resp.data;
         return resp.data;
