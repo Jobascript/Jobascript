@@ -6,11 +6,12 @@ var clearbit = require('clearbit')(config.clearbitKey);
 var db = require('../server/database');
 var rp = require('request-promise');
 var jobTable = require('../server/database').jobsTable;
+// db.companiesTable.addCompany({name: 'Apple'});
 db.companiesTable.getCompanies()
   //promise for getCompanies
   .then(function (companyArr) {
     // console.log('companyArr', companyArr);
-    console.log(companyArr);
+    // console.log(companyArr);
     var companyInfo = _.map(companyArr, function(company) {
       return [Number(company.id), company.name];
     });
@@ -19,15 +20,9 @@ db.companiesTable.getCompanies()
         // console.log(companyObj);
           return rp('http://api.indeed.com/ads/apisearch?publisher=9810665890415219&format=json&v=2&q=' + companyObj[1])
            .then(function (data) {
-            //  console.log(companyObj);
               var listOfJobs = JSON.parse(data).results;
-            //  console.log(listOfJobs);
-            //  console.log(listOfJobs);
              var filteredListOfJobs = _.filter(listOfJobs, function(job, key) {
-              var filteredJob = job.company.toLowerCase().indexOf(companyObj[1].toLowerCase());
-              // console.log(job.company, 'job company');
-              // console.log('companyObj', companyObj[1]);
-              return filteredJob !== -1;
+              return job.company.toLowerCase().indexOf(companyObj[1].toLowerCase()) !== -1;
              });
              _.each(filteredListOfJobs, function(jobs) {
                if (jobs.company === companyObj[1]) {
@@ -35,7 +30,7 @@ db.companiesTable.getCompanies()
                }
              });
             resolve(filteredListOfJobs);
-           });
+          });
       });
     })
     .then(function (data) {
@@ -60,3 +55,50 @@ db.companiesTable.getCompanies()
   .catch(function (err) {
     console.log('err in jobFetcher.js', err);
   });
+
+
+  db.companiesTable.getCompanies()
+    .then(function(companyArr) {
+      var companyInfo = _.map(companyArr, function (company) {
+        return [Number(company.id), company.name];
+      });
+      return new Promise(function (resolve, reject) {
+        return Promise.map(companyInfo, function (companyObj) {
+          return rp('https://jobs.github.com/positions.json?description=' + companyObj[1])
+          .then(function (data) {
+            var jobLists = JSON.parse(data);
+            var filteredJobs = _.filter(jobLists, function(job) {
+              return job.company.toLowerCase().indexOf(companyObj[1].toLowerCase()) !== -1;
+            });
+            _.each(filteredJobs, function(job) {
+              // console.log(job.company.toLowerCase().indexOf(companyObj[1].toLowerCase()) === 0);
+              if (job.company.toLowerCase().indexOf(companyObj[1].toLowerCase()) === 0) {
+                job.id = companyObj[0];
+              }
+            });
+            resolve(filteredJobs);
+          });
+        });
+      })
+          .then(function (data) {
+            _.each(data, function (job) {
+              var resultObj = {
+                title: job.title,
+                url: job.url,
+                description: job.description,
+                visa_sponsored: null,
+                remote_ok: null,
+                relocation: null,
+                salary: null,
+                created: job.created_at,
+                city: job.location,
+                company_id: job.id
+              };
+              console.log(resultObj);
+              jobTable.addJob(resultObj);
+            });
+          });
+        })
+      .catch(function (err) {
+        console.log('error in github api call', err);
+      });
