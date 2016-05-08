@@ -1,7 +1,6 @@
-module.exports = function ($scope, Comm, currentCompany, emails, $state) {
-  // console.log(currentCompany);
-  // var theEmails = [];
-  $scope.myEmails = emails;
+module.exports = function ($scope, $state, Comm, currentCompany) {
+  console.log(currentCompany);
+
   var googleScript = document.createElement('script');
   googleScript.setAttribute('src', 'https://apis.google.com/js/client.js');
   googleScript.setAttribute('id', 'onetime');
@@ -19,16 +18,8 @@ module.exports = function ($scope, Comm, currentCompany, emails, $state) {
       });
     });
   };
-
-  $scope.getEmails = function () {
-    Comm.getEmails(currentCompany).then(function (emails) {
-      console.log('b ', $scope.myEmails);
-      updateEmails(emails);
-      console.log('a ', $scope.myEmails);
-    });
+  $scope.changeState = function (message) {
+    $state.go('email');
+    console.log(message);
   };
-
-  function updateEmails(emails) {
-    $scope.myEmails = emails;
-  }
 };

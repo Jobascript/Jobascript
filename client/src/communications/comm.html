@@ -1,12 +1,18 @@
 <section>
-<!-- <script src="https://apis.google.com/js/client.js"></script> -->
-<!-- <div id='authorize-div' style='display: true'> -->
-<button id='authorize-button' ng-click='auth()'>Authorize JobaScript</button>
-<button ng-click="myEmails = [{id:1},{id:2},{id:3},{id:4}]">add</button>
-<button ng-click="getEmails()">get Emails</button>
-<!-- </div> -->
-<pre id="output">{{ myEmails }}</pre>
-  <ul>
-    <li ng-repeat="message in myEmails track by message.id">{{ message.id }}</li>
-  </ul>
+<script src="https://apis.google.com/js/client.js"></script>
+<ui-view
+  <div>
+    <button id='authorize-button' ng-click='auth()'>Auth + Emails</button>
+    <button id='previous'> < </button>
+    <button id='next'> > </button>
+    <button id='compose'> Compose </button>
+  </div>
+  <div>
+    <ul>
+      <li ng-repeat="message in emails track by $index" ui-sref-active="active" ng-click=''>
+        <a ui-sref='email({message_id: message.id})'>{{message.subject}}</a>
+      </li>
+    </ul>
+  </div>
+  </ui-view>
 </section>
