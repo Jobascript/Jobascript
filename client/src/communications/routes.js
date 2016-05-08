@@ -29,7 +29,7 @@ module.exports = function ($stateProvider) {
     },
     parent: 'comm',
     url: '/messages/:message_id',
-    controller: function ($scope, $state, Comm, message) {
+    controller: function ($scope, $state, $sce, Comm, message) {
       var current = {};
       var headers = message.payload.headers;
       var body = message.result.payload.parts[1];
@@ -41,6 +41,7 @@ module.exports = function ($stateProvider) {
       current.subject = Comm.getHeader(headers, 'Subject');
       current.body = realfinalbodydata;
       $scope.message = current;
+      $scope.email = $sce.trustAsHtml(realfinalbodydata);
     },
     template: require('./mail.html')
   });

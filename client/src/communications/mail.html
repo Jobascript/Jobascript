@@ -1,11 +1,5 @@
 <section>
 <ui-view>
-<h5><em>Subject: {{message.subject}}<em></h5><br>
-<h5> From: {{message.from}}</h5><br>
-<h6> Body: {{message.body}}</h6>
-<h6> Date: {{message.date}}</h6>
-<button> Reply </button>
-<button> Favorite </button>
-<p> A message from someone important </p>
+<div ng-bind-html='email'></div>
 </ui-view>
 </section>
