@@ -2,11 +2,11 @@ var db = require('../../server/database').usersTable;
 var auth = require('../auth');
 
 exports.followCompany = function (req, res) {
-  var userID = req.params.user_id;
+  var userID = req.user.id;
   var companyID = req.params.company_id;
 
-  if (!userID || !companyID) {
-    res.status(400).send('user ID and company ID is required');
+  if (!companyID) {
+    res.status(400).send('company ID is required');
     return;
   }
 
@@ -19,7 +19,7 @@ exports.followCompany = function (req, res) {
 };
 
 exports.unfollowCompany = function (req, res) {
-  var userID = req.params.user_id;
+  var userID = req.user.id;
   var companyID = req.params.company_id;
 
   db.unfollowCompany(userID, companyID).then(function () {
@@ -32,8 +32,7 @@ exports.unfollowCompany = function (req, res) {
 };
 
 exports.getCompanies = function (req, res) {
-  console.log('from jwt >>>> ', req.user);
-  var userID = req.params.user_id;
+  var userID = req.user.id;
 
   db.getCompanies(userID).then(function (companies) {
     res.status(200).send(companies);
@@ -49,10 +48,8 @@ exports.createUser = function (req, res) {
 
   db.createUser(user)
   .then(function (newUser) {
-    auth.genToken({
-      username: newUser.username,
-      temp: newUser.temp
-    }).then(function (tkn) {
+    console.log('>>>>>NEW USER: ', newUser);
+    auth.genToken(newUser).then(function (tkn) {
       res.status(201).send(tkn);
     });
   }, function () {

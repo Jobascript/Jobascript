@@ -1,4 +1,4 @@
-module.exports = function ($scope, currentUser, currentCompany, Company, $state) {
+module.exports = function ($scope, currentCompany, Company, $state) {
   $scope.company = currentCompany;
 
   // methods
@@ -6,13 +6,13 @@ module.exports = function ($scope, currentUser, currentCompany, Company, $state)
   $scope.unfollow = unfollowCompany;
 
   function unfollowCompany() {
-    Company.unfollow(currentCompany, currentUser).then(function () {
+    Company.unfollow(currentCompany).then(function () {
       $state.reload();
     });
   }
 
   function followCompany() {
-    Company.follow(currentCompany, currentUser).then(function () {
+    Company.follow(currentCompany).then(function () {
       $state.reload();
     });
   }

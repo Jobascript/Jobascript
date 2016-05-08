@@ -194,9 +194,7 @@ module.exports = function (db) {
       'ORDER BY ${joinTable~}.created DESC;'
     ].join(' ');
 
-    return db.manyOrNone(sqlStr, obj).catch(function (err) {
-      Promise.reject(err);
-    });
+    return db.manyOrNone(sqlStr, obj);
   };
 
   return Users;

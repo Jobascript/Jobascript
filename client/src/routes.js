@@ -7,7 +7,7 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
       currentUser: function (User) {
         return User.getUser();
       },
-      companies: function ($http, User) {
+      companies: function (User) {
         return User.getCompanies();
       }
     },

@@ -14,17 +14,20 @@ module.exports = function (app) {
   app.post('/api/user', userHandler.createUser);
 
   // users companies
-  app.get('/api/user/:user_id/companies', userHandler.getCompanies);
+  app.get('/api/user/companies', userHandler.getCompanies);
   // user following and unfollowing
-  app.post('/api/user/:user_id/companies/:company_id', userHandler.followCompany);
-  app.delete('/api/user/:user_id/companies/:company_id', userHandler.unfollowCompany);
-
+  app.post('/api/user/companies/:company_id', userHandler.followCompany);
+  app.delete('/api/user/companies/:company_id', userHandler.unfollowCompany);
+  
+  // comapany
   app.get('/api/company/:id', companyHandler.getCompany);
   app.post('/api/company', companyHandler.addCompany);
   app.delete('/api/company/:id', companyHandler.removeCompany);
   app.get('/api/companies', companyHandler.getCompanies);
-
+  
+  // news
   app.get('/api/news', newsHandler);
-
+  
+  // jobs
   app.get('/api/jobs', jobHandler);
 };

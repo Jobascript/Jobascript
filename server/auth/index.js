@@ -54,7 +54,9 @@ function signup(req, res) {
   .then(function (userObj) {
     return genToken({
       username: userObj.username,
-      temp: userObj.temp
+      id: userObj.id,
+      temp: userObj.temp,
+      created: userObj.created
     });
   }, function (results) {
     // (about results[1]) the middle db promise in tx is to check username collision
@@ -119,7 +121,7 @@ function login(req, res) {
 function genToken(userObj) {
   return new Promise(function (resolve, reject) {
     console.log('?????getting token for', userObj);
-    jwt.sign(userObj.username, SECRET, {}, function (err, token) {
+    jwt.sign(userObj, SECRET, {}, function (err, token) {
       console.log('got token!!>>>> ', token);
       if (err) reject(err);
       resolve(token);

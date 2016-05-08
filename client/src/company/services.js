@@ -70,12 +70,12 @@ module.exports = function ($http) {
     });
   };
 
-  var unfollow = function (company, user) {
-    return $http.delete('/api/user/' + user.id + '/companies/' + company.id);
+  var unfollow = function (company) {
+    return $http.delete('/api/user/companies/' + company.id);
   };
 
-  var follow = function (company, user) {
-    return $http.post('/api/user/' + user.id + '/companies/' + company.id);
+  var follow = function (company) {
+    return $http.post('/api/user/companies/' + company.id);
   };
 
   return {

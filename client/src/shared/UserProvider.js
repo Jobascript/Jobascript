@@ -1,18 +1,17 @@
 module.exports = function () {
-  var token = null;
+  var TOKEN = null;
 
   return {
     $get: init,
-    setUsername: setUsername,
     setToken: setToken
   };
 
   function init($http) {
-    var userObj = null;
+    var USER = null;
     var companiesList = [];
 
     return {
-      isAuth: function () { return !!token; },
+      isAuth: function () { return !!TOKEN; },
       signup: signup,
       login: login,
       logout: logout,
@@ -24,10 +23,10 @@ module.exports = function () {
     function getUser() {
       var promise;
 
-      if (userObj) {
-        promise = Promise.resolve(userObj);
-      } else if (token) {
-        promise = fetchUserByToken(token);
+      if (USER) {
+        promise = Promise.resolve(USER);
+      } else if (TOKEN) {
+        promise = fetchUserByToken(TOKEN);
       } else {
         promise = createTempUser();
       }
@@ -50,7 +49,7 @@ module.exports = function () {
         return fetchUserByToken(newUserToken);
       })
       .then(function (newUser) {
-        userObj = newUser;
+        USER = newUser;
         return newUser;
       })
       .catch(function (reason) {
@@ -62,18 +61,24 @@ module.exports = function () {
     function fetchUserByToken(userToken) {
       return $http.get('/api/verify/' + userToken)
       .then(function (resp) {
+        USER = resp.data;
         return resp.data;
       });
     }
 
     function getCompanies() {
-      return getUser().then(function (user) {
-        return $http.get('/api/user/' + user.id + '/companies')
+      console.log('user.getcom: ', TOKEN);
+      var promise = Promise.resolve([]);
+
+      if (TOKEN) {
+        promise = $http.get('/api/user/companies')
         .then(function (resp) {
           companiesList = resp.data;
           return resp.data;
         });
-      });
+      }
+
+      return promise;
     }
 
     function signup(user) {
@@ -104,11 +109,7 @@ module.exports = function () {
     }
   }
 
-  function setUsername(usernameToSet) {
-    username = usernameToSet;
-  }
-
   function setToken(tokenToSet) {
-    token = tokenToSet;
+    TOKEN = tokenToSet;
   }
 };
