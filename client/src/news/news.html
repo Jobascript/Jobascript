@@ -2,6 +2,6 @@
   <div ng-repeat="new in news">
     <img src="{{new.image_url}}" height="42" width="42">
     <a href="{{new.url}}">{{new.title}}</a>
-    <div class="newsSnippet">{{new.snippet}}</div>
+    <div ng-bind-html="new.snippet"></div>
   </div>
 </div>
