@@ -118,7 +118,7 @@ describe('/company Route Tests',  function() {
     });
   });
   describe('Testing removeCompany Method..',  function () {
-    describe('Sending a valid removeCompany request: ', function () {
+    xdescribe('Sending a valid removeCompany request: ', function () {
       it('Should respond with a 200 status code', function (done) {
         var companyId = '01';
         request(app)
@@ -133,7 +133,7 @@ describe('/company Route Tests',  function() {
         });
       });
     });
-    describe('Sending a valid removeCompany request when company to be removed not present: ', function () {
+    xdescribe('Sending a valid removeCompany request when company to be removed not present: ', function () {
       it('Should respond with a 404 status code', function (done) {
         var companyId = '10001';
         request(app)
