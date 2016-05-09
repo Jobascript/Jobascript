@@ -1,5 +1,4 @@
 module.exports = function ($http) {
-
   var getNews = function (company) {
     return $http({
       method: 'GET',
