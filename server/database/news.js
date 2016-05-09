@@ -88,30 +88,6 @@ module.exports = function (db) {
     })
   };
 
-  /**
-  * @param {String} string form of url
-  * @return {Promise} promise that resolves to bool whether or not url exists in our table
-  */
-  News.getUnique = function (url) {
-    var sqlStr = [
-      'SELECT * FROM ${table~}',
-      'WHERE url=${url};'
-    ].join(' ');
-
-    return db.query(sqlStr, {
-      table: TABLE_NAME,
-      url: url
-    }).then(function (data) {
-      if (data.length === 0) {
-        return false;
-      } else {
-        return true;
-      };
-    }).catch(function (err) {
-      return Promise.reject(err);
-    })
-  };
-
 
   /**
   * @param {Number} number corresponding to newsId of article to be removed
