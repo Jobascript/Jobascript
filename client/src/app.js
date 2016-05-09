@@ -19,9 +19,9 @@ app.config(function (UserProvider, $httpProvider, jwtInterceptorProvider) {
     UserProvider.setToken(token);
   }
 
-  jwtInterceptorProvider.tokenGetter = function () {
+  jwtInterceptorProvider.tokenGetter = ['User', function (User) {
     return localStorage.getItem('token');
-  };
+  }];
 
   $httpProvider.interceptors.push('jwtInterceptor');
 });

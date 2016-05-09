@@ -50,7 +50,7 @@ exports.createUser = function (req, res) {
   .then(function (newUser) {
     console.log('>>>>>NEW USER: ', newUser);
     auth.genToken(newUser).then(function (tkn) {
-      res.status(201).send(tkn);
+      res.status(201).json({ token: tkn });
     });
   }, function () {
     return Promise.reject('already exists');

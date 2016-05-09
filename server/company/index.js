@@ -16,7 +16,6 @@ exports.getCompanies = function (req, res) {
 exports.getCompany = function (req, res) {
   var type = req.query.type || 'id'; // can be 'id' or 'domain'
   var params = {};
-  var username = req.user.username;
 
   if (type === 'id') {
     params = { id: req.params.id };

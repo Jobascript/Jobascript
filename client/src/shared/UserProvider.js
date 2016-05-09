@@ -6,27 +6,24 @@ module.exports = function () {
     setToken: setToken
   };
 
-  function init($http) {
-    var USER = null;
-    var companiesList = [];
-
+  function init($http, jwtHelper) {
+    var companies = [];
     return {
-      isAuth: function () { return !!TOKEN; },
+      isAuth: function () { return !!TOKEN && !jwtHelper.decodeToken(TOKEN).temp; },
       signup: signup,
       login: login,
       logout: logout,
       getUser: getUser,
+      getToken: function () { return TOKEN; },
       getCompanies: getCompanies,
-      companies: function () { return companiesList; }
+      companies: function () { return companies }
     };
 
     function getUser() {
       var promise;
 
-      if (USER) {
-        promise = Promise.resolve(USER);
-      } else if (TOKEN) {
-        promise = fetchUserByToken(TOKEN);
+      if (TOKEN) {
+        promise = Promise.resolve(jwtHelper.decodeToken(TOKEN));
       } else {
         promise = createTempUser();
       }
@@ -46,10 +43,9 @@ module.exports = function () {
         return (resp.status === 302) ? resp.data : Promise.reject(resp.data);
       })
       .then(function (newUserToken) {
-        return fetchUserByToken(newUserToken);
+        return jwtHelper.decodeToken(newUserToken);
       })
       .then(function (newUser) {
-        USER = newUser;
         return newUser;
       })
       .catch(function (reason) {
@@ -58,22 +54,14 @@ module.exports = function () {
       });
     }
 
-    function fetchUserByToken(userToken) {
-      return $http.get('/api/user/' + userToken)
-      .then(function (resp) {
-        USER = resp.data;
-        return resp.data;
-      });
-    }
-
     function getCompanies() {
-      console.log('user.getcom: ', TOKEN);
+      console.log('user.getcom: ', TOKEN, jwtHelper.decodeToken(TOKEN));
       var promise = Promise.resolve([]);
 
       if (TOKEN) {
         promise = $http.get('/api/user/companies')
         .then(function (resp) {
-          companiesList = resp.data;
+          companies = resp.data; // update cached companies
           return resp.data;
         });
       }
@@ -93,6 +81,7 @@ module.exports = function () {
     }
 
     function logout() {
+      TOKEN = null;
       localStorage.removeItem('token');
     }
 

@@ -3,7 +3,7 @@ var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var Promise = require('bluebird');
 
-var SECRET = 'CrazyPrivateKey';
+var SECRET = require('../common.js').config().SECRET;
 
 // API
 module.exports = {
@@ -120,9 +120,10 @@ function login(req, res) {
 
 function genToken(userObj) {
   return new Promise(function (resolve, reject) {
-    console.log('?????getting token for', userObj);
+    console.log('>>>>>> getting token for', userObj, SECRET);
     jwt.sign(userObj, SECRET, {}, function (err, token) {
       console.log('got token!!>>>> ', token);
+      console.log('secret is >>>> ', SECRET);
       if (err) reject(err);
       resolve(token);
     });

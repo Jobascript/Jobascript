@@ -1,4 +1,4 @@
-module.exports = function (User, $state) {
+module.exports = function (User) {
   return {
     template: require('./signup-login.html'),
     controller: function ($scope) {
