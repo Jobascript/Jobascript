@@ -1,3 +1,4 @@
+var _ = require('underscore');
 module.exports = function () {
   var TOKEN = null;
 
@@ -13,10 +14,10 @@ module.exports = function () {
       signup: signup,
       login: login,
       logout: logout,
-      getUser: getUser,
+      getUser: _.once(getUser), // hack
       getToken: function () { return TOKEN; },
       getCompanies: getCompanies,
-      companies: function () { return companies }
+      companies: function () { return companies; }
     };
 
     function getUser() {
@@ -35,15 +36,15 @@ module.exports = function () {
       return $http.post('/api/user')
       .then(function (resp) {
         // token
-        saveToken(resp.data);
-        console.log('created a temp usr, token: ', resp.data);
+        saveToken(resp.data.token);
+        console.log('created a temp usr, token: ', resp.data.token);
         return resp.data;
       }, function (resp) {
         // 302 (Found) - user already exists
         return (resp.status === 302) ? resp.data : Promise.reject(resp.data);
       })
       .then(function (newUserToken) {
-        return jwtHelper.decodeToken(newUserToken);
+        return jwtHelper.decodeToken(newUserToken.token);
       })
       .then(function (newUser) {
         return newUser;
@@ -74,8 +75,8 @@ module.exports = function () {
         user.id = curUser.id;
         return $http.post('/api/signup', user)
         .then(function (resp) {
-          saveToken(resp.data);
-          return resp.data;
+          saveToken(resp.data.token);
+          return resp.data.token;
         });
       });
     }
@@ -88,12 +89,13 @@ module.exports = function () {
     function login(user) {
       return $http.post('/api/login', user)
       .then(function (resp) {
-        saveToken(resp.data);
-        return resp.data;
+        saveToken(resp.data.token);
+        return resp.data.token;
       });
     }
 
     function saveToken(tokenToSave) {
+      TOKEN = tokenToSave;
       localStorage.setItem('token', tokenToSave);
     }
   }

@@ -71,7 +71,7 @@ function signup(req, res) {
     return Promise.reject(reason);
   })
   .then(function (tkn) {
-    res.status(201).send(tkn); // success
+    res.status(201).json({ token: tkn }); // success
   })
   .catch(function (reason) {
     if (reason === 'username taken') {
@@ -100,12 +100,14 @@ function login(req, res) {
   .then(function (isPasswordMatched) {
     console.log('password match? ', isPasswordMatched);
     return isPasswordMatched ? genToken({
+      id: userFounded.id,
       username: userFounded.username,
-      temp: userFounded.temp
+      temp: userFounded.temp,
+      created: userFounded.created
     }) : Promise.reject('wrong password');
   })
   .then(function (token) {
-    res.status(200).send(token);
+    res.status(200).json({ token: token });
   })
   .catch(function (reason) {
     console.log('password check result>>>> ', reason);

@@ -1,7 +1,7 @@
 module.exports = function (User) {
   return {
     template: require('./signup-login.html'),
-    controller: function ($scope) {
+    controller: function ($scope, $state) {
       $scope.isAuth = User.isAuth();
       $scope.isSignupMode = false;
       $scope.isOpen = false;
@@ -23,8 +23,8 @@ module.exports = function (User) {
             // localStorage.setItem('user', $scope.user.username);
             $scope.user.username = '';
             $scope.user.password = '';
-            // $state.reload();
-            $scope.isAuth = true;
+            $state.go($state.current, {}, { reload: true });
+            // $scope.isAuth = true;
           })
           .catch(function (reason) {
             console.log('signup failed: ', reason);
@@ -36,8 +36,9 @@ module.exports = function (User) {
 
       $scope.logout = function () {
         User.logout();
-        // $state.reload();
-        $scope.isAuth = false;
+        console.log('logout!');
+        $state.go('home', {}, { reload: true });
+        // $scope.isAuth = false;
       };
 
       function login() {
@@ -45,6 +46,7 @@ module.exports = function (User) {
         User.login($scope.user)
         .then(function (token) {
           console.log('login succuess', token);
+          $state.go($state.current, {}, { reload: true });
         })
         .catch(function (reason) {
           console.log('login fail', reason);

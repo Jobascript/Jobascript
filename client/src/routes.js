@@ -5,10 +5,14 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
     abstract: true,
     resolve: {
       currentUser: function (User) {
-        return User.getUser();
+        return User.getUser().catch(function (err) {
+          console.error(err);
+        });
       },
       companies: function (User) {
-        return User.getCompanies();
+        return User.getCompanies().catch(function (err) {
+          console.error(err);
+        });
       }
     },
     views: {

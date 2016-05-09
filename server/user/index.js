@@ -35,7 +35,7 @@ exports.getCompanies = function (req, res) {
   var userID = req.user.id;
 
   db.getCompanies(userID).then(function (companies) {
-    res.status(200).send(companies);
+    res.status(200).json(companies);
   })
   .catch(function (reason) {
     res.sendStatus(500);
@@ -49,11 +49,12 @@ exports.createUser = function (req, res) {
   db.createUser(user)
   .then(function (newUser) {
     console.log('>>>>>NEW USER: ', newUser);
-    auth.genToken(newUser).then(function (tkn) {
-      res.status(201).json({ token: tkn });
-    });
+    return auth.genToken(newUser);
   }, function () {
     return Promise.reject('already exists');
+  })
+  .then(function (tkn) {
+    res.status(201).json({ token: tkn });
   })
   .catch(function (reason) {
     if (reason === 'already exists') {

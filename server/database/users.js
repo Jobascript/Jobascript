@@ -92,7 +92,7 @@ module.exports = function (db) {
     });
   };
 
-  // return user - id, username, temp
+  // return user - id, username, temp, created
   Users.updateUser = function (userID, args) {
     var columns = args;
     if (columns.username) {
@@ -105,7 +105,7 @@ module.exports = function (db) {
     // check username collision
     var checkUsernameSql  = 'SELECT * FROM ${table~} WHERE username=$$${username}$$;';
     var updateSql         = 'UPDATE ${table~} SET ' + helpers.toSqlString(columns, ',') +
-                            ' WHERE id=$$${user_id}$$ RETURNING *;';
+                            ' WHERE id=$$${user_id}$$ RETURNING id, username, temp, created;';
     /* eslint-enable */
 
     return db.tx(function (t) {
