@@ -59,6 +59,7 @@
     "jsonwebtoken": "^6.2.0",
     "mocha": "^2.4.5",
     "moment": "^2.13.0",
+    "ng-toast": "^2.0.0",
     "pg-monitor": "^0.5.3",
     "pg-promise": "^4.0.4",
     "request": "^2.72.0",

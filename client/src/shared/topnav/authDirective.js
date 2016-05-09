@@ -1,7 +1,7 @@
 module.exports = function (User) {
   return {
     template: require('./signup-login.html'),
-    controller: function ($scope, $state) {
+    controller: function ($scope, $state, ngToast) {
       $scope.isAuth = User.isAuth();
       $scope.isSignupMode = false;
       $scope.isOpen = false;
@@ -20,14 +20,12 @@ module.exports = function (User) {
         if ($scope.isSignupMode) {
           User.signup($scope.user).then(function (token) {
             console.log('Full user created, token: ', token);
-            // localStorage.setItem('user', $scope.user.username);
-            $scope.user.username = '';
-            $scope.user.password = '';
+            ngToast.success('<strong>signup succuess:</strong> Welcome ' + $scope.user.username + '!');
             $state.go($state.current, {}, { reload: true });
-            // $scope.isAuth = true;
           })
           .catch(function (reason) {
             console.log('signup failed: ', reason);
+            ngToast.danger('<strong>signup failed:</strong> ' + reason.data || reason.statusText || reason);
           });
         } else {
           login();
@@ -37,6 +35,7 @@ module.exports = function (User) {
       $scope.logout = function () {
         User.logout();
         console.log('logout!');
+        ngToast.info('<strong>logout</strong>');
         $state.go('home', {}, { reload: true });
         // $scope.isAuth = false;
       };
@@ -45,10 +44,12 @@ module.exports = function (User) {
         console.log('logging in...');
         User.login($scope.user)
         .then(function (token) {
+          ngToast.success('<strong>login succuess</strong> Welcome back, ' + $scope.user.username + '!');
           console.log('login succuess', token);
           $state.go($state.current, {}, { reload: true });
         })
         .catch(function (reason) {
+          ngToast.danger('<strong>login failed:</strong> ' + reason.data || reason.statusText || reason);
           console.log('login fail', reason);
         });
       }
