@@ -51,17 +51,18 @@ module.exports = function (db) {
     }
     _.extend(jobListing, {table: TABLE_NAME});
     var sqlStr = [
-      'INSERT INTO ${table~} (title, url, description, visa_sponsored, remote_ok, relocation, salary, city, company_id)',
+      'INSERT INTO ${table~} (title, company_name, url, description, visa_sponsored, remote_ok, relocation, created, city, company_id)',
       'VALUES',
       '(',
         [
           '${title}',
+          '${company_name}',
           '${url}',
           '${description}',
           '${visa_sponsored}',
           '${remote_ok}',
           '${relocation}',
-          '${salary}',
+          '${created}',
           '${city}',
           '${company_id}'
         ].join(', '),
