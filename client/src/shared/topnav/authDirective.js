@@ -38,7 +38,7 @@ module.exports = function (User) {
         User.logout();
         console.log('logout!');
         ngToast.info('<strong>logout</strong>');
-        $state.go('start', {}, { reload: true });
+        $state.go('start');
       };
 
       function login() {
@@ -48,7 +48,11 @@ module.exports = function (User) {
           ngToast.success('<strong>login succuess</strong> Welcome back, '
                           + $scope.user.username + '!');
           console.log('login succuess', token);
-          $state.go($state.current, {}, { reload: true });
+          if ($state.current.name === 'company') {
+            $state.go($state.current, {}, { reload: true });
+          } else {
+            $state.go('home', {}, { reload: true });
+          }
         })
         .catch(function (reason) {
           ngToast.danger('<strong>login failed:</strong> ' +

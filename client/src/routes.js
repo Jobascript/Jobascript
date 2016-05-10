@@ -40,9 +40,16 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
     parent: 'layout',
     views: {
       'topnav@layout': {
-        template: require('./pages/getting-started.html')
+        resolve: {
+          topCompanies: function (Company) {
+            return Company.getCompanies({ size: 5 });
+          }
+        },
+        controller: require('./pages/getting-started/controller.js'),
+        template: require('./pages/getting-started/index.html')
       },
-      'sidebar@layout': {}
+      'sidebar@layout': {},
+      'main@layout': {}
     }
   });
 };

@@ -67,7 +67,7 @@ gulp.task('startup', done => gulpSequence('server', 'client')(done));
 
 gulp.task('watch', function() {
   // client
-  gulp.watch(paths.client.src + '**/*', ['client']);
+  gulp.watch(paths.client.src + '**/*.*', ['client']);
   // server
   gulp.watch(paths.server.scripts, ['server']);
 });
