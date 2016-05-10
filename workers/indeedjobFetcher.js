@@ -36,16 +36,15 @@ db.companiesTable.getCompanies()
     .then(function (data) {
       _.each(data, function(job) {
         var resultObj = {
-          remote_ok: null,
-          salary: null,
-          relocation: null,
-          company: job.company,
           title: job.jobtitle,
+          company_name: job.company,
           url: job.url,
           description: job.snippet,
-          city: job.city,
-          created: job.date,
           visa_sponsored: job.sponsored,
+          remote_ok: null,
+          relocation: null,
+          created: job.date,
+          city: job.city,
           company_id: job.id
         };
         jobTable.addJob(resultObj);

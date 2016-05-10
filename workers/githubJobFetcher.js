@@ -40,22 +40,22 @@ db.companiesTable.getCompanies()
     .then(function (data) {
       var finalArray = _.flatten(data);
       _.each(finalArray, function (job) {
-        // console.log(job);
+        console.log(job);
         var resultObj = {
           title: job.title,
+          company_name: job.company,
           url: job.url,
           description: job.description,
           visa_sponsored: null,
           remote_ok: null,
           relocation: null,
-          salary: null,
           created: job.created_at,
           city: job.location,
           company_id: job.company_id
         };
-        console.log('this is resultObj', resultObj);
-        console.log('job', job);
-        jobTable.addJob(resultObj);
+        // console.log('this is resultObj', resultObj);
+        // console.log('job', job);
+        // jobTable.addJob(resultObj);
       });
     });
   })
