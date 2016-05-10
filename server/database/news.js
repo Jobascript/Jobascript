@@ -1,5 +1,3 @@
-var _ = require('underscore');
-
 const TABLE_NAME = 'news';
 
 module.exports = function (db) {
@@ -17,17 +15,20 @@ module.exports = function (db) {
   * @return {Promise} resolve with news id
   */
   News.addNews = function (news, companyID) {
+    /* eslint-disable max-len */
     if (!news) {
       throw new Error('a news obj arg is required! e.g. {title: \'Twitch gets pwnd by newbs\'...}');
     } else if (!news.url) {
       throw new Error('company has to have a url property! e.g. {url: \'www.cnn.com/trump_wins_election\'...}');
     }
+    /* eslint-enable */
 
     var uniqueStr = [
       'SELECT * FROM ${table~}',
       'WHERE url=${url}'
     ].join(' ');
 
+    /* eslint-disable indent */
     var sqlStr = [
       'INSERT INTO ${table~} (title, snippet, url, company_id, author, image_url, date_written)',
       'VALUES',
@@ -43,6 +44,7 @@ module.exports = function (db) {
         ].join(', '),
       ') RETURNING id;'
     ].join(' ');
+    /* eslint-enable */
 
     return db.tx('unique-url', function (t) {
       return t.batch([
@@ -124,31 +126,6 @@ module.exports = function (db) {
       return Promise.reject(err);
     });
   };
-
-  // turn obj into sql str, e.g. {a:1, b:2} => 'a=1, b="blah"'
-  // joinWith needs to be a String 'AND', 'OR' or ','
-  function toSqlString(obj, joinWith) {
-    var tuples = _.pairs(obj);
-
-    var string = tuples.map(function (tuple) {
-      var t = tuple.slice();
-      var str;
-      var operator = '=';
-
-      if (t[1] === null) {
-        operator = ' IS ';
-        t[1] = String(t[1]).toUpperCase();
-      } else {
-        t[1] = '$$' + t[1] + '$$'; // escape stuff
-      }
-
-      str = t[0] + operator + t[1];
-
-      return str;
-    }).join(' ' + joinWith + ' ');
-
-    return string;
-  }
 
   return News;
 };
