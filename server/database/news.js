@@ -20,7 +20,7 @@ module.exports = function (db) {
     if (!news) {
       throw new Error('a news obj arg is required! e.g. {title: \'Twitch gets pwnd by newbs\'...}');
     } else if (!news.url) {
-      throw new Error('company has to have a url property! e.g. {url: \'www.cnn.com/trump_wins_election\'...}')
+      throw new Error('company has to have a url property! e.g. {url: \'www.cnn.com/trump_wins_election\'...}');
     }
 
     var uniqueStr = [
@@ -82,10 +82,10 @@ module.exports = function (db) {
       table: TABLE_NAME,
       company_id: options.company_id
     }).then(function (data) {
-      return data
+      return data;
     }).catch(function (err) {
       return Promise.reject(err);
-    })
+    });
   };
 
 
@@ -95,8 +95,8 @@ module.exports = function (db) {
   */
   News.removeArticle = function (newsID) {
     var sqlStr = [
-    'DELETE FROM ${table~}',
-    'WHERE id=${id};'
+      'DELETE FROM ${table~}',
+      'WHERE id=${id};'
     ].join(' ');
 
     return db.query(sqlStr, {

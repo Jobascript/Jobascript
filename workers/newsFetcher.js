@@ -4,7 +4,6 @@ var Promise = require('bluebird');
 var parseURL = Promise.promisify(require('rss-parser').parseURL);
 var moment = require('moment');
 var axios = require('axios');
-// var _ = require('underscore');
 
 var Companies = require('../server/database').companiesTable;
 var News = require('../server/database').newsTable;
@@ -43,7 +42,6 @@ Companies.getCompanies()
       var articleObj = {
         title: article.title,
         snippet: article.contentSnippet,
-        image_url: 'http://awesomeshit.ninja/wp-content/uploads/2014/11/grumpy-cat-no.jpg',
         url: link,
         date_written: moment(article.pubDate).format()
       };
@@ -95,7 +93,7 @@ Companies.getCompanies()
       title: article.cleanedTitle,
       snippet: article.text,
       url: article.url,
-      image_url: article.image || 'http://awesomeshit.ninja/wp-content/uploads/2014/11/grumpy-cat-no.jpg',
+      image_url: article.image,
       date_written: moment(article.publicationDate.date).format(),
       author: article.author
     };
@@ -105,5 +103,3 @@ Companies.getCompanies()
 .then(function (data) {
   News.removeOld();
 });
-
-// News.removeOld();
