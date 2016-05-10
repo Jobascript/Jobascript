@@ -34,6 +34,17 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
     url: '/a',
     parent: 'layout'
   });
+
+  $stateProvider.state('start', {
+    url: '/getting-started',
+    parent: 'layout',
+    views: {
+      'topnav@layout': {
+        template: require('./pages/getting-started.html')
+      },
+      'sidebar@layout': {}
+    }
+  });
 };
 
 exports.listen = function ($rootScope, User, $state) {
@@ -53,7 +64,10 @@ exports.listen = function ($rootScope, User, $state) {
         }, { reload: true });
       } else {
         // if not company goto home
-        $state.transitionTo('home', {}, { notify: false });
+        // $state.transitionTo('home', {}, { notify: false });
+
+        // if no company goto start
+        $state.transitionTo('start', {}, { reload: true });
       }
     }
   });

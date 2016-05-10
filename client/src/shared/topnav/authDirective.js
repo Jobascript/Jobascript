@@ -38,7 +38,7 @@ module.exports = function (User) {
         User.logout();
         console.log('logout!');
         ngToast.info('<strong>logout</strong>');
-        $state.go('home', {}, { reload: true });
+        $state.go('start', {}, { reload: true });
       };
 
       function login() {
