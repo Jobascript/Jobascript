@@ -39,7 +39,7 @@ db.companiesTable.getCompanies()
           title: job.jobtitle,
           company_name: job.company,
           url: job.url,
-          description: job.snippet,
+          description: function() {return job.snippet.replace(/<\/*[\s\S]+?>|\u2022/g, '').replace(/^[ \t]+|[ \t]+$/gm, '').replace(/ +/g, ' ');},
           visa_sponsored: job.sponsored,
           remote_ok: null,
           relocation: null,

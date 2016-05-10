@@ -50,12 +50,12 @@ CREATE TABLE IF NOT EXISTS news (
 
 CREATE TABLE IF NOT EXISTS jobs (
   title TEXT,
+  company_name TEXT,
   url TEXT,
   description TEXT,
   visa_sponsored BOOLEAN,
   remote_ok BOOLEAN,
   relocation BOOLEAN,
-  salary INT,
   created TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
   city TEXT,
   id BIGSERIAL PRIMARY KEY,
