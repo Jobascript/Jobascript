@@ -1,23 +1,26 @@
-<div class="container jbs-getting-started">
-  <h1>Getting started</h1>
-  <p class="lead measure">Pick a few companies that insterest you to get started.</p>
-  <div class="row">
-    <section class="col-xs-8">
-      <ul class="media-list">
-        <li class="media pa4 clickable" ng-class="{'bg-success': company.isFollowing}" ng-repeat="company in topCompanies" ng-click="toFollow(company)">
-          <div class="media-left">
-            <img class="media-object img-thumbnail w4" ng-src="{{company.logo}}" alt="{{company.name}}">
-          </div>
-          <div class="media-body">
-            <h4 class="media-heading">{{ company.legal_name || company.display_name || company.name }}</h4>
-            <p>{{ company.description }}</p>
-          </div>
-        </li>
-      </ul>
-    </section>
-    <section class="col-xs-4">
-      <button class="btn btn-info btn-block" ng-click="continue()">Continue</button>
-      <auth-widget></auth-widget>
-    </section>
-  </div>
+<div class="jbs-getting-started">
+  <section class="tc bg-silver pa5">
+    <h1>Getting started</h1>
+    <p class="lead measure center">Pick a few companies that insterest you to get started.</p>
+    <auth-widget></auth-widget>
+  </section>
+  <section class="container">
+    <form class="pa4">
+      <div class="form-group w-60 dib">
+        <input type="text" class="form-control" placeholder="Search For Companies...">
+      </div>
+      <button class="btn btn-info" ng-show="{{getLength()}}" ng-click="continue()">Continue with {{numOfFollows}}</button>
+    </form>
+    <ul class="media-list">
+      <li class="media pa4 clickable" ng-class="{'bg-success': company.isFollowing}" ng-repeat="company in topCompanies" ng-click="toFollow(company)">
+        <div class="media-left">
+          <img class="media-object img-thumbnail w4" ng-src="{{company.logo}}" alt="{{company.name}}">
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">{{ company.legal_name || company.display_name || company.name }}</h4>
+          <p>{{ company.description }}</p>
+        </div>
+      </li>
+    </ul>
+  </section>
 </div>
