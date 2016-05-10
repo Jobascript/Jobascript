@@ -1,8 +1,8 @@
 var rp = require('request-promise');
 var parser = require('xml2json');
 
-module.exports = function getJobs(req, res) {
-  console.log(req.query.companyName);
+module.exports = function getJobs (req, res) {
+  // console.log(req.query.companyName);
   var companyName = req.query.companyName;
   rp('https://stackoverflow.com/jobs/feed?searchTerm=' + companyName)
    .then(function(data) {
@@ -15,8 +15,3 @@ module.exports = function getJobs(req, res) {
     res.sendStatus(500);
   });
 };
-
-
-// parser.on('title', function(title) {
-//       console.log(title);
-// });
