@@ -50,6 +50,9 @@ Companies.getCompanies()
       News.addNews(articleObj, val.id);
     });
   });
+})
+.then(function (data) {
+  News.removeOld();
 });
 
 Companies.getCompanies()
@@ -98,6 +101,9 @@ Companies.getCompanies()
     };
     News.addNews(articleObj, val.id);
   })
+})
+.then(function (data) {
+  News.removeOld();
 });
 
-News.removeOld();
+// News.removeOld();

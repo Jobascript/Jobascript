@@ -115,7 +115,7 @@ module.exports = function (db) {
   News.removeOld = function () {
     var sqlStr = [
       'DELETE FROM ${table~}',
-      'WHERE date_written < NOW() - INTERVAL \'90 days\''
+      'WHERE date_written < NOW() - INTERVAL \'30 days\''
     ].join(' ');
 
     return db.query(sqlStr, {
