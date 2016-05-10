@@ -1,5 +1,5 @@
 exports.config = function ($urlRouterProvider, $stateProvider) {
-  $urlRouterProvider.otherwise('/a');
+  $urlRouterProvider.otherwise('/getting-started');
 
   $stateProvider.state('layout', {
     abstract: true,
@@ -37,20 +37,13 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
 
   $stateProvider.state('start', {
     url: '/getting-started',
-    parent: 'layout',
-    views: {
-      'topnav@layout': {
-        resolve: {
-          topCompanies: function (Company) {
-            return Company.getCompanies({ size: 5 });
-          }
-        },
-        controller: require('./pages/getting-started/controller.js'),
-        template: require('./pages/getting-started/index.html')
-      },
-      'sidebar@layout': {},
-      'main@layout': {}
-    }
+    resolve: {
+      topCompanies: function (Company) {
+        return Company.getCompanies({ size: 5 });
+      }
+    },
+    controller: require('./pages/getting-started/controller.js'),
+    template: require('./pages/getting-started/index.html')
   });
 };
 

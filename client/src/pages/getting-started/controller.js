@@ -1,7 +1,7 @@
 var Promise = require('bluebird');
 var inflection = require('inflection');
 
-module.exports = function ($scope, topCompanies, Company, $state) {
+module.exports = function ($scope, topCompanies, User, Company, $state) {
   $scope.numOfFollows = '';
   var toFollow = {};
   $scope.topCompanies = topCompanies;
@@ -10,8 +10,10 @@ module.exports = function ($scope, topCompanies, Company, $state) {
   };
   $scope.continue = function () {
     console.log(toFollow);
-    Promise.map(Object.keys(toFollow), function (id) {
-      return Company.follow({ id: id });
+    User.getUser().then(function () {
+      return Promise.map(Object.keys(toFollow), function (id) {
+        return Company.follow({ id: id });
+      });
     })
     .then(function () {
       $state.go('home', {}, { reload: true });
@@ -33,6 +35,10 @@ module.exports = function ($scope, topCompanies, Company, $state) {
       $scope.numOfFollows = inflection.inflect(len + ' company', Object.keys(toFollow).length);
       // $scope.numOfFollows += 1;
     }
+  };
+
+  $scope.searchCompanies = function () {
+
   };
 };
 
