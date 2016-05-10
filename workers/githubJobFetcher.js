@@ -19,37 +19,46 @@ db.companiesTable.getCompanies()
         .then(function (data) {
           var jobLists = JSON.parse(data);
           var filteredJobs = _.filter(jobLists, function(job) {
-            return job.company.toLowerCase().indexOf(companyObj[1].toLowerCase()) !== -1;
+            if (job.company.toLowerCase().indexOf(companyObj[1].toLowerCase()) !== -1) {
+              return job;
+            }
           });
           _.each(filteredJobs, function(job) {
             // console.log(job.company.toLowerCase().indexOf(companyObj[1].toLowerCase()) === 0);
             if (job.company.toLowerCase().indexOf(companyObj[1].toLowerCase()) === 0) {
-              job.id = companyObj[0];
+              job.company_id = companyObj[0];
             }
           });
-          resolve(filteredJobs);
-        });
-      });
-    })
-        .then(function (data) {
-          _.each(data, function (job) {
-            var resultObj = {
-              title: job.title,
-              url: job.url,
-              description: job.description,
-              visa_sponsored: null,
-              remote_ok: null,
-              relocation: null,
-              salary: null,
-              created: job.created_at,
-              city: job.location,
-              company_id: job.id
-            };
-            console.log(resultObj);
-            jobTable.addJob(resultObj);
-          });
+          // console.log(filteredJobs);
+          return filteredJobs;
         });
       })
+      .then(function (data) {
+        resolve(data);
+      });
+    })
+    .then(function (data) {
+      var finalArray = _.flatten(data);
+      _.each(finalArray, function (job) {
+        // console.log(job);
+        var resultObj = {
+          title: job.title,
+          url: job.url,
+          description: job.description,
+          visa_sponsored: null,
+          remote_ok: null,
+          relocation: null,
+          salary: null,
+          created: job.created_at,
+          city: job.location,
+          company_id: job.company_id
+        };
+        console.log('this is resultObj', resultObj);
+        console.log('job', job);
+        jobTable.addJob(resultObj);
+      });
+    });
+  })
     .catch(function (err) {
       console.log('error in github api call', err);
     });
