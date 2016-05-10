@@ -7,7 +7,6 @@ var db = require('../server/database');
 var rp = require('request-promise');
 var jobTable = require('../server/database').jobsTable;
 
-
 db.companiesTable.getCompanies()
   .then(function(companyArr) {
     var companyInfo = _.map(companyArr, function (company) {
@@ -24,12 +23,10 @@ db.companiesTable.getCompanies()
             }
           });
           _.each(filteredJobs, function(job) {
-            // console.log(job.company.toLowerCase().indexOf(companyObj[1].toLowerCase()) === 0);
             if (job.company.toLowerCase().indexOf(companyObj[1].toLowerCase()) === 0) {
               job.company_id = companyObj[0];
             }
           });
-          // console.log(filteredJobs);
           return filteredJobs;
         });
       })
@@ -45,7 +42,7 @@ db.companiesTable.getCompanies()
           title: job.title,
           company_name: job.company,
           url: job.url,
-          description: job.description,
+          description: function() {return job.description.replace(/<\/*[\s\S]+?>|\u2022/g, '').replace(/^[ \t]+|[ \t]+$/gm, '').replace(/ +/g, ' ').replace(/&#39;/g, "'");},
           visa_sponsored: null,
           remote_ok: null,
           relocation: null,
@@ -53,9 +50,7 @@ db.companiesTable.getCompanies()
           city: job.location,
           company_id: job.company_id
         };
-        // console.log('this is resultObj', resultObj);
-        // console.log('job', job);
-        // jobTable.addJob(resultObj);
+        jobTable.addJob(resultObj);
       });
     });
   })

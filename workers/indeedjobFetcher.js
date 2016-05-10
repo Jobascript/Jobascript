@@ -6,18 +6,13 @@ var clearbit = require('clearbit')(config.clearbitKey);
 var db = require('../server/database');
 var rp = require('request-promise');
 var jobTable = require('../server/database').jobsTable;
-// db.companiesTable.addCompany({name: 'Apple'});
 db.companiesTable.getCompanies()
-  //promise for getCompanies
   .then(function (companyArr) {
-    // console.log('companyArr', companyArr);
-    // console.log(companyArr);
     var companyInfo = _.map(companyArr, function(company) {
       return [Number(company.id), company.name];
     });
     return new Promise(function(resolve, reject) {
       return Promise.map(companyInfo, function(companyObj) {
-        // console.log(companyObj);
           return rp('http://api.indeed.com/ads/apisearch?publisher=9810665890415219&format=json&v=2&q=' + companyObj[1])
            .then(function (data) {
               var listOfJobs = JSON.parse(data).results;
