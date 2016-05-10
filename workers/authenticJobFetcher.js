@@ -6,7 +6,8 @@ var clearbit = require('clearbit')(config.clearbitKey);
 var db = require('../server/database');
 var rp = require('request-promise');
 var jobTable = require('../server/database').jobsTable;
-// db.companiesTable.addCompany({name: 'CBS Interactive'});
+var $ = require("jquery");
+db.companiesTable.addCompany({name: 'CBS Interactive'});
 db.companiesTable.getCompanies()
   .then(function (companyObj) {
     var companyArr = _.map(companyObj, function(company) {
@@ -47,21 +48,25 @@ db.companiesTable.getCompanies()
     })
     .then(function (job) {
       var finalArr = _.flatten(job);
+
+
       _.each(finalArr, function(job) {
-        // console.log(job.apply_url);
+        // console.log(job);
+
         resultObj = {
-          remote_ok: null,
-          salary: null,
-          relocation: function() {if (job.relocation_assistance === 1) return true;},
-          company: job.company.name,
           title: job.title,
+          company_name: job.company.name,
           url: job.apply_url,
-          description: job.description,
+          description: function() {job.description.replace(/<\/*[\s\S]+?>|\u2022/g, '').replace(/^[ \t]+|[ \t]+$/gm, '').replace(/ +/g, ' ');},
+          visa_sponsored: false,
+          remote_ok: null,
+          relocation: null,
           city: job.company.location.city,
           created: job.post_date,
-          visa_sponsored: false,
           company_id: job.company_id
         };
+// function() {if (job.relocation_assistance === 1) return true; else return false;},
+// job.description.replace(/<\/*[\s\S]+?>|\u2022/g, '').replace(/^[ \t]+|[ \t]+$/gm, '').replace(/ +/g, ' ')
         jobTable.addJob(resultObj);
       });
 
