@@ -6,10 +6,11 @@
   </section>
   <section class="container">
     <form class="pa4">
-      <div class="form-group w-60 dib">
+      <div class="dib w-60">
         <input type="text" class="form-control" placeholder="Search For Companies...">
+      </div><div class="w-40 dib">
+        <button class="btn btn-info" ng-show="getLength() > 0" ng-click="continue()">Continue with {{numOfFollows}}</button>
       </div>
-      <button class="btn btn-info" ng-show="{{getLength()}}" ng-click="continue()">Continue with {{numOfFollows}}</button>
     </form>
     <ul class="media-list">
       <li class="media pa4 clickable" ng-class="{'bg-success': company.isFollowing}" ng-repeat="company in topCompanies" ng-click="toFollow(company)">
