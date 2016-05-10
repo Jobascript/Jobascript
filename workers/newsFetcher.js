@@ -40,9 +40,11 @@ Companies.getCompanies()
     val.feed.entries.forEach(function (article) {
       var link = url.parse(article.link, true);
       link = link.query.url;
+      var source = article.title.split(' - ');
+      source = source[source.length - 1];
       var articleObj = {
         title: article.title,
-        snippet: article.contentSnippet.substr(0, 300) + '...',
+        snippet: article.contentSnippet.substr(source.length, 300 + source.length) + '...',
         url: link,
         date_written: moment(article.pubDate).format()
       };

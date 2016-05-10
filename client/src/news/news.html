@@ -1,7 +1,8 @@
 <div>
   <div ng-repeat="new in news">
-    <img src="{{new.image_url}}" height="42" width="42">
+    <img ng-if="{{new.image_url}}"src="{{new.image_url}}" height="42" width="42">
     <a href="{{new.url}}">{{new.title}}</a>
-    <div ng-bind-html="new.snippet"></div>
+    <div class="text-success">{{new.url}}</div>
+    <div ng-bind-html="new.snippet" class="text-muted"></div>
   </div>
 </div>
