@@ -35,20 +35,17 @@ Change `debug` to `true` in `env.json`
 {
   "development": {
     "dbName": "jobascript.dev",
-    "dropDB": false,
     "debug": true,
     "clearbitKey": "98d8c9be83606358bfc9453ac48a127f"
   },
   "production": {
     "dbName": "jobascript",
-    "dropDB": false,
     "debug": false,
     "clearbitKey": "98d8c9be83606358bfc9453ac48a127f"
   },
   "test": {
     "dbName": "jobascript.test",
-    "debug": false,
-    "dropDB": false
+    "debug": false
   }
 }
 ```
