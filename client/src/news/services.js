@@ -1,9 +1,9 @@
 module.exports = function ($http) {
-  var getGoogleNews = function (companyName) {
+  var getNews = function (company) {
     return $http({
       method: 'GET',
       url: '/api/news',
-      params: { name: companyName }
+      params: { company_id: company }
     })
     .then(function (resp) {
       return resp.data;
@@ -13,6 +13,6 @@ module.exports = function ($http) {
   };
 
   return {
-    getGoogleNews: getGoogleNews
+    getNews: getNews
   };
 };

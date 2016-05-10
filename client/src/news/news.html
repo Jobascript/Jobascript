@@ -1,9 +1,7 @@
 <div>
-  <form ng-submit="filter()">
-    <input type="text" placeholder="News Topic" ng-model="newsFilter"/>
-    <input type="submit" value="Search News">
-  </form>
   <div ng-repeat="new in news">
-    <div ng-bind-html="new.contentHTML"></div>
+    <img src="{{new.image_url}}" height="42" width="42">
+    <a href="{{new.url}}">{{new.title}}</a>
+    <div ng-bind-html="new.snippet"></div>
   </div>
 </div>
