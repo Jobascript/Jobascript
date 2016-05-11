@@ -45,6 +45,11 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
     controller: require('./pages/getting-started/controller.js'),
     template: require('./pages/getting-started/index.html')
   });
+
+  $stateProvider.state('auth', {
+    url: '/auth',
+    template: '<div auth-widget class="mw6 center"></div>'
+  });
 };
 
 exports.listen = function ($rootScope, User, $state) {

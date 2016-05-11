@@ -1,7 +1,9 @@
 var _ = require('underscore');
 var inflection = require('inflection');
 
-module.exports = function ($scope, Company, $state, companies) {
+module.exports = function ($scope, Company, $state, companies, User, ngToast) {
+  $scope.isAuth = User.isAuth();
+  $scope.isOpen = false;
   $scope.suggestions = [];
   $scope.cache = [];
   $scope.isFresh = companies.length === 0;
@@ -11,6 +13,14 @@ module.exports = function ($scope, Company, $state, companies) {
   $scope.clearSuggestions = clearSuggestions;
   $scope.showSuggestions = showSuggestions;
   $scope.navToCompany = navToCompany;
+  $scope.logout = logout;
+
+  function logout() {
+    User.logout();
+    console.log('logout!');
+    ngToast.info('<strong>logout</strong>');
+    $state.go('start');
+  }
 
   function navToCompany(company) {
     var currentList = companies;

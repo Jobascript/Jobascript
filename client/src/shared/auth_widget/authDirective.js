@@ -2,9 +2,7 @@ module.exports = function (User) {
   return {
     template: require('./signup-login.html'),
     controller: function ($scope, $state, ngToast) {
-      $scope.isAuth = User.isAuth();
       $scope.isSignupMode = false;
-      $scope.isOpen = false;
       $scope.user = {
         username: '',
         password: ''
