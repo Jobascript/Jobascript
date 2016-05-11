@@ -48,7 +48,9 @@ Companies.getCompanies()
         url: link,
         date_written: moment(article.pubDate).format()
       };
-      News.addNews(articleObj, val.id);
+      News.addNews(articleObj, val.id).catch(function (reason) {
+        console.log(reason);
+      });
     });
   });
 })
@@ -102,7 +104,9 @@ Companies.getCompanies()
       date_written: moment(article.publicationDate.date).format(),
       author: article.author
     };
-    News.addNews(articleObj, val.id);
+    News.addNews(articleObj, val.id).catch(function (reason) {
+      console.log(reason);
+    });
   });
   return '';
 })
