@@ -15,6 +15,7 @@ module.exports = function () {
       login: login,
       logout: logout,
       getUser: _.once(getUser), // hack
+      createTempUser: createTempUser,
       getToken: function () { return TOKEN; },
       getCompanies: getCompanies,
       companies: function () { return companies; }

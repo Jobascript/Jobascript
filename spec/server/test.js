@@ -40,7 +40,7 @@ describe('/company Route Tests',  function() {
             done();
           }
         });
-      }); 
+      });
       it('Should receive a stringified company Id',  function (done) {
         request(app)
         .post('/api/company')

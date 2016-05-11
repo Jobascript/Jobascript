@@ -10,7 +10,7 @@ module.exports = function ($scope, topCompanies, User, Company, $state) {
   };
   $scope.continue = function () {
     console.log(toFollow);
-    User.getUser().then(function () {
+    User.createTempUser().then(function () {
       return Promise.map(Object.keys(toFollow), function (id) {
         return Company.follow({ id: id });
       });
