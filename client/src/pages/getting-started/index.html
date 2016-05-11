@@ -1,0 +1,26 @@
+<div class="jbs-getting-started">
+  <section class="tc bg-silver pa5">
+    <h1>Getting started</h1>
+    <p class="lead measure center">Pick a few companies that insterest you to get started. Or <a ui-sref="auth">Login Here</a>.</p>
+  </section>
+  <section class="container">
+    <form class="pa4">
+      <div class="dib w-60">
+        <input type="text" class="form-control" placeholder="Search For Companies...">
+      </div><div class="w-40 dib tr">
+        <button class="btn btn-info" ng-show="getLength() > 0" ng-click="continue()">Continue with {{numOfFollows}}</button>
+      </div>
+    </form>
+    <ul class="media-list">
+      <li class="media pa4 clickable" ng-class="{'bg-success': company.isFollowing}" ng-repeat="company in topCompanies" ng-click="toFollow(company)">
+        <div class="media-left">
+          <img class="media-object img-thumbnail w4" ng-src="{{company.logo}}" alt="{{company.name}}">
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">{{ company.legal_name || company.display_name || company.name }}</h4>
+          <p>{{ company.description }}</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+</div>

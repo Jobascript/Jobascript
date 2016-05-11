@@ -1,5 +1,5 @@
-var _ = require('underscore');
 var Promise = require('bluebird');
+var helpers = require('./helpers.js');
 
 const TABLE_NAME = 'companies';
 
@@ -23,7 +23,7 @@ module.exports = function (db) {
 
     var sqlStr = [
       'SELECT * FROM ${table~}',
-      'WHERE ' + toSqlString(filter, 'AND'),
+      'WHERE ' + helpers.toSqlString(filter, 'AND'),
       'ORDER BY created DESC',
       'LIMIT ${size:raw}',
       ';'
@@ -81,7 +81,7 @@ module.exports = function (db) {
    * @return {Object} a company object
    */
   Companies.getCompany = function (args) {
-    var sqlStr = 'SELECT * FROM ${table~} WHERE ' + toSqlString(args, 'OR') + ';';
+    var sqlStr = 'SELECT * FROM ${table~} WHERE ' + helpers.toSqlString(args, 'OR') + ';';
 
     return db.one(sqlStr, {
       table: TABLE_NAME
@@ -105,8 +105,8 @@ module.exports = function (db) {
     if (company === undefined) return Promise.reject('Must provide company');
     if (args === undefined) return Promise.reject('Must provide arg');
 
-    var sqlStr = 'UPDATE ${table~} SET ' + toSqlString(args, ',') +
-      ' WHERE ' + toSqlString(company, 'AND') + ';';
+    var sqlStr = 'UPDATE ${table~} SET ' + helpers.toSqlString(args, ',') +
+      ' WHERE ' + helpers.toSqlString(company, 'AND') + ';';
 
     return db.result(sqlStr, {
       table: TABLE_NAME
@@ -116,31 +116,6 @@ module.exports = function (db) {
       return Promise.reject(err);
     });
   };
-
-  // turn obj into sql str, e.g. {a:1, b:2} => 'a=1, b="blah"'
-  // joinWith needs to be a String 'AND', 'OR' or ','
-  function toSqlString(obj, joinWith) {
-    var tuples = _.pairs(obj);
-
-    var string = tuples.map(function (tuple) {
-      var t = tuple.slice();
-      var str;
-      var operator = '=';
-
-      if (t[1] === null) {
-        operator = ' IS ';
-        t[1] = String(t[1]).toUpperCase();
-      } else {
-        t[1] = '$$' + t[1] + '$$'; // escape stuff
-      }
-
-      str = t[0] + operator + t[1];
-
-      return str;
-    }).join(' ' + joinWith + ' ');
-
-    return string;
-  }
 
   return Companies;
 };

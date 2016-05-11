@@ -1,14 +1,18 @@
 exports.config = function ($urlRouterProvider, $stateProvider) {
-  $urlRouterProvider.otherwise('/a');
+  $urlRouterProvider.otherwise('/getting-started');
 
   $stateProvider.state('layout', {
     abstract: true,
     resolve: {
       currentUser: function (User) {
-        return User.getUser();
+        return User.getUser().catch(function (err) {
+          console.error(err);
+        });
       },
-      companies: function ($http, User) {
-        return User.getCompanies();
+      companies: function (User) {
+        return User.getCompanies().catch(function (err) {
+          console.error(err);
+        });
       }
     },
     views: {
@@ -30,6 +34,22 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
     url: '/a',
     parent: 'layout'
   });
+
+  $stateProvider.state('start', {
+    url: '/getting-started',
+    resolve: {
+      topCompanies: function (Company) {
+        return Company.getCompanies({ size: 5 });
+      }
+    },
+    controller: require('./pages/getting-started/controller.js'),
+    template: require('./pages/getting-started/index.html')
+  });
+
+  $stateProvider.state('auth', {
+    url: '/auth',
+    template: '<div auth-widget class="mw6 center"></div>'
+  });
 };
 
 exports.listen = function ($rootScope, User, $state) {
@@ -40,7 +60,6 @@ exports.listen = function ($rootScope, User, $state) {
     // when company is removed && when loading up the first time
     if (toState.name === 'home') {
       event.preventDefault();
-      console.log('home: ', companyList);
       if (companyList.length > 0) {
         // load the first company in the list
         $state.transitionTo('company', {
@@ -48,8 +67,8 @@ exports.listen = function ($rootScope, User, $state) {
           id: companyList[0].id
         }, { reload: true });
       } else {
-        // if not company goto home
-        $state.transitionTo('home', {}, { notify: false });
+        // if no company goto start
+        $state.transitionTo('start', {}, { reload: true });
       }
     }
   });

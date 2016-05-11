@@ -1,15 +1,26 @@
 var _ = require('underscore');
 var inflection = require('inflection');
 
-module.exports = function ($scope, Company, $state, companies) {
+module.exports = function ($scope, Company, $state, companies, User, ngToast) {
+  $scope.isAuth = User.isAuth();
+  $scope.isOpen = false;
   $scope.suggestions = [];
   $scope.cache = [];
+  $scope.isFresh = companies.length === 0;
 
   // methods
   $scope.suggest = _.debounce(suggestCompanies, 200);
   $scope.clearSuggestions = clearSuggestions;
   $scope.showSuggestions = showSuggestions;
   $scope.navToCompany = navToCompany;
+  $scope.logout = logout;
+
+  function logout() {
+    User.logout();
+    console.log('logout!');
+    ngToast.info('<strong>logout</strong>');
+    $state.go('start');
+  }
 
   function navToCompany(company) {
     var currentList = companies;
@@ -48,9 +59,10 @@ module.exports = function ($scope, Company, $state, companies) {
         console.log('shit: ', why);
       });
     } else {
-      $state.go('company', companyExist);
+      $state.go('company', companyExist, { reload: true });
     }
 
+    $scope.isFresh = false;
     $scope.companyName = '';
     clearSuggestions(false);
   }

@@ -1,18 +1,31 @@
-<div class="container-fluid">
-  <div class="navbar-header">
-    <a class="navbar-brand" href="#/">Jobascript</a>
-  </div>
-  <div class="w-60 navbar-form navbar-left dropdown" ng-class="{ open: suggestions.length > 0 }">
-    <input type="text" class="db w-100 form-control b--dark-gray bg-black" placeholder="Search" ng-model="companyName" ng-change="suggest(companyName)">
-    <ul class="dropdown-menu w-100">
-      <li ng-repeat="company in suggestions">
-        <a class="clickable" ng-click="navToCompany(company)">
-          <div class="pv2 truncate">
-            <img class="w2 truncate" ng-src="{{company.logo}}" alt="{{company.name}}">
-            {{ company.name || '[Name Missing]' }}
-          </div>
-        </a>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+<div class="container-fluid jbs-topnav jbs-animate" ng-class="{'jbs-fresh': isFresh}">
+  <div class="jbs-fresh-center cf jbs-animate">
+    <div class="navbar-header jbs-animate">
+      <a class="navbar-brand" ui-sref="home">Jobascript</a>
+    </div>
+    <div class="w-60 jbs-animate navbar-form navbar-left dropdown" ng-class="{ open: suggestions.length > 0 }">
+      <input type="text" class="db w-100 form-control b--dark-gray bg-black" placeholder="Search for your dream company" ng-model="companyName" ng-change="suggest(companyName)">
+      <ul class="dropdown-menu w-100">
+        <li ng-repeat="company in suggestions">
+          <a class="clickable" ng-click="navToCompany(company)">
+            <div class="pv2 truncate">
+              <img class="w2 truncate" ng-src="{{company.logo}}" alt="{{company.name}}">
+              {{ company.name || '[Name Missing]' }}
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown" ng-class="{open: isOpen}" ng-if="!isAuth">
+        <a class="clickable" ng-click="isOpen = !isOpen">Login</a>
+        <div class="dropdown-menu pv0">
+          <auth-widget></auth-widget>
+        </div>
       </li>
+      <li ng-if="isAuth"><a class="clickable" ng-click="logout()">Logout</a></li>
     </ul>
   </div>
 </div>
+</nav>

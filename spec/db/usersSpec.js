@@ -59,6 +59,36 @@ describe('Database Users', function () {
     });
   });
 
+  describe('Update a user', function () {
+    var uid = '';
+
+    it('Should update user by column', function () {
+      var columns = {
+        username: 'lol'
+      };
+
+      return usersTable.updateUser(userID, columns)
+      .should.eventually.be.fulfilled;
+    });
+
+    it('New user is a temp user', function () {
+      return usersTable.createUser()
+      .then(function (user) {
+        uid = user.id;
+        return usersTable.isUserTemp(uid)
+        .should.eventually.be.fulfilled.and.be.true;
+      });
+    });
+
+    it('Updated user is not a temp user', function () {
+      return usersTable.updateUser(uid, { username: 'myusername' })
+      .then(function (user) {
+        return usersTable.isUserTemp(user.id)
+        .should.eventually.be.fulfilled.and.be.false;
+      });
+    });
+  });
+
   describe('Follow and Unfollow Company', function () {
     it('Takes userID and companyID and link them', function () {
       return usersTable.followCompany(userID, companyID).should.be.fulfilled;
@@ -80,6 +110,14 @@ describe('Database Users', function () {
       return usersTable.getCompanies(userID)
       .should.eventually.be.an('array')
       .and.have.lengthOf(1);
+    });
+
+    it('follow_on as date of follow', function () {
+      return usersTable.getCompanies(userID)
+      .should.eventually.satisfy(function (array) {
+        var company = array[0];
+        return expect(company).to.have.property('followed_on');
+      });
     });
   });
 });
