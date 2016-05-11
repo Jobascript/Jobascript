@@ -1,7 +1,10 @@
 DROP TABLE IF EXISTS users_companies;
 DROP TABLE IF EXISTS news;
+DROP TABLE IF EXISTS jobs;
 DROP TABLE IF EXISTS companies;
 DROP TABLE IF EXISTS users;
+
+
 
 CREATE TABLE IF NOT EXISTS companies (
   name TEXT UNIQUE,
@@ -43,5 +46,19 @@ CREATE TABLE IF NOT EXISTS news (
   image_url TEXT,
   date_written DATE,
   author TEXT,
+  company_id INT REFERENCES companies
+);
+
+CREATE TABLE IF NOT EXISTS jobs (
+  title TEXT,
+  company_name TEXT,
+  url TEXT,
+  description TEXT,
+  visa_sponsored BOOLEAN,
+  remote_ok BOOLEAN,
+  relocation BOOLEAN,
+  created TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+  city TEXT,
+  id BIGSERIAL PRIMARY KEY,
   company_id INT REFERENCES companies
 );

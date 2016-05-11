@@ -7,7 +7,7 @@ module.exports = function ($scope, $state, Comm, currentCompany) {
       console.log('get emails');
       Comm.getEmails(currentCompany).then(function (emails) {
         console.log('emails here: ', emails);
-        $scope.$apply(function() {
+        $scope.$apply(function () {
           $scope.emails = emails;
         });
       });

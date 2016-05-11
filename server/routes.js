@@ -25,9 +25,7 @@ module.exports = function (app) {
   app.delete('/api/company/:id', companyHandler.removeCompany);
   app.get('/api/companies', companyHandler.getCompanies);
 
-  // news
   app.get('/api/news', newsHandler);
 
-  // jobs
   app.get('/api/jobs', jobHandler);
 };
