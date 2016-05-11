@@ -42,9 +42,12 @@ Companies.getCompanies()
       link = link.query.url;
       var source = article.title.split(' - ');
       source = source[source.length - 1];
+      if(article.contentSnippet.slice(0, source.length) === source){
+        article.contentSnippet = article.contentSnippet.substr(source.length, 500);
+      }
       var articleObj = {
         title: article.title,
-        snippet: article.contentSnippet.substr(source.length, 300 + source.length) + '...',
+        snippet: article.contentSnippet.substr(0, 300) + '...',
         url: link,
         date_written: moment(article.pubDate).format()
       };
@@ -73,7 +76,7 @@ Companies.getCompanies()
 
     var alchemyCall = axios.create({
       baseURL: alchemyUrl,
-      timeout: 2000
+      timeout: 30000
     });
 
     return alchemyCall.get(queryParam)
