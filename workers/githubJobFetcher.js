@@ -28,6 +28,9 @@ db.companiesTable.getCompanies()
             }
           });
           return filteredJobs;
+        })
+        .catch(function (err) {
+          console.log('err in rp', err);
         });
       })
       .then(function (data) {
@@ -37,7 +40,6 @@ db.companiesTable.getCompanies()
     .then(function (data) {
       var finalArray = _.flatten(data);
       _.each(finalArray, function (job) {
-        console.log(job);
         var resultObj = {
           title: job.title,
           company_name: job.company,
@@ -50,6 +52,7 @@ db.companiesTable.getCompanies()
           city: job.location,
           company_id: job.company_id
         };
+        console.log(db);
         jobTable.addJob(resultObj);
       });
     });

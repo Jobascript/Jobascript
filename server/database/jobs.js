@@ -13,9 +13,13 @@ module.exports = function (db) {
 
 
   Jobs.getJobs = function (options) {
-    var sqlStr = 'SELECT * FROM ${table~} WHERE ' + toSqlString(options, 'AND') + ' ;';
+    var sqlStr = [
+      'SELECT * FROM ${table~}',
+      'WHERE company_id=${id};'
+    ].join(' ');
     return db.result(sqlStr, {
-      table: TABLE_NAME
+      table: TABLE_NAME,
+      id: options.id
     })
     .then(function (data) {
       return data;
