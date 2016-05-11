@@ -10,7 +10,12 @@ module.exports = function (db) {
    * Delete all rows in table
    */
   Companies.clearAll = function () {
-    return db.none('DELETE FROM ${table~};', { table: TABLE_NAME });
+    return db.tx(function (t) {
+      t.batch([
+        t.none('DELETE FROM "jobs";'),
+        t.none('DELETE FROM ${table~};', { table: TABLE_NAME })
+      ]);
+    });
   };
 
   /**

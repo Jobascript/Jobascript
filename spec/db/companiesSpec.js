@@ -11,16 +11,9 @@ var should = chai.should();
 
 var _ = require('underscore');
 
-describe('Database tests', function () {
+describe('Database companies', function () {
   var ID = '';
-  var comName = '';
-
-  var company = {
-    name: 'uber',
-    display_name: 'Uber',
-    domain: 'uber.com',
-    logo: 'https://logo.clearbit.com/uber.com'
-  };
+  var comName = ''; // eslint-disable-line
 
   var companies = [
     {
@@ -44,19 +37,13 @@ describe('Database tests', function () {
   ];
 
   before(function (done) {
-    var promises = [];
-    promises.push(db.clearAll());
-    promises.concat(companies.map(function (com) {
-      return db.addCompany(com).then(function (id) {
-        ID = id;
-        comName = com.name;
-        return id;
-      });
-    }));
-
-    Promise.all(promises).then(function () {
+    Promise.map(companies, function (com) {
+      return db.addCompany(com);
+    })
+    .then(function () {
       done();
-    }).catch(function (reason) {
+    })
+    .catch(function (reason) {
       console.log('in test, ', reason);
       done(reason);
     });
@@ -71,8 +58,8 @@ describe('Database tests', function () {
   describe('Get a Company', function () {
     it('should accept name', function () {
       return db.getCompany({
-        name: comName
-      }).should.eventually.have.property('name', comName);
+        name: 'google'
+      }).should.eventually.have.property('name', 'google');
     });
 
     it('should accept domain', function () {
@@ -129,7 +116,12 @@ describe('Database tests', function () {
 
   describe('Add Company', function () {
     it('Should return companyID', function () {
-      return db.addCompany(company)
+      return db.addCompany({
+        name: 'uber',
+        display_name: 'Uber',
+        domain: 'uber.com',
+        logo: 'https://logo.clearbit.com/uber.com'
+      })
       .should.eventually.satisfy(function (num) {
         return !isNaN(Number(num));
       });
