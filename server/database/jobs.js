@@ -53,8 +53,10 @@ module.exports = function (db) {
       throw new Error('a job obj is required to query for jobs e.g {title: \'software engineer\'}');
     }
     _.extend(jobListing, { table: TABLE_NAME });
+    /* eslint-disable */
     var sqlStr = [
-      'INSERT INTO ${table~} (title, company_name, url, description, visa_sponsored, remote_ok,relocation, created, city, company_id)',
+      'INSERT INTO ${table~}',
+      '(title, company_name, url, description, visa_sponsored, remote_ok,relocation, created, city, company_id)',
       'VALUES',
       '(',
     [
@@ -72,6 +74,8 @@ module.exports = function (db) {
       ')',
       'RETURNING id'
     ].join(' ');
+    /* eslint-enable */
+
     return db.query(sqlStr, jobListing)
     .then(function (data) {
       return data;
