@@ -1,5 +1,4 @@
 var _ = require('underscore');
-var promise = require('bluebird');
 
 const TABLE_NAME = 'jobs';
 
@@ -7,7 +6,7 @@ module.exports = function (db) {
   var Jobs = {};
 
 
-  Jobs.clearAllJobs = function() {
+  Jobs.clearAllJobs = function () {
     return db.none('DELETE FROM ${table~};', { table: TABLE_NAME });
   };
 
@@ -29,8 +28,8 @@ module.exports = function (db) {
     });
   };
 
-  Jobs.updateJobs = function(jobId, args) {
-    if (jobId=== undefined) {
+  Jobs.updateJobs = function (jobId, args) {
+    if (jobId === undefined) {
       return Promise.reject('must have a jobId');
     }
     if (args === undefined) {
@@ -41,43 +40,43 @@ module.exports = function (db) {
       table: TABLE_NAME,
       job_id: jobId
     })
-    .then(function(data) {
+    .then(function (data) {
       return data;
     })
-    .catch(function(err) {
+    .catch(function (err) {
       return Promise.reject(err);
     });
   };
 
-  Jobs.addJob = function(jobListing) {
+  Jobs.addJob = function (jobListing) {
     if (!jobListing) {
       throw new Error('a job obj is required to query for jobs e.g {title: \'software engineer\'}');
     }
-    _.extend(jobListing, {table: TABLE_NAME});
+    _.extend(jobListing, { table: TABLE_NAME });
     var sqlStr = [
-      'INSERT INTO ${table~} (title, company_name, url, description, visa_sponsored, remote_ok, relocation, created, city, company_id)',
+      'INSERT INTO ${table~} (title, company_name, url, description, visa_sponsored, remote_ok,relocation, created, city, company_id)',
       'VALUES',
       '(',
-        [
-          '${title}',
-          '${company_name}',
-          '${url}',
-          '${description}',
-          '${visa_sponsored}',
-          '${remote_ok}',
-          '${relocation}',
-          '${created}',
-          '${city}',
-          '${company_id}'
-        ].join(', '),
+    [
+      '${title}',
+      '${company_name}',
+      '${url}',
+      '${description}',
+      '${visa_sponsored}',
+      '${remote_ok}',
+      '${relocation}',
+      '${created}',
+      '${city}',
+      '${company_id}'
+    ].join(', '),
       ')',
       'RETURNING id'
     ].join(' ');
     return db.query(sqlStr, jobListing)
-    .then(function(data) {
+    .then(function (data) {
       return data;
     })
-    .catch(function(err) {
+    .catch(function (err) {
       return Promise.reject(err);
     });
   };

@@ -1,5 +1,3 @@
-var rp = require('request-promise');
-var parser = require('xml2json');
 var jobTable = require('../database').jobsTable;
 module.exports = function (req, res) {
   var currentCompany = req.query;

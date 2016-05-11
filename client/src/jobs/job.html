@@ -5,7 +5,6 @@
   <input type='checkbox' ng-model='job_remote' ng-value='true' /> Work Remotely?
   <button ng-click='search()'>Get Jobs With Requirements</button>
   <div ng-repeat="job in currentJobs | filter: {title: jobSearch}">
-    <h3 ng-click='doStuff(job.link)'>{{decode(job.title)}}</li>
     <h4>Apply here <a ng-href='{{job.link}}' target='_blank'>{{job.link}}</a></h4>
     <div class='job.publish'>Posted On {{decode(job.pubDate)}}</div>
     <div> Required Skills
