@@ -18,3 +18,4 @@ var db = pgp(cn);
 exports.usersTable = require('./users.js')(db);
 exports.companiesTable = require('./companies.js')(db);
 exports.newsTable = require('./news.js')(db);
+exports.jobsTable = require('./jobs.js')(db);
