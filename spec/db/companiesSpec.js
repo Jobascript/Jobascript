@@ -136,10 +136,10 @@ describe('Database companies', function () {
     });
   });
 
-  describe('Update Company', function () {
+  xdescribe('Update Company', function () {
     beforeEach(function (done) {
       db.clearAll().then(function () {
-        db.addCompany(companies[0]).then(function (id) {
+        db.addCompany({name: 'stripe'}).then(function (id) {
           ID = id;
           done();
         });

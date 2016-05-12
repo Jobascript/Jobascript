@@ -14,7 +14,7 @@ var alchemyKey
 // = 'aeacf083250dd17e5e5cc0da04aa316da4e94bfd';
 // = 'f0855469b5be36c6b4ae467290751bf8663f014a';
 
-Companies.getCompanies()
+Companies.getCompanies({ size: false })
 .then(function (companies) {
   var companyInfo = companies.map(function (company) {
     return [company.name, company.id];
@@ -61,7 +61,7 @@ Companies.getCompanies()
   News.removeOld();
 });
 
-Companies.getCompanies()
+Companies.getCompanies({ size: false })
 .then(function (companies) {
   var companyInfo = companies.map(function (company) {
     return [company.name, company.id];
