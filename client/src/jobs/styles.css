@@ -34,30 +34,47 @@
 }
 .job-filter-wrapper {
   min-height: 72px;
-  border: 1em solid #337AB7;
+  border: 1em solid #222222;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
-  background-color: #337AB7;
+  background-color: #222222;
+}
+.form-control {
+  color: #000000;
 }
 .job-title {
-  color: #337AB7;
+  color: #000000;
+  font-size: 19px;
+}
+.job-title:hover {
+  color: #000000;
   font-weight: bold;
+  cursor: pointer;
 }
 .job-apply {
   color: #656565;
   float: right;
 }
 .job-apply:hover {
-  color: #337AB7;
+  color: #000000;
   font-weight: bold;
+  text-decoration: none;
 }
 .job-publish {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: lighter;
+}
+.job-description:hover {
+  color: #222222;
+  font-weight: bold;
+  cursor: pointer;
 }
 .job-description-text {
   font-family: 'Lato', serif;
-  color: #337AB7;
+  font-size: 17px;
+  color: #222222;
+  max-width: 650px;
+  margin: 0 auto;
 }
 
 .description {
