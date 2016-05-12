@@ -47,7 +47,11 @@ module.exports = function (db) {
 
   Jobs.addJob = function (jobListing) {
     if (!jobListing) {
-      throw new Error('a job obj is required to query for jobs e.g {title: \'software engineer\'}, your data: ' + JSON.stringify(jobListing));
+      throw new Error(
+        'a job obj is required to query for jobs ' +
+        'e.g {title: \'software engineer\'}, your data: ' +
+        JSON.stringify(jobListing)
+      );
     }
     if (jobListing.title === undefined) {
       throw new Error('need a title, your data: ' + JSON.stringify(jobListing));
