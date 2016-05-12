@@ -14,7 +14,7 @@ var alchemyKey
 // = 'aeacf083250dd17e5e5cc0da04aa316da4e94bfd';
 // = 'f0855469b5be36c6b4ae467290751bf8663f014a';
 
-Companies.getCompanies()
+Companies.getCompanies({ size: false })
 .then(function (companies) {
   var companyInfo = companies.map(function (company) {
     return [company.name, company.id];
@@ -40,13 +40,20 @@ Companies.getCompanies()
     val.feed.entries.forEach(function (article) {
       var link = url.parse(article.link, true);
       link = link.query.url;
+      var source = article.title.split(' - ');
+      source = source[source.length - 1];
+      if(article.contentSnippet.slice(0, source.length) === source){
+        article.contentSnippet = article.contentSnippet.substr(source.length, 500);
+      }
       var articleObj = {
         title: article.title,
         snippet: article.contentSnippet.substr(0, 300) + '...',
         url: link,
         date_written: moment(article.pubDate).format()
       };
-      News.addNews(articleObj, val.id);
+      News.addNews(articleObj, val.id).catch(function (reason) {
+        console.log(reason);
+      });
     });
   });
 })
@@ -54,7 +61,7 @@ Companies.getCompanies()
   News.removeOld();
 });
 
-Companies.getCompanies()
+Companies.getCompanies({ size: false })
 .then(function (companies) {
   var companyInfo = companies.map(function (company) {
     return [company.name, company.id];
@@ -69,7 +76,7 @@ Companies.getCompanies()
 
     var alchemyCall = axios.create({
       baseURL: alchemyUrl,
-      timeout: 2000
+      timeout: 30000
     });
 
     return alchemyCall.get(queryParam)
@@ -100,7 +107,9 @@ Companies.getCompanies()
       date_written: moment(article.publicationDate.date).format(),
       author: article.author
     };
-    News.addNews(articleObj, val.id);
+    News.addNews(articleObj, val.id).catch(function (reason) {
+      console.log(reason);
+    });
   });
   return '';
 })
