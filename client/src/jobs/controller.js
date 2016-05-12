@@ -7,7 +7,7 @@ module.exports = function ($scope, Job, currentCompany, jobs) {
   // $scope.jobSkills = [];
   // $scope.jobDescription = '';
   // $scope.details = null;
-  
+
   $scope.jobs = jobs.map(function (job) {
     job.description = entities.decode(job.description);
     job.created = moment(job.created).fromNow();

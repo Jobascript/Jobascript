@@ -2,6 +2,7 @@ var Promise = require('bluebird');
 var _ = require('underscore');
 var db = require('../server/database');
 var rp = require('request-promise');
+var moment = require('moment');
 var Entities = require('html-entities').AllHtmlEntities;
 
 var entities = new Entities();
@@ -138,7 +139,7 @@ function mapColumns(schema, jobs, comID) {
         // visa_sponsored: null,
         // remote_ok: null,
         // relocation: null,
-        created: job.created_at,
+        created: moment(new Date()).isAfter(job.created_at) ? moment(new Date()).format() : job.created_at,
         city: job.location,
         company_id: comID
       };
