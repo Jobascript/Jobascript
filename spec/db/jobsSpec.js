@@ -36,11 +36,16 @@ describe('Database jobs', function () {
   ];
 
   before(function (done) {
-    Promise.map(companies, function (com) {
-      return db.addCompany(com);
+    return db.clearAll()
+    .then(function () {
+      return Promise.map(companies, function (com) {
+        return db.addCompany(com);
+      })
+      .then(function (arr) {
+        COM_ID = arr[1];
+      });
     })
-    .then(function (arr) {
-      COM_ID = arr[1];
+    .then(function () {
       done();
     })
     .catch(function (reason) {
@@ -51,7 +56,7 @@ describe('Database jobs', function () {
 
   after(function (done) {
     return db.clearAll()
-    // .then(jobsTable.clearAllJobs)
+    .then(jobsTable.clearAllJobs)
     .then(function () {
       done();
     });

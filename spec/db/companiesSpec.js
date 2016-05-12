@@ -37,8 +37,11 @@ describe('Database companies', function () {
   ];
 
   before(function (done) {
-    Promise.map(companies, function (com) {
-      return db.addCompany(com);
+    db.clearAll()
+    .then(function () {
+      Promise.map(companies, function (com) {
+        return db.addCompany(com);
+      });
     })
     .then(function () {
       done();
