@@ -1,10 +1,21 @@
+var Entities = require('html-entities').AllHtmlEntities;
+var entities = new Entities();
+var moment = require('moment');
+
 module.exports = function ($scope, Job, currentCompany, jobs) {
   // $scope.currentJobs = [];
   // $scope.jobSkills = [];
   // $scope.jobDescription = '';
   // $scope.details = null;
+  
+  $scope.jobs = jobs.map(function (job) {
+    job.description = entities.decode(job.description);
+    job.created = moment(job.created).fromNow();
 
-  $scope.jobs = jobs;
+    job.expand = false;
+
+    return job;
+  });
 
 //   $scope.clicked = function (job) {
 //     job.isCompact = !job.isCompact;

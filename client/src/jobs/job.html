@@ -18,10 +18,16 @@
   <pre ng-bind-html='currentJobs'></pre>
 </div> -->
 <section>
-  <article class="panel panel-default" ng-repeat="job in jobs">
+  <article class="jbs-job panel panel-default" ng-class="{'jbs-job--expand': job.expand}" ng-repeat="job in jobs">
     <div class="panel-body">
-      <h4>{{ job.title }}</h4>
-      <p>{{ job.description }}</p>
+      <header class="cf">
+        <h4 class="fl w-80 truncate" title="{{ job.title }}">{{ job.title }}</h4>
+        <a class="btn btn-info fr" ng-href="{{ job.url }}" target="_blank">Apply</a>
+      </header>
+      <p class="jbs-job-description" ng-click="job.expand = !job.expand" ng-bind-html="job.description"></p>
+    </div>
+    <div class="panel-footer">
+      <span>{{ job.created }}</span>
     </div>
   </article>
 </section>

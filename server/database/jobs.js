@@ -20,7 +20,7 @@ module.exports = function (db) {
     var sqlStr = [
       'SELECT * FROM ${table~}',
       'WHERE ' + helpers.toSqlString(options, 'AND'),
-      ';'
+      'ORDER BY created DESC;'
     ].join(' ');
 
     return db.any(sqlStr, {
