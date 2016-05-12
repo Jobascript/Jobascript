@@ -11,10 +11,39 @@ module.exports = function ($scope, Job, currentCompany, jobs) {
   $scope.jobs = jobs.map(function (job) {
     job.description = entities.decode(job.description);
     job.created = moment(job.created).fromNow();
-
     job.expand = false;
 
     return job;
+    });
+  // $scope.search = function () {
+  //   Job.getJobs(currentCompany.name)
+  //   .then(function (data) {
+  //     if (!Array.isArray($scope.currentJobs)) {
+  //       $scope.currentJobs = [$scope.currentJobs];
+  //       $scope.currentJobs[0].isCompact = true;
+  //     }
+  //     console.log(data);
+  //     $scope.currentJobs.forEach(function (job) {
+  //       job.isCompact = true;
+  //     });
+  //     console.log($scope.currentJobs, 'currentjobs');
+  //     console.log('raw data after clicked', data);
+  //   });
+  // };
+console.log(currentCompany);
+ Job.getJobs(currentCompany).then(function (data) {
+   $scope.currentJobs = data.rows;
+   console.log(data.rows);
+    if (!Array.isArray($scope.currentJobs)) {
+      $scope.currentJobs = [$scope.currentJobs];
+      $scope.currentJobs[0].isCompact = true;
+    }
+    // console.log(data);
+    $scope.currentJobs.forEach(function (job) {
+      job.isCompact = true;
+    });
+    // console.log($scope.currentJobs, 'currentjobs');
+    // console.log('raw data', data);
   });
 
 //   $scope.clicked = function (job) {
@@ -57,4 +86,5 @@ module.exports = function ($scope, Job, currentCompany, jobs) {
 //     // console.log($scope.currentJobs, 'currentjobs');
 //     // console.log('raw data', data);
 //   });
+
 };
