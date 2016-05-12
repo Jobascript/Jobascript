@@ -15,7 +15,7 @@ module.exports = function ($http) {
   var addCompany = function (companyObj) {
     return $http.post('/api/company', companyObj)
     .then(function (resp) {
-      return resp.data;
+      return resp.data.id;
     }, function (err) {
       console.error('err', err);
     });

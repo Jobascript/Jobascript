@@ -1,24 +1,14 @@
 var jobTable = require('../database').jobsTable;
+var _ = require('underscore');
+
 module.exports = function (req, res) {
-  var currentCompany = req.query;
-  var finalData = JSON.parse(currentCompany.currentCompany);
-  jobTable.getJobs(finalData)
-  .then(function (data) {
-    res.send(data);
+  var q = _.pick(req.query, 'company_id');
+
+  jobTable.getJobs(q).then(function (jobs) {
+    res.status(200).send(jobs);
   })
   .catch(function (err) {
-    console.log('err in index.js', err);
     res.sendStatus(500);
+    console.log('GET /jobs', err);
   });
-
-  // rp('https://stackoverflow.com/jobs/feed?searchTerm=' + companyName)
-  //  .then(function(data) {
-  //    var json = parser.toJson(data);
-  //   //  console.log(data);
-  //    res.send(json);
-  //  })
-  //  .catch(function(err) {
-  //   console.log('error in index.js job', err);
-  //   res.sendStatus(500);
-  // });
 };

@@ -43,7 +43,7 @@ exports.addCompany = function (req, res) {
     logo: req.body.logo
   })
   .then(function (companyID) {
-    res.status(200).send(companyID.toString());
+    res.status(200).json({ id: String(companyID) });
   }).catch(function (err) {
     console.log(err);
     res.sendStatus(500);
