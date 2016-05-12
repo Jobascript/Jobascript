@@ -56,7 +56,7 @@ console.log('grabbing companies......')
                   '=========================');
       _.each(finalArray, function (job) {
         var resultObj = {
-          title: function() {return job.title.replace(/[^A-Za-z]/g, '');}, 
+          title: function() {return job.title.replace(/[^A-Za-z\s]/g, '');}, 
           company_name: job.company,
           url: job.url,
           description: function() {return job.description.replace(/<\/*[\s\S]+?>|\u2022/g, '').replace(/^[ \t]+|[ \t]+$/gm, '').replace(/ +/g, ' ').replace(/&#39;/g, "'");},
