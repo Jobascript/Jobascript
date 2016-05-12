@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <input type='text' class='form-control' placeholder='filter locations' ng-model='jobSearch'/>
   <input type='checkbox' ng-model='job_relocation' ng-value='true' /> Require Relocation?
   <input type='checkbox' ng-model='job_visa' ng-value='true' /> Require Visa?
@@ -16,4 +16,12 @@
   </div>
   <pre ng-bind-html='details[0].duties'></pre>
   <pre ng-bind-html='currentJobs'></pre>
-</div>
+</div> -->
+<section>
+  <article class="panel panel-default" ng-repeat="job in jobs">
+    <div class="panel-body">
+      <h4>{{ job.title }}</h4>
+      <p>{{ job.description }}</p>
+    </div>
+  </article>
+</section>

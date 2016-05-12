@@ -38,8 +38,7 @@ exports.config = function ($stateProvider) {
 exports.listen = function ($rootScope, $state) { // eslint-disable-line no-unused-vars
   $rootScope.$on('$stateChangeSuccess', function (event, toState) {
     if (toState.name === 'company') {
-      // disbale auto load jobs tab temporarily
-      // $state.go('jobs', {}, { relative: toState });
+      $state.go('jobs', {}, { relative: toState });
     }
   });
 };

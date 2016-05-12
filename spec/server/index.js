@@ -63,9 +63,6 @@ describe('API Routes Tests', function () {
       .expect(function (res) {
         console.log('>>>> ', res.body);
         return expect(Number(res.body.id)).not.to.be.NaN;
-        // if (!isNaN(Number(res.body))) {
-        //   throw new Error('Response is not a number');
-        // }
       })
       .expect(200, done);
     });
