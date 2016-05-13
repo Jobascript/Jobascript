@@ -4,27 +4,27 @@ module.exports = function ($stateProvider) {
   .state('comm', {
     parent: 'company',
     url: '/communications',
-    resolve: {
-      gapi: function ($window) {
-        return new Promise(function (resolve) {
-          var googleScript = $window.document.createElement('script');
-          googleScript.onload = function () {
-            resolve(gapi);
-          };
+    // resolve: {
+    //   gScript: function ($window) {
+    //     return new Promise(function (resolve) {
+    //       var googleScript = $window.document.createElement('script');
+    //       // googleScript.onload = function (sth) {
+    //       //   resolve(gapi);
+    //       // };
+    //       googleScript.setAttribute('src', 'https://apis.google.com/js/client.js');
+    //       googleScript.setAttribute('id', 'onetime');
 
-          googleScript.setAttribute('src', 'https://apis.google.com/js/client.js');
-          googleScript.setAttribute('id', 'onetime');
-
-          if (!$window.document.getElementById('onetime')) {
-            $window.document.head.appendChild(googleScript);
-          } else {
-            resolve(gapi);
-          }
-        }).catch(function (err) {
-          console.error('Error loading google api: ', err);
-        });
-      }
-    },
+    //       if (!$window.document.getElementById('onetime')) {
+    //         $window.document.head.appendChild(googleScript);
+    //         resolve(googleScript);
+    //       } else {
+    //         resolve($window.document.getElementById('onetime'));
+    //       }
+    //     }).catch(function (err) {
+    //       console.error('Error loading google api: ', err);
+    //     });
+    //   }
+    // },
     controller: 'CommController',
     template: require('./comm.html')
   })

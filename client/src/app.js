@@ -57,3 +57,15 @@ require('tachyons/css/tachyons.min.css');
 require('./shared/layout.css');
 
 angular.bootstrap(document, ['jobascript']);
+
+// var googleScript = window.document.createElement('script');
+// googleScript.onload = function () {
+//   console.log('gapi');
+//   angular.bootstrap(document, ['jobascript']);
+// };
+// googleScript.setAttribute('src', 'https://apis.google.com/js/client.js');
+// googleScript.setAttribute('id', 'onetime');
+
+// if (!window.document.getElementById('onetime')) {
+//   window.document.head.appendChild(googleScript);
+// }
