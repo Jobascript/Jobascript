@@ -1,6 +1,6 @@
 <section>
   <h1>
-    <img class="w3" ng-src="{{company.logo}}"> {{ (company.legal_name.indexOf(company.name) !== -1 ? company.legal_name : company.display_name) || company.name }}
+    <img class="w3" ng-src="{{company.logo}}"> {{ (company.legal_name.toLowerCase().indexOf(company.display_name.toLowerCase()) !== -1 ? company.legal_name : company.display_name) || company.display_name }}
     <button class="fr btn" ng-if="company.isFollowing" ng-click="unfollow()" ng-mouseleave="btnHover = false" ng-mouseenter="btnHover = true" ng-init="btnHover = false" ng-class="{'btn-danger': btnHover, 'btn-default': !btnHover}">
       <i class="glyphicon" ng-class="{'glyphicon-remove': btnHover, 'glyphicon-heart text-danger': !btnHover}"></i>
       {{ btnHover ? 'Unfollow' : 'Following'}}
