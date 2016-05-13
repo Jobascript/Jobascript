@@ -1,8 +1,8 @@
 <section>
   <button class="btn btn-primary" ng-click="connect()" ng-show="!isAuth">Connect with Gmail</button>
   <ul>
-    <li ng-repeat="message in emails" ui-sref-active="active">
-      <a ui-sref="email({message_id: message.id})">{{message.subject}}</a>
+    <li ng-repeat="email in emails" ui-sref-active="active">
+      <email-thread thread-id="" ui-sref="email({message_id: email.id})"></email-thread>
     </li>
   </ul>
 </section>

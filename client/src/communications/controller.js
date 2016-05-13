@@ -11,7 +11,6 @@ module.exports = function ($scope, $state, currentCompany, gapi) {
   checkAuth();
 
   function checkAuth() {
-    // console.log(JSON.stringify(gapi));
     gapi.auth.authorize({
       client_id: CLIENT_ID,
       scope: SCOPES,

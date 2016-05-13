@@ -5,8 +5,15 @@ module.exports = function ($stateProvider) {
     parent: 'company',
     url: '/communications',
     resolve: {
-      gapi: function () {
-        return require('google-client-api')();
+      gapi: function (GAPI) {
+        var google;
+        if (!GAPI.getGAPI()){
+          google = require('google-client-api')();
+          GAPI.setGAPI(google);
+        } else {
+          google = GAPI.getGAPI();
+        }
+        return google;
       }
     },
     controller: 'CommController',
