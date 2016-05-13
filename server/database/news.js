@@ -24,7 +24,7 @@ module.exports = function (db) {
     }
     /* eslint-enable */
 
-    news.company_id = companyID;
+    news.company_id = news.company_id ? news.company_id : companyID;
 
     var uniqueStr = [
       'SELECT * FROM ${table~}',
@@ -70,7 +70,7 @@ module.exports = function (db) {
   News.getNews = function (options) {
     var sqlStr = [
       'SELECT * FROM ${table~}',
-      'WHERE company_id=${company_id};'
+      'WHERE company_id=${company_id} ORDER BY date_written DESC;'
     ].join(' ');
 
     return db.query(sqlStr, {

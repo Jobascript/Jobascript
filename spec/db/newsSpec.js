@@ -21,7 +21,6 @@ describe('News Table Query', function () {
   };
 
   before(function (done) {
-    
     return News.clearAll()
     .then(Company.clearAll)
     .then(function () {
@@ -38,7 +37,6 @@ describe('News Table Query', function () {
   });
 
   describe('Inserting', function () {
-
     var article = {
       title: 'Some guy acquires Twitch for $1',
       snippet: 'Some guy pays one dollar to acquire twitch',
@@ -46,7 +44,7 @@ describe('News Table Query', function () {
       date_written: '2016-5-10'
     };
 
-    beforeEach(function (done) {
+    before(function (done) {
       pgp.query('DELETE FROM news;')
       .then(function () {
         return Company.addCompany(company);
@@ -62,7 +60,7 @@ describe('News Table Query', function () {
       });
     });
 
-    afterEach(function (done) {
+    after(function (done) {
       pgp.tx(function (t) {
         t.batch([
           t.query('DELETE FROM news;'),
@@ -107,7 +105,7 @@ describe('News Table Query', function () {
       date_written: '2015-5-10'
     };
 
-    beforeEach(function (done) {
+    before(function (done) {
       pgp.query('DELETE FROM news;')
       .then(function () {
         return Company.addCompany(company);
@@ -123,7 +121,7 @@ describe('News Table Query', function () {
       });
     });
 
-    afterEach(function (done) {
+    after(function (done) {
       pgp.tx(function (t) {
         t.batch([
           t.query('DELETE FROM news;'),
@@ -151,7 +149,7 @@ describe('News Table Query', function () {
         url: 'www.newnews.com',
         date_written: moment(new Date()).format()
       };
-        
+
       return News.addNews(article, companyID)
       .then(News.removeOld)
       .then(function () {
