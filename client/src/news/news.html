@@ -1,9 +1,10 @@
 <div>
-  <div ng-repeat="new in news" style="padding-top:15px;">
-    <!-- <img src="{{new.image_url}}" height="42" width="42"> -->
-    <a href="{{new.url}}">{{new.title}}</a>
+  <div ng-repeat="new in news" style="padding:6px;margin-top:6px;background-color:#F8F8F8;box-shadow:2.5px 2.5px 2.5px #888888;" class="table table-bordered">
+    <img src="{{new.image_url}}">
+    <font size="4"><a href="{{new.url}}">{{new.title}}</a></font>
     <div class="text-success">{{new.url}}</div>
     <div ng-bind-html="new.snippet" class="text-muted"></div>
+    <a href="{{new.url}}">Read more...</a>
   </div>
-  <div ng-if="news.length === 0">NO NEWS YET, PLESE COME BACK LATER THANK YOU!</div>
+  <div ng-if="news.length === 0" style="padding-top:15px;">Sorry, we don't have news for {{compName}} yet. Please check again soon!</div>
 </div>
