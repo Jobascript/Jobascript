@@ -139,7 +139,7 @@ function mapColumns(schema, jobs, comID) {
         // visa_sponsored: null,
         // remote_ok: null,
         // relocation: null,
-        created: moment(new Date()).isAfter(job.created_at) ? moment(new Date()).format() : job.created_at,
+        created: moment(new Date()).isAfter(job.created_at) ? moment(new Date()).toISOString() : job.created_at,
         city: job.location,
         company_id: comID
       };
@@ -152,7 +152,7 @@ function mapColumns(schema, jobs, comID) {
         // visa_sponsored: null,
         // remote_ok: null,
         // relocation: null,
-        created: job.date,
+        created: moment(job.date).toISOString(),
         city: job.formattedLocation,
         company_id: comID
       };
@@ -165,7 +165,7 @@ function mapColumns(schema, jobs, comID) {
         // visa_sponsored: null,
         remote_ok: !!job.telecommuting,
         relocation: !!job.relocation_assistance,
-        created: job.post_date,
+        created: moment(job.post_date).toISOString(),
         city: job.formattedLocation || job.company.location.name,
         company_id: comID
       };
