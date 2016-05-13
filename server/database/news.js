@@ -1,4 +1,5 @@
 const TABLE_NAME = 'news';
+var _ = require('underscore');
 
 module.exports = function (db) {
   var News = {};
@@ -15,33 +16,30 @@ module.exports = function (db) {
   * @return {Promise} resolve with news id
   */
   News.addNews = function (news, companyID) {
-    /* eslint-disable max-len */
+    /* eslint-disable */
     if (!news) {
       throw new Error('a news obj arg is required! e.g. {title: \'Twitch gets pwnd by newbs\'...}');
     } else if (!news.url) {
       throw new Error('company has to have a url property! e.g. {url: \'www.cnn.com/trump_wins_election\'...}');
     }
+
+    news.company_id = news.company_id ? news.company_id : companyID;
+
     /* eslint-enable */
 
     var uniqueStr = [
       'SELECT * FROM ${table~}',
-      'WHERE url=${url}'
+      'WHERE url=$$${url}$$;'
     ].join(' ');
 
     /* eslint-disable indent */
     var sqlStr = [
-      'INSERT INTO ${table~} (title, snippet, url, company_id, author, image_url, date_written)',
-      'VALUES',
-      '(',
-        [
-          '${title}',
-          '${snippet}',
-          '${url}',
-          '${company_id}',
-          '${author}',
-          '${image_url}',
-          '${date_written}'
-        ].join(', '),
+      'INSERT INTO ${table~} (',
+      Object.keys(news).toString(),
+      ') VALUES (',
+      _.map(news, function (value) {
+        return '$$' + value + '$$';
+      }).toString(),
       ') RETURNING id;'
     ].join(' ');
     /* eslint-enable */
@@ -52,21 +50,17 @@ module.exports = function (db) {
           table: TABLE_NAME,
           url: news.url
         }),
-        t.one(sqlStr, {
-          table: TABLE_NAME,
-          title: news.title,
-          snippet: news.snippet,
-          url: news.url,
-          author: news.author,
-          image_url: news.image_url,
-          date_written: news.date_written,
-          company_id: companyID
-        }).then(function (result) {
-          return result.id;
-        }).catch(function (err) {
-          return Promise.reject(err);
-        })
+        t.one(sqlStr, { table: TABLE_NAME })
       ]);
+    })
+    .then(function (results) {
+      return results[1].id;
+    })
+    .catch(function (err) {
+      if (err[0] && err[0].success) { // check if it failed the duplicates check
+        return Promise.reject(err[1].result);
+      }
+      return Promise.reject(err);
     });
   };
 
@@ -77,7 +71,7 @@ module.exports = function (db) {
   News.getNews = function (options) {
     var sqlStr = [
       'SELECT * FROM ${table~}',
-      'WHERE company_id=${company_id};'
+      'WHERE company_id=${company_id} ORDER BY date_written DESC;'
     ].join(' ');
 
     return db.query(sqlStr, {

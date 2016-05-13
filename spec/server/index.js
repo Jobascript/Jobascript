@@ -13,7 +13,37 @@ describe('API Routes Tests', function () {
     });
   });
 
-  xdescribe('company tests', function () {
+  describe('job tests', function () {
+    var COM_ID;
+    before(function (done) {
+      db.companiesTable.addCompany({
+        name: 'google',
+        display_name: 'Google',
+        domain: 'google.com',
+        logo: 'https://logo.clearbit.com/google.com'
+      })
+      .then(function (id) {
+        COM_ID = id;
+        done();
+      });
+    });
+
+    after(function (done) {
+      db.companiesTable.clearAll()
+      .then(db.jobsTable.clearAllJobs)
+      .then(function () {
+        done();
+      });
+    });
+
+    it('GET', function (done) {
+      request.get('/api/jobs')
+      .query({ company_id: COM_ID })
+      .expect(200, done);
+    });
+  });
+
+  describe('company tests', function () {
     after(function (done) {
       db.companiesTable.clearAll()
       .then(function () {
@@ -23,6 +53,7 @@ describe('API Routes Tests', function () {
 
     it('should respond with a company ID after the company was added', function (done) {
       request.post('/api/company')
+      .type('json')
       .send({
         name: 'google',
         display_name: 'Google',
@@ -31,13 +62,9 @@ describe('API Routes Tests', function () {
       })
       .expect(function (res) {
         console.log('>>>> ', res.body);
-        return expect(JSON.parse(res.body)).to.be.a('number');
-        // if (!isNaN(Number(res.body))) {
-        //   throw new Error('Response is not a number');
-        // }
+        return expect(Number(res.body.id)).not.to.be.NaN;
       })
       .expect(200, done);
     });
   });
 });
-

@@ -37,8 +37,11 @@ describe('Database companies', function () {
   ];
 
   before(function (done) {
-    Promise.map(companies, function (com) {
-      return db.addCompany(com);
+    db.clearAll()
+    .then(function () {
+      Promise.map(companies, function (com) {
+        return db.addCompany(com);
+      });
     })
     .then(function () {
       done();
@@ -136,10 +139,13 @@ describe('Database companies', function () {
     });
   });
 
-  xdescribe('Update Company', function () {
+  describe('Update Company', function () {
     beforeEach(function (done) {
       db.clearAll().then(function () {
-        db.addCompany({name: 'stripe'}).then(function (id) {
+        db.addCompany({
+          name: 'stripe',
+          domain: 'stripe.com'
+        }).then(function (id) {
           ID = id;
           done();
         });

@@ -1,146 +1,198 @@
-var assert = require('chai').assert;
-var expect = require('chai').expect;
-var config = require('../common.js').config();
-var Company = require('../../server/database/index.js').companiesTable
+var Company = require('../../server/database/index.js').companiesTable;
 var News = require('../../server/database/index.js').newsTable;
+var pgp = require('../../server/database/index.js').pgp;
+var moment = require('moment');
+
+var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+
+/* eslint-disable no-unused-vars */
+var expect = chai.expect;
+var should = chai.should();
+/* eslint-enable */
 
 describe('News Table Query', function () {
   var companyID = '';
-  beforeEach(function (done) {
-    var company = {
-      name: 'twitch.com',
-      display_name: 'TWITCH',
-      domain: 'www.twitch.com'
+  var company = {
+    name: 'twitch.com',
+    display_name: 'TWITCH',
+    domain: 'www.twitch.com'
+  };
+
+  before(function (done) {
+    return News.clearAll()
+    .then(Company.clearAll)
+    .then(function () {
+      done();
+    });
+  });
+
+  after(function (done) {
+    return News.clearAll()
+    .then(Company.clearAll)
+    .then(function () {
+      done();
+    });
+  });
+
+  describe('Inserting', function () {
+    var article = {
+      title: 'Some guy acquires Twitch for $1',
+      snippet: 'Some guy pays one dollar to acquire twitch',
+      url: 'www.news.com',
+      date_written: '2016-5-10'
     };
 
-    Company.addCompany(company).then(function (compID) {
-      companyID = compID;
-      done();
+    before(function (done) {
+      pgp.query('DELETE FROM news;')
+      .then(function () {
+        return Company.addCompany(company);
+      })
+      .then(function (compID) {
+        companyID = compID;
+      })
+      .then(function () {
+        return News.addNews(article, companyID);
+      })
+      .then(function () {
+        done();
+      });
     });
-  });
-  
-  afterEach(function (done) {
-    return Company.clearAll().then(function (data) {
-      done();
-    });
-  });
 
-  describe ('Inserting', function () {
-    it ('should successfully add an article', function (done) {
-      var article = {
+    after(function (done) {
+      pgp.tx(function (t) {
+        t.batch([
+          t.query('DELETE FROM news;'),
+          t.query('DELETE FROM companies;')
+        ]);
+      })
+      .then(function () {
+        done();
+      });
+    });
+
+    it('should successfully add an article', function () {
+      var thisArticle = {
+        title: 'Some guy acquires Twitch for $1',
+        snippet: 'Some guy pays one dollar to acquire twitch',
+        url: 'www.ddddddddd.com',
+        date_written: '2014-5-10'
+      };
+
+      return News.addNews(thisArticle, companyID)
+      .should.eventually.be.fullfilled;
+    });
+
+    it('should reject articles with collided urls', function () {
+      var thisArticle = {
         title: 'Some guy acquires Twitch for $1',
         snippet: 'Some guy pays one dollar to acquire twitch',
         url: 'www.news.com',
         date_written: '2016-5-10'
       };
 
-      News.addNews(article, companyID).then(function (articleID) {
-        expect(articleID).to.be.ok;
-        News.clearAll().then(function (data) {
-          done();
-        });
-      });
-    });
-
-    it ('should only accept articles with unique urls', function (done) {
-
-      var article = {
-        title: 'Some guy acquires Twitch for $1',
-        snippet: 'Some guy pays one dollar to acquire twitch',
-        url: 'www.news.com',
-        date_written: '2016-5-10'
-      };
-
-      News.addNews(article, companyID).then(function (articleID) {
-        News.addNews(article, companyID).then(function (articleID) {
-        }).catch(function (err) {
-          expect(err).to.be.ok;
-          News.clearAll().then(function (data) {
-            done();
-          });
-        });
-      });
-
+      return News.addNews(thisArticle, companyID)
+      .should.be.rejected;
     });
   });
 
-  describe ('Removing old articles', function () {
-    it ('should successfully remove articles older than 30 days', function (done) {
-      var article = {
-        title: 'Some guy acquires Twitch for $1',
-        snippet: 'Some guy pays one dollar to acquire twitch',
-        url: 'www.news.com',
-        date_written: '2015-5-10'
-      };
+  describe('Removing old articles', function () {
+    var article = {
+      title: 'Some guy acquires Twitch for $1',
+      snippet: 'Some guy pays one dollar to acquire twitch',
+      url: 'www.news.com',
+      date_written: '2015-5-10'
+    };
 
-      News.addNews(article, companyID).then(function (articleID) {
-        News.removeOld().then(function (data) {
-          News.getNews({ company_id: companyID }).then(function (articles) {
-            expect(articles).to.be.empty;
-              
-            done();
-          })
-        });
+    before(function (done) {
+      pgp.query('DELETE FROM news;')
+      .then(function () {
+        return Company.addCompany(company);
+      })
+      .then(function (compID) {
+        companyID = compID;
+      })
+      .then(function () {
+        return News.addNews(article, companyID);
+      })
+      .then(function () {
+        done();
       });
     });
-    it ('should not remove articles newer than 30 days', function (done) {
-      var today = new Date();
+
+    after(function (done) {
+      pgp.tx(function (t) {
+        t.batch([
+          t.query('DELETE FROM news;'),
+          t.query('DELETE FROM companies;')
+        ]);
+      })
+      .then(function () {
+        done();
+      });
+    });
+
+    it('should successfully remove articles older than 30 days', function () {
+
+      return News.removeOld()
+      .then(function () {
+        return News.getNews({ company_id: companyID });
+      })
+      .should.eventually.be.empty;
+    });
+
+    it('should not remove articles newer than 30 days', function () {
       var article = {
         title: 'Some guy acquires Twitch for $1',
         snippet: 'Some guy pays one dollar to acquire twitch',
-        url: 'www.news.com',
-        date_written: today
+        url: 'www.newnews.com',
+        date_written: moment(new Date()).format()
       };
-        
-      News.addNews(article, companyID).then(function (articleID) {
-        News.removeOld().then(function (data) {
-          News.getNews({ company_id: companyID }).then(function (articles) {
-            expect(articles).to.not.be.empty;
-            News.clearAll().then(function (data) {
-              done();
-            });
-          });
-        });
-      });
 
+      return News.addNews(article, companyID)
+      .then(News.removeOld)
+      .then(function () {
+        return News.getNews({ company_id: companyID });
+      })
+      .should.eventually.not.be.empty;
     });
   });
 
   describe('getNews', function () {
-    it('should return news articles related to a particular company', function (done) {
-      var article1 = {
-        title: 'Some guy acquires Twitch for $1',
-        snippet: 'Some guy pays one dollar to acquire twitch',
-        url: 'www.news1.com',
-        date_written: '2016-5-10'
-      };
-      var article2 = {
-        title: 'Some guy acquires Twitch for $1',
-        snippet: 'Some guy pays one dollar to acquire twitch',
-        url: 'www.news2.com',
-        date_written: '2016-5-10'
-      };
+    var article = {
+      title: 'Some guy acquires Twitch for $1',
+      snippet: 'Some guy pays one dollar to acquire twitch',
+      url: 'www.news.com',
+      date_written: '2015-5-10'
+    };
 
-      News.addNews(article1, companyID).then(function (articleID) {
-        News.addNews(article2, companyID).then(function (articleID) {
-          News.getNews({ company_id: companyID }).then(function (articles) {
-            expect(articles).to.have.length.above(1);
-
-            News.clearAll().then(function (data) {
-              done();
-            });
-          });
-        });
+    beforeEach(function (done) {
+      pgp.query('DELETE FROM news;')
+      .then(function () {
+        return Company.addCompany(company);
+      })
+      .then(function (compID) {
+        companyID = compID;
+      })
+      .then(function () {
+        return News.addNews(article, companyID);
+      })
+      .then(function () {
+        done();
       });
     });
 
-    it('should return no articles if none exist', function (done) {
+    it('should return news articles related to a particular company', function () {
+      News.getNews({ company_id: companyID })
+      .should.eventually.be.an('array').lengthOf(1);
+    });
+
+    xit('should return no articles if none exist', function (done) {
       News.getNews({ company_id: companyID }).then(function (articles) {
         expect(articles).to.be.empty;
         done();
       });
     });
-
-
   });
 });

@@ -72,4 +72,9 @@ gulp.task('watch', function() {
   gulp.watch(paths.server.scripts, ['server']);
 });
 
+gulp.task('dev-client', ['client'], function () {
+  // client
+  gulp.watch(paths.client.src + '**/*.*', ['client']);
+});
+
 gulp.task('default', ['watch', 'startup']);

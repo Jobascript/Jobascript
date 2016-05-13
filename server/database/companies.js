@@ -37,8 +37,6 @@ module.exports = function (db) {
     return db.query(sqlStr, {
       table: TABLE_NAME,
       size: size || 'ALL'
-    }).catch(function (err) {
-      return Promise.reject(err);
     });
   };
 
@@ -76,8 +74,6 @@ module.exports = function (db) {
       logo: company.logo || null
     }).then(function (result) {
       return result.id;
-    }).catch(function (err) {
-      return Promise.reject(err);
     });
   };
 
@@ -90,8 +86,6 @@ module.exports = function (db) {
 
     return db.one(sqlStr, {
       table: TABLE_NAME
-    }).catch(function (err) {
-      return Promise.reject(err);
     });
   };
 
@@ -117,8 +111,6 @@ module.exports = function (db) {
       table: TABLE_NAME
     }).then(function (result) {
       return result.rowCount;
-    }).catch(function (err) {
-      return Promise.reject(err);
     });
   };
 
