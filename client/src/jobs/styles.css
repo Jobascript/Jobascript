@@ -31,6 +31,9 @@
   background-color: #F3F3F3;
   border: 1px solid #E1E8ED;
   padding: 1em;
+  margin-top: 5px;
+  margin-bottom: 7px;
+  box-shadow: 2.5px 2.5px 2.5px #888888;
 }
 .job-filter-wrapper {
   min-height: 72px;
@@ -52,7 +55,7 @@
   cursor: pointer;
 }
 .job-apply {
-  color: #656565;
+  /*color: #656565;*/
   float: right;
 }
 .job-apply:hover {
@@ -70,10 +73,8 @@
   cursor: pointer;
 }
 .job-description-text {
-  font-family: 'Lato', serif;
-  font-size: 17px;
+  font-size: 16px;
   color: #222222;
-  max-width: 650px;
   margin: 0 auto;
 }
 
