@@ -1,8 +1,13 @@
 <section>
   <h1>
     <img class="w3" ng-src="{{company.logo}}"> {{company.legal_name || company.display_name}}
-    <button class="fr btn btn-danger" ng-if="company.isFollowing" ng-click="unfollow()">Unfollow</button>
-    <button class="fr btn btn-success" ng-if="!company.isFollowing" ng-click="follow()">Follow</button>
+    <button class="fr btn" ng-if="company.isFollowing" ng-click="unfollow()" ng-mouseleave="btnHover = false" ng-mouseenter="btnHover = true" ng-init="btnHover = false" ng-class="{'btn-danger': btnHover, 'btn-default': !btnHover}">
+      <i class="glyphicon" ng-class="{'glyphicon-remove': btnHover, 'glyphicon-heart text-danger': !btnHover}"></i>
+      {{ btnHover ? 'Unfollow' : 'Following'}}
+    </button>
+    <button class="fr btn btn-primary" ng-if="!company.isFollowing" ng-click="follow()">
+      <i class="glyphicon glyphicon-heart-empty"></i> Follow
+    </button>
   </h1>
   <p class="measure">{{ company.description || 'Description Coming Soon' }}</p>
   <section>
