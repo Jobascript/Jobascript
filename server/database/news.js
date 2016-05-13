@@ -16,15 +16,16 @@ module.exports = function (db) {
   * @return {Promise} resolve with news id
   */
   News.addNews = function (news, companyID) {
-    /* eslint-disable max-len */
+    /* eslint-disable */
     if (!news) {
       throw new Error('a news obj arg is required! e.g. {title: \'Twitch gets pwnd by newbs\'...}');
     } else if (!news.url) {
       throw new Error('company has to have a url property! e.g. {url: \'www.cnn.com/trump_wins_election\'...}');
     }
-    /* eslint-enable */
 
     news.company_id = news.company_id ? news.company_id : companyID;
+
+    /* eslint-enable */
 
     var uniqueStr = [
       'SELECT * FROM ${table~}',
