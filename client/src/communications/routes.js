@@ -4,61 +4,30 @@ module.exports = function ($stateProvider) {
   .state('comm', {
     parent: 'company',
     url: '/communications',
-    // resolve: {
-    //   gapi: function ($document) {
-    //     console.log('inside resolve');
+    resolve: {
+      gapi: function ($window) {
+        return new Promise(function (resolve) {
+          var googleScript = $window.document.createElement('script');
+          googleScript.onload = function () {
+            resolve(gapi);
+          };
 
-    //     // var $googleScript = $('<script>');
-    //     // $googleScript.attr('src', 'https://apis.google.com/js/client.js');
-    //     // $googleScript.attr('id', 'onetime');
+          googleScript.setAttribute('src', 'https://apis.google.com/js/client.js');
+          googleScript.setAttribute('id', 'onetime');
 
-    //     // console.log('script tag', googleScript);
-
-    //     return new Promise(function (resolve, reject) {
-    //       var googleScript = angular.element('<script/>');
-    //       googleScript.onload(function () {
-    //         console.log('gapi loaded');
-    //         resolve(gapi);
-    //       });
-    //       googleScript.attr('src', 'https://apis.google.com/js/client.js');
-    //       googleScript.attr('id', 'onetime');
-
-    //       console.log('inside resolve p', googleScript);
-
-    //       if (!$('#onetime')) {
-    //         googleScript.appendTo('head');
-    //         console.log('script appended');
-    //       } else {
-    //         console.log('script already loaded');
-    //         resolve(gapi);
-    //       }
-    //       // reject('no script');
-    //     }).catch(function (err) {
-    //       console.log(err);
-    //     });
-    //   }
-    // },
-    onEnter: function () {
-      var googleScript = window.document.createElement('script');
-      googleScript.setAttribute('src', 'https://apis.google.com/js/client.js');
-      googleScript.setAttribute('id', 'onetime');
-
-      if (!window.document.getElementById('onetime')) {
-        window.document.head.appendChild(googleScript);
+          if (!$window.document.getElementById('onetime')) {
+            $window.document.head.appendChild(googleScript);
+          } else {
+            resolve(gapi);
+          }
+        }).catch(function (err) {
+          console.error('Error loading google api: ', err);
+        });
       }
     },
-    // resolve: {
-    //   emails: function (Comm) {
-    //     return Comm.getEmails(function (emails) {
-    //       return emails;
-    //     }, function (err) {
-    //       console.log('not authorize: ', err);
-    //       return [];
-    //     });
-    //   }
-    // },
     controller: 'CommController',
-    template: require('./comm.html') })
+    template: require('./comm.html')
+  })
   .state('email', {
     resolve: {
       message: function ($stateParams) {
