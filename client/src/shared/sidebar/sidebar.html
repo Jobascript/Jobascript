@@ -1,6 +1,15 @@
-<div ng-blur="suggestions = []">
-  <input type="text" class="form-control" placeholder="Filter" ng-model="search">
-  <ul class="nav nav-pills nav-stacked mt2">
-    <li ng-repeat="company in companies | filter: { display_name: search } track by company.id | orderBy: '-company.followed_on'" ui-sref-active="active"><a ui-sref="company(company)">{{ company.display_name }}</a></li>
+<div class="{{style.outer}}">
+  <ul class="nav nav-pills nav-stacked mt2 overflow-container {{ style['company-list'] }}">
+    <li ng-repeat="company in companies track by company.id" ui-sref-active="active"><a ui-sref="company(company)">{{ company.display_name }}</a></li>
   </ul>
+  <header class="{{style.control}}">
+    <div class="btn-group btn-group-justified">
+      <a class="btn btn-default btn-sm tl" ng-click="sortBy('name')">
+        Name <i class="glyphicon fr" ng-class="{'glyphicon-menu-down': reverses.name, 'glyphicon-menu-up': !reverses.name}"></i>
+      </a>
+      <a class="btn btn-default btn-sm tl" ng-click="sortBy('followed_on')">
+        Date <i class="glyphicon fr" ng-class="{'glyphicon-menu-down': reverses['followed_on'], 'glyphicon-menu-up': !reverses['followed_on']}"></i>
+      </a>
+    </div>
+  </header>
 </div>

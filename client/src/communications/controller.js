@@ -1,5 +1,5 @@
 module.exports = function ($scope, $state, Comm, currentCompany) {
-  console.log(currentCompany);
+  // console.log(gapi);
   $scope.emails = [];
   $scope.auth = function () {
     console.log('check auth');
@@ -13,8 +13,8 @@ module.exports = function ($scope, $state, Comm, currentCompany) {
       });
     });
   };
-  $scope.changeState = function (message) {
-    $state.go('email');
-    console.log(message);
-  };
+  // $scope.changeState = function (message) {
+  //   $state.go('email');
+  //   console.log(message);
+  // };
 };

@@ -1,7 +1,9 @@
 var Promise = require('bluebird');
 var inflection = require('inflection');
+var style = require('./getting-started.css');
 
 module.exports = function ($scope, topCompanies, User, Company, $state) {
+  $scope.style = style;
   $scope.numOfFollows = '';
   var toFollow = {};
   $scope.topCompanies = topCompanies;

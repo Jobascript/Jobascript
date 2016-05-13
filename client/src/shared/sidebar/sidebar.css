@@ -1,1 +1,14 @@
+:local(.company-list) {
+  height: 100%;
+  padding: 3em 0;
+}
 
+:local(.control) {
+  position: absolute;
+  top: 0;
+}
+
+:local(.outer) {
+  position: relative;
+  height: 100%;
+}
