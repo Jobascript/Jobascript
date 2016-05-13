@@ -70,7 +70,7 @@ module.exports = function (db) {
       Object.keys(jobListing).toString(),
       ') VALUES (',
       _.map(jobListing, function (value) {
-        return '$$' + value + '$$'
+        return '$$' + value + '$$';
       }).toString(),
       ') RETURNING id;'
     ].join(' ');
@@ -88,7 +88,6 @@ module.exports = function (db) {
       if (err[0] && err[0].success) { // check if it failed the duplicates check
         return Promise.reject(err[1].result);
       }
-
       return Promise.reject(err);
     });
   };
