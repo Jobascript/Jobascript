@@ -1,7 +1,9 @@
 var _ = require('underscore');
 var inflection = require('inflection');
+var style = require('./topnav.css');
 
 module.exports = function ($scope, Company, $state, companies, User, ngToast) {
+  $scope.style = style;
   $scope.isAuth = User.isAuth();
   $scope.isOpen = false;
   $scope.suggestions = [];

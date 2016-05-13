@@ -2,3 +2,14 @@
   position: relative;
   z-index: 999;
 }
+
+:local .logo {
+  display: block;
+  background-image: url(./jbs_logo.png);
+  background-position: center;
+  background-size: 310px 68px;
+  width: 310px;
+  height: 68px;
+  margin-left: auto;
+  margin-right: auto;
+}
