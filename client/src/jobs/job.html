@@ -10,7 +10,7 @@
   </div>
   <div class='job-wrapper' ng-repeat="job in jobs | filter: {title: jobSearch}">
     <span class='job-title' ng-click="clicked(job)">{{job.title}}</span>
-    <span class='job-apply'><button><a class='job-apply' ng-href='{{job.url}}' target='_blank'>Click Here to Apply</a></button></span>
+    <span class='job-apply'><button class='btn btn-default'><a class='job-apply' ng-href='{{job.url}}' target='_blank'>Click Here to Apply</a></button></span>
     <div class='job-publish'>Posted On {{job.created | date: 'medium'}}</div>
     <div class='job-compact' ng-class="{'job-compact': job.isCompact}">
       <div class='job-description-text measure ml0' ng-bind-html='job.description | textFilter'></div>
