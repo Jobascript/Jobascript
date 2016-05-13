@@ -17,7 +17,7 @@
           <img class="media-object img-thumbnail w4" ng-src="{{company.logo}}" alt="{{company.name}}">
         </div>
         <div class="media-body">
-          <h4 class="media-heading">{{ company.legal_name || company.display_name || company.name }}</h4>
+          <h4 class="media-heading">{{ (company.legal_name.indexOf(company.name) !== -1 ? company.legal_name : company.display_name) || company.name }}</h4>
           <p>{{ company.description }}</p>
         </div>
       </li>
