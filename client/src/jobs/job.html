@@ -8,7 +8,7 @@
   <div ng-if='!currentJobs'>
     Sorry! There are no job listing for {{currentCompany.display_name}} at this time. Please check again soon!
   </div>
-  <div class='job-wrapper' ng-repeat="job in currentJobs | filter: {title: jobSearch}">
+  <div class='job-wrapper' ng-repeat="job in jobs | filter: {title: jobSearch}">
     <span class='job-title' ng-click="clicked(job)">{{job.title}}</span>
     <span class='job-apply'><button><a class='job-apply' ng-href='{{job.url}}' target='_blank'>Click Here to Apply</a></button></span>
     <div class='job-publish'>Posted On {{job.created | date: 'medium'}}</div>
