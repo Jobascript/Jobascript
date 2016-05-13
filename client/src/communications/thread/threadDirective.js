@@ -1,5 +1,12 @@
-module.exports = function (GAPI) {
+module.exports = function () {
   return {
-    template: require('./thread.html')
+    scope: {
+      threadId: '@'
+    },
+    template: require('./thread.html'),
+    controller: function ($scope, GAPI) {
+      console.log('thred scope ', $scope);
+      // GAPI
+    }
   };
 };
