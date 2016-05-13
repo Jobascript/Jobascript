@@ -4,33 +4,17 @@ module.exports = function ($stateProvider) {
   .state('comm', {
     parent: 'company',
     url: '/communications',
-    // resolve: {
-    //   gScript: function ($window) {
-    //     return new Promise(function (resolve) {
-    //       var googleScript = $window.document.createElement('script');
-    //       // googleScript.onload = function (sth) {
-    //       //   resolve(gapi);
-    //       // };
-    //       googleScript.setAttribute('src', 'https://apis.google.com/js/client.js');
-    //       googleScript.setAttribute('id', 'onetime');
-
-    //       if (!$window.document.getElementById('onetime')) {
-    //         $window.document.head.appendChild(googleScript);
-    //         resolve(googleScript);
-    //       } else {
-    //         resolve($window.document.getElementById('onetime'));
-    //       }
-    //     }).catch(function (err) {
-    //       console.error('Error loading google api: ', err);
-    //     });
-    //   }
-    // },
+    resolve: {
+      gapi: function () {
+        return require('google-client-api')();
+      }
+    },
     controller: 'CommController',
     template: require('./comm.html')
   })
   .state('email', {
     resolve: {
-      message: function ($stateParams) {
+      message: function ($stateParamsgapi, gapi) {
         return new Promise(function (resolve, reject) {
           console.log('new promise');
           var messageRequest = gapi.client.gmail.users.messages.get({

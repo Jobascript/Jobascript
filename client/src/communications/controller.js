@@ -1,75 +1,37 @@
-var CLIENT_ID = '647322278471-06e71cofl2ddsauer9rtoopfpokgo4pm.apps.googleusercontent.com';
+// var CLIENT_ID = '647322278471-06e71cofl2ddsauer9rtoopfpokgo4pm.apps.googleusercontent.com';
+var CLIENT_ID = '378952285896-tlt8i2f17edieb5kl2mmsfl7miccetbg.apps.googleusercontent.com';
 var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 
-module.exports = function ($scope, $state, currentCompany, GAuth, GApi) {
-  /* globals gapi */
-
-  GAuth.setClient(CLIENT_ID);
-  GAuth.setScope(SCOPES.join(' '));
-  // GApi.load('gmail', 'v1')
-
+module.exports = function ($scope, $state, currentCompany, gapi) {
   $scope.isAuth = false;
   $scope.emails = [];
-  // $scope.auth = function () {
-  //   console.log('check auth');
-  //   Comm.checkAuth().then(function () {
-  //     console.log('get emails');
-  //     Comm.getEmails(currentCompany).then(function (emails) {
-  //       console.log('emails here: ', emails);
-  //       $scope.$apply(function () {
-  //         $scope.emails = emails;
-  //       });
-  //     });
-  //   });
-  // };
-  
-  $scope.connect = function () {
-    GAuth.login().then(function (user) {
-      console.log(user.name + ' is login');
-    }, function () {
-      console.log('login fail');
-    });
-  };
-  
-  // gScript.onload = checkAuth;
 
-  
-  GAuth.checkAuth().then(
-    function (user) {
-      console.log(user.name + 'is login');
-    },
-    function () {
-      console.log('NO AUTH');
-    }
-  );
+  $scope.connect = handleAuthClick;
+
+  checkAuth();
 
   function checkAuth() {
     // console.log(JSON.stringify(gapi));
-    // gapi.auth.authorize({
-    //   client_id: CLIENT_ID,
-    //   scope: SCOPES,
-    //   immediate: true
-    // }, handleAuthResult);
+    gapi.auth.authorize({
+      client_id: CLIENT_ID,
+      scope: SCOPES,
+      immediate: true
+    }, handleAuthResult);
   }
 
   function handleAuthResult(authResult) {
     $scope.$apply(function () {
-      // var authorizeButton = document.getElementById('authorize-button');
       if (authResult && !authResult.error) {
-        // authorizeButton.style.visibility = 'hidden';
-        
         $scope.isAuth = true;
         makeApiCall();
       } else {
         $scope.isAuth = false;
         console.log('not auth yet');
-        // authorizeButton.style.visibility = '';
-        // authorizeButton.onclick = handleAuthClick;
       }
     });
   }
 
-  function handleAuthClick(event) {
+  function handleAuthClick() {
     gapi.auth.authorize({
       client_id: CLIENT_ID,
       scope: SCOPES,

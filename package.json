@@ -24,7 +24,6 @@
   "homepage": "https://github.com/Jobascript/Jobascript#readme",
   "dependencies": {
     "angular": "^1.5.5",
-    "angular-google-gapi": "^1.0.0-beta.2",
     "angular-jwt": "0.0.9",
     "angular-sanitize": "^1.5.5",
     "angular-ui-router": "^0.2.18",
@@ -47,7 +46,7 @@
     "express": "^4.13.4",
     "express-jwt": "^3.4.0",
     "file-loader": "^0.8.5",
-    "googleapis": "^6.1.0",
+    "google-client-api": "^1.0.4",
     "gulp": "^3.9.1",
     "gulp-eslint": "^2.0.0",
     "gulp-mocha": "^2.2.0",
