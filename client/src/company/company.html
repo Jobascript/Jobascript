@@ -1,21 +1,36 @@
 <section>
-  <h1>
-    <img class="w3" ng-src="{{company.logo}}"> {{ (company.legal_name.toLowerCase().indexOf(company.display_name.toLowerCase()) !== -1 ? company.legal_name : company.display_name) || company.display_name }}
-    <button class="fr btn" ng-if="company.isFollowing" ng-click="unfollow()" ng-mouseleave="btnHover = false" ng-mouseenter="btnHover = true" ng-init="btnHover = false" ng-class="{'btn-danger': btnHover, 'btn-link': !btnHover}">
-      <i class="glyphicon" ng-class="{'glyphicon-remove': btnHover, 'glyphicon-heart text-danger': !btnHover}"></i>
-      <span ng-class="{'text-muted': !btnHover}">{{ btnHover ? 'Unfollow' : 'Following'}}</span>
-    </button>
-    <button class="fr btn btn-primary" ng-if="!company.isFollowing" ng-click="follow()">
-      <i class="glyphicon glyphicon-heart-empty"></i> Follow
-    </button>
-  </h1>
-  <p class="measure">{{ company.description || 'Description Coming Soon' }}</p>
-  <section>
-    <ul class="nav nav-tabs">
-      <li ui-sref-active="active"><a ui-sref="jobs()">Job Openings</a></li>
-      <li ui-sref-active="active"><a ui-sref="comm()">Communications</a></li>
-      <li ui-sref-active="active"><a ui-sref="news()">News</a></li>
-    </ul>
-    <div ui-view></div>
+  <section class="mb5 mt4">
+    <div class="media dib w-60 v-mid">
+      <div class="media-left media-middle pr0">
+        <img class="img-rounded media-object" ng-src="{{company.logo}}" alt="{{company.display_name}}">
+      </div>
+      <div class="media-body pl4">
+        <div class="media-heading cf">
+          <h4 class="dib v-mid mw6">
+            {{ (company.legal_name.toLowerCase().indexOf(company.display_name.toLowerCase()) !== -1 ? company.legal_name : company.display_name) || company.display_name }}
+          </h4>
+          <div class="dib ml4 v-mid">
+            <button class="btn btn-sm" ng-if="company.isFollowing" ng-click="unfollow()" ng-mouseleave="btnHover = false" ng-mouseenter="btnHover = true" ng-init="btnHover = false" ng-class="{'btn-danger': btnHover, 'btn-link': !btnHover}">
+              <i class="glyphicon" ng-class="{'glyphicon-remove': btnHover, 'glyphicon-heart text-danger': !btnHover}"></i>
+              <span ng-class="{'text-muted': !btnHover}">{{ btnHover ? 'Unfollow' : 'Following'}}</span>
+            </button>
+            <button class="btn btn-success btn-sm" ng-if="!company.isFollowing" ng-click="follow()">
+              <i class="glyphicon glyphicon-heart-empty"></i> Follow
+            </button>
+          </div>
+        </div>
+        <ul class="nav nav-pills mt4">
+          <li ui-sref-active="active">
+            <a ui-sref="jobs()">
+              Jobs
+              <span class="badge">{{ company.job_count }}</span>
+            </a>
+          </li>
+          <li ui-sref-active="active"><a ui-sref="comm()">Communications</a></li>
+          <li ui-sref-active="active"><a ui-sref="news()">News</a></li>
+        </ul>
+      </div>
+    </div><p class="dib v-mid pl4 w-40">{{ company.description || 'Description Coming Soon' }}</p>
   </section>
+  <section class="mw9" ui-view></section>
 </section>
