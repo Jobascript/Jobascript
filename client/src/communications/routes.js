@@ -6,13 +6,16 @@ module.exports = function ($stateProvider) {
     url: '/communications',
     resolve: {
       gapi: function (GAPI) {
-        var google;
-        if (!GAPI.getGAPI()){
-          google = require('google-client-api')();
-          GAPI.setGAPI(google);
-        } else {
-          google = GAPI.getGAPI();
+        var google = GAPI.getGAPI();
+        
+        if (!google) {
+          google = require('google-client-api')()
+          .then(function (resolvedGAPI) {
+            GAPI.setGAPI(resolvedGAPI);
+            return resolvedGAPI;
+          });
         }
+
         return google;
       }
     },

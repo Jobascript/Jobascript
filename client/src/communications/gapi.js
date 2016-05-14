@@ -1,14 +1,14 @@
 module.exports = function () {
-  var gapi = null;
+  var cachedgapi = null;
 
   function setGAPI(obj) {
-    gapi = obj;
+    cachedgapi = obj;
   }
 
   return {
     setGAPI: setGAPI,
     getGAPI: function () {
-      return gapi;
+      return cachedgapi;
     }
   };
 };

@@ -60,30 +60,6 @@ module.exports = function ($scope, $state, currentCompany, gapi) {
             $scope.emails = resp.messages;
           });
         }
-
-        // for each message send id to google
-
-        // resp.messages.forEach(function (v) {
-        //   var messageRequest = gapi.client.gmail.users.messages.get({
-        //     userId: 'me',
-        //     id: v.id
-        //   });
-        //   messageRequest.execute(function (messageResp) {
-        //     // here message is an array
-        //     var headers = messageResp.payload.headers;
-        //     var message = {};
-        //     message.id = v.id;
-        //     message.date = getHeader(headers, 'Date');
-        //     message.from = getHeader(headers, 'From');
-        //     message.subject = getHeader(headers, 'Subject');
-        //     // before pushing, extract relevant data to send to view
-        //     // here a string is being sent
-        //     messages.push(message);
-        //     if (messages.length === resp.messages.length) {
-        //       resolve(messages);
-        //     }
-        //   });
-        // });
       });
     });
   }
