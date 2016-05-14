@@ -48,7 +48,7 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
 
   $stateProvider.state('auth', {
     url: '/auth',
-    template: '<div auth-widget class="mw6 center"></div>'
+    template: require('./auth.html')
   });
 };
 
