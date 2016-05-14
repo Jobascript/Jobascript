@@ -83,6 +83,12 @@ function mapColumns(newsArray, company) {
   .map(function (article) {
     var realUrl = url.parse(article.link, true).query.url;
 
+    var source = article.title.split(' - ');
+    source = source[source.length - 1];
+    if(article.contentSnippet.slice(0, source.length) === source){
+      article.contentSnippet = article.contentSnippet.substr(source.length, 1000);
+    }
+
     return {
       title: article.title,
       snippet: article.contentSnippet.substr(0, 300) + '...',
