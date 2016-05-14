@@ -45,6 +45,7 @@ function runScript() {
       var companyToBeInserted = {};
       var columns = _.chain(richCompany)
                     .pick(
+                      'logo',
                       'legalName',
                       'description',
                       'location',
@@ -68,7 +69,7 @@ function runScript() {
         columns.linkedin = columns.linkedin.handle;
       }
 
-      _.each(columns, function(value, camel) {
+      _.each(columns, function (value, camel) {
         var underscore = inflection.underscore(camel);
         companyToBeInserted[underscore] = value;
       });

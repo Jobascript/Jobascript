@@ -28,7 +28,12 @@ module.exports = function (db) {
     var filter = (options && options.filter) || { 1: 1 };
 
     var sqlStr = [
-      'SELECT * FROM ${table~}',
+      'SELECT *,',
+      '(SELECT count(*) FROM jobs WHERE company_id = companies.id)',
+      'AS job_count,',
+      '(SELECT count(*) FROM users_companies WHERE company_id = companies.id)',
+      'AS follow_count',
+      'FROM ${table~}',
       'WHERE ' + helpers.toSqlString(filter, 'AND'),
       options && options.description ? ' AND description IS NOT NULL' : '',
       options && options.hasjobs ? ' AND id IN (SELECT company_id FROM jobs)' : '',
