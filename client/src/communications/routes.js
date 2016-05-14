@@ -23,8 +23,11 @@ module.exports = function ($stateProvider) {
     template: require('./comm.html')
   })
   .state('email', {
+    parent: 'comm',
+    url: '/:message_id',
     resolve: {
-      message: function ($stateParamsgapi, gapi) {
+      message: function ($stateParams, gapi) {
+        // var gapi = GAPI.getGAPI();
         return new Promise(function (resolve, reject) {
           console.log('new promise');
           var messageRequest = gapi.client.gmail.users.messages.get({
@@ -40,11 +43,12 @@ module.exports = function ($stateProvider) {
               reject();
             }
           });
+        })
+        .catch(function (err) {
+          console.error('email >> ', err);
         });
       }
     },
-    parent: 'comm',
-    url: '/messages/:message_id',
     controller: function ($scope, $state, $sce, Comm, message) {
       var current = {};
       var headers = message.payload.headers;

@@ -5,27 +5,22 @@ var moment = require('moment');
 module.exports = function () {
   return {
     scope: {
-      threadId: '@'
+      threadId: '='
     },
     template: require('./thread.html'),
     controller: function ($scope, GAPI) {
       var gapi = GAPI.getGAPI();
 
-      console.log(gapi);
-      // console.log('thred scope ', $scope);
-      // GAPI
-      // gapi.client.load('gmail', 'v1').then(function () {
-        gapi.client.gmail.users.messages.get({
-          userId: 'me',
-          id: $scope.threadId
-        })
-        .execute(function (resp) {
-          console.log('thread dir', resp);
-          $scope.$apply(function () {
-            $scope.snippet = entities.decode(resp.snippet);
-          });
+      gapi.client.gmail.users.messages.get({
+        userId: 'me',
+        id: $scope.threadId
+      })
+      .execute(function (resp) {
+        $scope.$apply(function () {
+          $scope.snippet = entities.decode(resp.snippet);
+          $scope.date = moment(Number(resp.internalDate)).fromNow();
         });
-      // });
+      });
 
       // for each message send id to google
 
