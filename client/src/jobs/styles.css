@@ -4,6 +4,11 @@
 .job-compact {
   /*max-height: 0px;*/
   display: none;
+
+}
+.job-compact:hover {
+  color: #337AB7;
+  font-weight: bold;
 }
 .job {
   max-width: 50px;
@@ -18,9 +23,56 @@
   transition: opacity 0.5s;
 }*/
 
-.fade {
-  opacity: 0;
-  transition: opacity 0.5s;
+.job-wrapper {
+  /*width: 1170px;*/
+  min-height: 90px;
+  background-color: #FFFFFF;
+  border: 1px solid #E1E8ED;
+  padding: 1em;
+  margin-bottom: 10px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  box-shadow: 2.5px 2.5px 2.5px #888888;
+}
+.job-filter-wrapper {
+  min-height: 72px;
+  border: 1em solid #222222;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  background-color: #222222;
+}
+.form-control {
+  color: #000000;
+}
+.job-title {
+  color: #333;
+  font-size: 19px;
+}
+.job-title:hover {
+  color: black;
+  /*cursor: pointer;*/
+}
+.job-apply {
+  color: #000000;
+  float: right;
+}
+.job-apply:hover {
+  color: #000000;
+  text-decoration: none;
+}
+.job-publish {
+  font-size: 12px;
+  font-weight: lighter;
+}
+.job-description:hover {
+  color: #222222;
+  font-weight: bold;
+  cursor: pointer;
+}
+.job-description-text {
+  font-size: 16px;
+  color: #222222;
+  margin: 0 auto;
 }
 
 .description {
@@ -29,11 +81,12 @@
 }
 
 .jbs-job-description {
-  max-height: 6em;
+  max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s;
 }
 
 .jbs-job--expand .jbs-job-description {
   max-height: 64em;
+  overflow: scroll;
 }

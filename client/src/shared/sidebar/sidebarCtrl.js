@@ -2,7 +2,7 @@ var style = require('./sidebar.css');
 
 module.exports = function ($scope, $filter, companies) {
   var orderBy = $filter('orderBy');
-  
+
   $scope.style = style;
   $scope.companies = companies;
 

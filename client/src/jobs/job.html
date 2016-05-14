@@ -1,33 +1,22 @@
-<!-- <div>
-  <input type='text' class='form-control' placeholder='filter locations' ng-model='jobSearch'/>
-  <input type='checkbox' ng-model='job_relocation' ng-value='true' /> Require Relocation?
-  <input type='checkbox' ng-model='job_visa' ng-value='true' /> Require Visa?
-  <input type='checkbox' ng-model='job_remote' ng-value='true' /> Work Remotely?
-  <button ng-click='search()'>Get Jobs With Requirements</button>
-  <div ng-repeat="job in currentJobs | filter: {title: jobSearch}">
-    <h4>Apply here <a ng-href='{{job.link}}' target='_blank'>{{job.link}}</a></h4>
-    <div class='job.publish'>Posted On {{decode(job.pubDate)}}</div>
-    <div> Required Skills
-      <li ng-repeat='jobSkills in job.category track by $index'>{{jobSkills}}</li>
+<div>
+  <div class="job-filter-wrapper">
+    <div class="form-group has-feedback">
+      <label class="control-label" for="inputSuccess4"></label>
+      <input type="text" class="form-control bg-black b--dark-gray" id="inputSuccess4" placeholder="Filter by Job Title" ng-model='jobSearch'>
     </div>
-    <div class='description-{{$index}}' ng-click="clicked(job)">Job Description</div>
-    <li class='job-compact' ng-class="{'job-compact': job.isCompact}" ng-bind-html='decode(job.description)'></li>
-    <div class='description-{{$index}}' ng-click="clicked(job)">Click here to get Job Description</div>
   </div>
-  <pre ng-bind-html='details[0].duties'></pre>
-  <pre ng-bind-html='currentJobs'></pre>
-</div> -->
-<section>
-  <article class="jbs-job panel panel-default" ng-class="{'jbs-job--expand': job.expand}" ng-repeat="job in jobs">
-    <div class="panel-body">
-      <header class="cf">
-        <h4 class="fl w-80 truncate" title="{{ job.title }}">{{ job.title }}</h4>
-        <a class="btn btn-info fr" ng-href="{{ job.url }}" target="_blank">Apply</a>
-      </header>
-      <p class="jbs-job-description" ng-click="job.expand = !job.expand" ng-bind-html="job.description"></p>
+  <div ng-if='!jobs.length'>
+    Sorry! There are no job listing for {{currentCompany.display_name}} at this time. Please check again soon!
+  </div>
+  <div class='job-wrapper' ng-class="{'jbs-job--expand': job.expand}" ng-repeat="job in jobs | filter: {title: jobSearch}">
+    <div class="cf">
+      <h4 class='job-title clickable w-80 truncate fl' ng-click="job.expand = !job.expand">{{job.title}}</h4>
+      <a class='btn btn-default job-apply' ng-href='{{job.url}}' target='_blank'>Apply</a>
     </div>
-    <div class="panel-footer">
-      <span>{{ job.created }}</span>
+    <div class='job-publish'>Posted {{job.created | date: 'medium'}}</div>
+    <div class='jbs-job-description'>
+      <div class='job-description-text measure ml0' ng-bind-html='job.description | textFilter'></div>
     </div>
-  </article>
-</section>
+
+  </div>
+</div>
