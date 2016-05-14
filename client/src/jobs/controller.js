@@ -24,7 +24,6 @@ module.exports = function ($scope, Job, currentCompany, jobs) {
 
  $scope.clicked = function (job) {
     job.isCompact = !job.isCompact;
-    console.log(job.isCompact);
   };
   $scope.decode = function htmlDecode (input) {
     var e = document.createElement('div');

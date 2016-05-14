@@ -132,7 +132,7 @@ function mapColumns(schema, jobs, comID) {
     var columns = {};
     if (schema === 'github') {
       columns = {
-        title: job.title,
+        title: function() {return job.title.replace(/[^A-Za-z\s]/g, '');},
         company_name: job.company,
         url: job.url,
         description: entities.encode(job.description),
