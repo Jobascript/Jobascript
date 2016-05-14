@@ -1,7 +1,8 @@
-<section ui-view>
+<section class="pv4" ui-view>
   <div class="well well-lg" ng-show="isAuth === null">Loading...</div>
   <button class="btn btn-primary" ng-click="connect()" ng-show="isAuth === false">Connect with Gmail</button>
   <div class="list-group" ng-show="isAuth">
+    <div class="well well-lg" ng-show="!emails.length">No Emails...</div>
     <email-thread class="list-group-item" ng-repeat="email in emails" thread-id="email.threadId"></email-thread>
   </div>
 </section>
