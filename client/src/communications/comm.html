@@ -1,6 +1,7 @@
 <section ui-view>
-  <button class="btn btn-primary" ng-click="connect()" ng-show="!isAuth">Connect with Gmail</button>
-  <div class="list-group">
+  <div class="well well-lg" ng-show="isAuth === null">Loading...</div>
+  <button class="btn btn-primary" ng-click="connect()" ng-show="isAuth === false">Connect with Gmail</button>
+  <div class="list-group" ng-show="isAuth">
     <email-thread class="list-group-item" ng-repeat="email in emails" thread-id="email.threadId"></email-thread>
   </div>
 </section>

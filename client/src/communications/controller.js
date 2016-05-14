@@ -3,7 +3,7 @@ var CLIENT_ID = '378952285896-tlt8i2f17edieb5kl2mmsfl7miccetbg.apps.googleuserco
 var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 
 module.exports = function ($scope, $state, currentCompany, gapi) {
-  $scope.isAuth = false;
+  $scope.isAuth = null;
   $scope.emails = [];
 
   $scope.connect = handleAuthClick;
