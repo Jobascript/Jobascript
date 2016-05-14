@@ -26,6 +26,8 @@ module.exports = function (db) {
   Companies.getCompanies = function (options) {
     var size = (options && options.size !== undefined) ? options.size : 10;
     var filter = (options && options.filter) || { 1: 1 };
+    var orderBy = (options && options.orderby) ? options.orderby.split(':')[0] : 'created';
+    var reverse = (options && options.orderby) ? options.orderby.split(':')[1] === 'true' : true;
 
     var sqlStr = [
       'SELECT *,',
@@ -37,14 +39,16 @@ module.exports = function (db) {
       'WHERE ' + helpers.toSqlString(filter, 'AND'),
       options && options.description ? ' AND description IS NOT NULL' : '',
       options && options.hasjobs ? ' AND id IN (SELECT company_id FROM jobs)' : '',
-      'ORDER BY created DESC',
+      'ORDER BY ${orderby~} ${reverse:raw}',
       'LIMIT ${size:raw}',
       ';'
     ].join(' ');
 
     return db.query(sqlStr, {
       table: TABLE_NAME,
-      size: size || 'ALL'
+      size: size || 'ALL',
+      orderby: orderBy,
+      reverse: reverse ? 'DESC' : 'ASC'
     });
   };
 
