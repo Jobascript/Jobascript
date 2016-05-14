@@ -7,7 +7,6 @@ module.exports = function ($stateProvider) {
     resolve: {
       gapi: function (GAPI) {
         var google = GAPI.getGAPI();
-        
         if (!google) {
           google = require('google-client-api')()
           .then(function (resolvedGAPI) {
