@@ -132,14 +132,15 @@ function mapColumns(schema, jobs, comID) {
     var columns = {};
     if (schema === 'github') {
       columns = {
-        title: function() {return job.title.replace(/[^A-Za-z\s]/g, '');},
+        title: job.title.replace(/[0-9]/g, ''),
         company_name: job.company,
         url: job.url,
         description: entities.encode(job.description),
         // visa_sponsored: null,
         // remote_ok: null,
         // relocation: null,
-        created: moment(new Date()).isAfter(job.created_at) ? moment(new Date()).toISOString() : job.created_at,
+        created: moment(new Date()).isAfter(job.created_at) ?
+                  moment(new Date()).toISOString() : job.created_at,
         city: job.location,
         company_id: comID
       };

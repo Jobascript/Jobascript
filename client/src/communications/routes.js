@@ -16,12 +16,10 @@ module.exports = function ($stateProvider) {
 
     //     return new Promise(function (resolve, reject) {
     //       var googleScript = angular.element('<script/>');
-          
     //       googleScript.onload(function () {
     //         console.log('gapi loaded');
     //         resolve(gapi);
     //       });
-          
     //       googleScript.attr('src', 'https://apis.google.com/js/client.js');
     //       googleScript.attr('id', 'onetime');
 
