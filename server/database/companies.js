@@ -19,7 +19,8 @@ module.exports = function (db) {
   };
 
   /**
-   * @param  {Object} options obj e.g. {size: 10}, {size:false} to get all
+   * @param  {Object} options e.g. {size: 10}, {size:false} to get all
+   *                          {hasjobs: true} to get only companies that as jobs
    * @return {Array} Array of company objects
    */
   Companies.getCompanies = function (options) {
@@ -29,6 +30,7 @@ module.exports = function (db) {
     var sqlStr = [
       'SELECT * FROM ${table~}',
       'WHERE ' + helpers.toSqlString(filter, 'AND'),
+      options && options.hasjobs ? ' AND id IN (SELECT company_id FROM jobs)' : '',
       'ORDER BY created DESC',
       'LIMIT ${size:raw}',
       ';'
