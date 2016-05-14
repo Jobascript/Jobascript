@@ -1,18 +1,8 @@
-<section>
-<script src="https://apis.google.com/js/client.js"></script>
-<ui-view
-  <div>
-    <button id='authorize-button' ng-click='auth()'>Auth + Emails</button>
-    <button id='previous'> < </button>
-    <button id='next'> > </button>
-    <button id='compose'> Compose </button>
+<section class="pv4" ui-view>
+  <div class="well well-lg" ng-show="isAuth === null">Loading...</div>
+  <button class="btn btn-primary" ng-click="connect()" ng-show="isAuth === false">Connect with Gmail</button>
+  <div class="list-group" ng-show="isAuth">
+    <div class="well well-lg" ng-show="!emails.length">No Emails...</div>
+    <email-thread class="list-group-item" ng-repeat="email in emails" thread-id="email.threadId"></email-thread>
   </div>
-  <div>
-    <ul>
-      <li ng-repeat="message in emails track by $index" ui-sref-active="active" ng-click=''>
-        <a ui-sref='email({message_id: message.id})'>{{message.subject}}</a>
-      </li>
-    </ul>
-  </div>
-  </ui-view>
 </section>

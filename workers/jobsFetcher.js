@@ -100,6 +100,7 @@ function fetchIndeed(comName, comID) {
       l: 'sf',
       // sort: 'date',
       jt: 'fulltime', // job type
+      highlight: 0,
       limit: 1000,
       radius: 1000
     },

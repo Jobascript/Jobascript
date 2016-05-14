@@ -4,64 +4,29 @@ module.exports = function ($stateProvider) {
   .state('comm', {
     parent: 'company',
     url: '/communications',
-    // resolve: {
-    //   gapi: function ($document) {
-    //     console.log('inside resolve');
+    resolve: {
+      gapi: function (GAPI) {
+        var google = GAPI.getGAPI();
+        if (!google) {
+          google = require('google-client-api')()
+          .then(function (resolvedGAPI) {
+            GAPI.setGAPI(resolvedGAPI);
+            return resolvedGAPI;
+          });
+        }
 
-    //     // var $googleScript = $('<script>');
-    //     // $googleScript.attr('src', 'https://apis.google.com/js/client.js');
-    //     // $googleScript.attr('id', 'onetime');
-
-    //     // console.log('script tag', googleScript);
-
-    //     return new Promise(function (resolve, reject) {
-    //       var googleScript = angular.element('<script/>');
-    //       googleScript.onload(function () {
-    //         console.log('gapi loaded');
-    //         resolve(gapi);
-    //       });
-    //       googleScript.attr('src', 'https://apis.google.com/js/client.js');
-    //       googleScript.attr('id', 'onetime');
-
-    //       console.log('inside resolve p', googleScript);
-
-    //       if (!$('#onetime')) {
-    //         googleScript.appendTo('head');
-    //         console.log('script appended');
-    //       } else {
-    //         console.log('script already loaded');
-    //         resolve(gapi);
-    //       }
-    //       // reject('no script');
-    //     }).catch(function (err) {
-    //       console.log(err);
-    //     });
-    //   }
-    // },
-    onEnter: function () {
-      var googleScript = window.document.createElement('script');
-      googleScript.setAttribute('src', 'https://apis.google.com/js/client.js');
-      googleScript.setAttribute('id', 'onetime');
-
-      if (!window.document.getElementById('onetime')) {
-        window.document.head.appendChild(googleScript);
+        return google;
       }
     },
-    // resolve: {
-    //   emails: function (Comm) {
-    //     return Comm.getEmails(function (emails) {
-    //       return emails;
-    //     }, function (err) {
-    //       console.log('not authorize: ', err);
-    //       return [];
-    //     });
-    //   }
-    // },
     controller: 'CommController',
-    template: require('./comm.html') })
+    template: require('./comm.html')
+  })
   .state('email', {
+    parent: 'comm',
+    url: '/:message_id',
     resolve: {
-      message: function ($stateParams) {
+      message: function ($stateParams, gapi) {
+        // var gapi = GAPI.getGAPI();
         return new Promise(function (resolve, reject) {
           console.log('new promise');
           var messageRequest = gapi.client.gmail.users.messages.get({
@@ -77,11 +42,12 @@ module.exports = function ($stateProvider) {
               reject();
             }
           });
+        })
+        .catch(function (err) {
+          console.error('email >> ', err);
         });
       }
     },
-    parent: 'comm',
-    url: '/messages/:message_id',
     controller: function ($scope, $state, $sce, Comm, message) {
       var current = {};
       var headers = message.payload.headers;

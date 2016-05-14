@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-module.exports = function () { // remove comment and use $http later
+module.exports = function () {
   var CLIENT_ID = '647322278471-06e71cofl2ddsauer9rtoopfpokgo4pm.apps.googleusercontent.com';
   var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
   /* globals gapi */

@@ -19,24 +19,36 @@ module.exports = function (db) {
   };
 
   /**
-   * @param  {Object} options obj e.g. {size: 10}, {size:false} to get all
+   * @param  {Object} options e.g. {size: 10}, {size:false} to get all
+   *                          {hasjobs: true} to get only companies that as jobs
    * @return {Array} Array of company objects
    */
   Companies.getCompanies = function (options) {
     var size = (options && options.size !== undefined) ? options.size : 10;
     var filter = (options && options.filter) || { 1: 1 };
+    var orderBy = (options && options.orderby) ? options.orderby.split(':')[0] : 'created';
+    var reverse = (options && options.orderby) ? options.orderby.split(':')[1] === 'true' : true;
 
     var sqlStr = [
-      'SELECT * FROM ${table~}',
+      'SELECT *,',
+      '(SELECT count(*) FROM jobs WHERE company_id = companies.id)',
+      'AS job_count,',
+      '(SELECT count(*) FROM users_companies WHERE company_id = companies.id)',
+      'AS follow_count',
+      'FROM ${table~}',
       'WHERE ' + helpers.toSqlString(filter, 'AND'),
-      'ORDER BY created DESC',
+      options && options.description ? ' AND description IS NOT NULL' : '',
+      options && options.hasjobs ? ' AND id IN (SELECT company_id FROM jobs)' : '',
+      'ORDER BY ${orderby~} ${reverse:raw}',
       'LIMIT ${size:raw}',
       ';'
     ].join(' ');
 
     return db.query(sqlStr, {
       table: TABLE_NAME,
-      size: size || 'ALL'
+      size: size || 'ALL',
+      orderby: orderBy,
+      reverse: reverse ? 'DESC' : 'ASC'
     });
   };
 

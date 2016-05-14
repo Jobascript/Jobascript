@@ -1,24 +1,31 @@
 <div class="jbs-getting-started">
   <section class="tc bg-black pa5 near-white">
     <h1 class="{{style.logo}}"></h1>
-    <p class="lead measure center">Pick a few companies that interest you to get started. Or <a ui-sref="auth">Login Here</a>.</p>
-  </section>
-  <section class="container">
-    <form class="pa4">
+    <p class="lead measure center">Pick a few companies that interest you to get started, <br>or <a ui-sref="auth">login here</a>.</p>
+    <form class="tc mw8 center">
       <div class="dib w-60">
-        <input type="text" class="form-control" placeholder="Search For Companies...">
-      </div><div class="w-40 dib tr">
-        <button class="btn btn-info" ng-show="getLength() > 0" ng-click="continue()">Continue with {{numOfFollows}}</button>
+        <input type="text" class="form-control b--dark-gray bg-black white" placeholder="Search For Companies...">
+      </div><div class="w-40 dib" ng-if="getLength() > 0">
+        <button class="btn btn-primary" ng-click="continue()">Continue with {{numOfFollows}}</button>
       </div>
     </form>
+  </section>
+  <section class="container mw8 pt4">
     <ul class="media-list">
       <li class="media pa4 clickable" ng-class="{'bg-success': company.isFollowing}" ng-repeat="company in topCompanies" ng-click="toFollow(company)">
         <div class="media-left">
           <img class="media-object img-thumbnail w4" ng-src="{{company.logo}}" alt="{{company.name}}">
         </div>
         <div class="media-body">
-          <h4 class="media-heading">{{ (company.legal_name.toLowerCase().indexOf(company.display_name.toLowerCase()) !== -1 ? company.legal_name : company.display_name) || company.display_name }}</h4>
-          <p>{{ company.description }}</p>
+          <div class="dib w-80 v-mid">
+            <h4 class="media-heading">{{ (company.legal_name.toLowerCase().indexOf(company.display_name.toLowerCase()) !== -1 ? company.legal_name : company.display_name) || company.display_name }}
+            </h4>
+            <p>{{ company.description }}</p>
+          </div>
+          <span class="label ba black f3 v-mid ml4 tc">
+            <span class="text-primary">{{ company.job_count }}</span>
+            <span class="f5">jobs</span>
+          </span>
         </div>
       </li>
     </ul>

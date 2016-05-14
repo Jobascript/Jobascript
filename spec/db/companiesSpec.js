@@ -1,5 +1,6 @@
 var Promise = require('bluebird');
 var db = require('../../server/database').companiesTable;
+var pgp = require('../../server/database').pgp;
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -73,6 +74,21 @@ describe('Database companies', function () {
   });
 
   describe('Get Companies', function () {
+    before(function (done) {
+      pgp.one('INSERT INTO companies (name, domain) VALUES (${name}, ${domain}) RETURNING id;', {
+        name: 'jobascript',
+        domain: 'jobascript.xyz'
+      }).then(function (result) {
+        return pgp.query('INSERT INTO jobs (title, url, company_id) VALUES (${title}, ${url}, ${company_id});', {
+          title: 'CEO',
+          url: 'jobascript.xyz',
+          company_id: result.id
+        });
+      }).then(function () {
+        done();
+      });
+    });
+
     it('Should return an array of companies', function () {
       return db.getCompanies().should.eventually.be.a('array');
     });
@@ -84,7 +100,7 @@ describe('Database companies', function () {
 
     it('Should take false as size and return all', function () {
       return db.getCompanies({ size: false })
-      .should.eventually.to.have.lengthOf(3);
+      .should.eventually.to.have.lengthOf(4);
     });
 
     it('Should take filter option', function () {
@@ -109,11 +125,18 @@ describe('Database companies', function () {
           description: null
         }
       })
-      .should.eventually.have.lengthOf(3).and.satisfy(function (companies) {
+      .should.eventually.have.lengthOf(4).and.satisfy(function (companies) {
         var values = _.pluck(companies, 'name');
 
-        return values.length === _.intersection(values, ['apple', 'google', 'stripe']).length;
+        return values.length === _.intersection(values, ['apple', 'google', 'stripe', 'jobascript']).length;
       });
+    });
+
+    it('take hasjobs flag and return only companies with jobs', function () {
+      return db.getCompanies({
+        hasjobs: true
+      })
+      .should.eventually.have.lengthOf(1);
     });
   });
 
