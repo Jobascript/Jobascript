@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-default bg-black navbar-fixed-top">
 <div class="container-fluid jbs-topnav jbs-animate" ng-class="{'jbs-fresh': isFresh}">
   <div class="jbs-fresh-center cf jbs-animate">
     <div class="navbar-header jbs-animate">
@@ -7,7 +7,7 @@
       </a>
     </div>
     <div class="w-60 jbs-animate navbar-form navbar-left dropdown" ng-class="{ open: suggestions.length > 0 }">
-      <input type="text" class="db w-100 form-control b--dark-gray bg-black" placeholder="Search for your dream company" ng-model="companyName" ng-change="suggest(companyName)">
+      <input type="text" class="db w-100 form-control b--dark-gray bg-black white" placeholder="Search for your dream company" ng-model="companyName" ng-change="suggest(companyName)">
       <ul class="dropdown-menu w-100">
         <li ng-repeat="company in suggestions">
           <a class="clickable" ng-click="navToCompany(company)">

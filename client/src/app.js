@@ -53,6 +53,7 @@ require('./news');
 // style
 require('ng-toast/dist/ngToast.min.css');
 require('bootstrap/dist/css/bootstrap.css');
+require('./bootstrap.css');
 require('tachyons/css/tachyons.min.css');
 require('./shared/layout.css');
 

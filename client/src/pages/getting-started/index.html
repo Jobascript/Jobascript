@@ -1,12 +1,12 @@
 <div class="jbs-getting-started">
   <section class="tc bg-black pa5 near-white">
     <h1 class="{{style.logo}}"></h1>
-    <p class="lead measure center">Pick a few companies that interest you to get started. Or <a ui-sref="auth">Login here</a>.</p>
+    <p class="lead measure center">Pick a few companies that interest you to get started, <br>or <a ui-sref="auth">login here</a>.</p>
     <form class="tc mw8 center">
       <div class="dib w-60">
-        <input type="text" class="form-control" placeholder="Search For Companies...">
+        <input type="text" class="form-control b--dark-gray bg-black white" placeholder="Search For Companies...">
       </div><div class="w-40 dib" ng-if="getLength() > 0">
-        <button class="btn btn-info" ng-click="continue()">Continue with {{numOfFollows}}</button>
+        <button class="btn btn-primary" ng-click="continue()">Continue with {{numOfFollows}}</button>
       </div>
     </form>
   </section>
