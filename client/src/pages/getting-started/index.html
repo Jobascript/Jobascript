@@ -17,7 +17,9 @@
           <img class="media-object img-thumbnail w4" ng-src="{{company.logo}}" alt="{{company.name}}">
         </div>
         <div class="media-body">
-          <h4 class="media-heading">{{ (company.legal_name.toLowerCase().indexOf(company.display_name.toLowerCase()) !== -1 ? company.legal_name : company.display_name) || company.display_name }}</h4>
+          <h4 class="media-heading">{{ (company.legal_name.toLowerCase().indexOf(company.display_name.toLowerCase()) !== -1 ? company.legal_name : company.display_name) || company.display_name }}
+            <span class="label label-default fr">{{ company.job_count }} jobs</span>
+          </h4>
           <p>{{ company.description }}</p>
         </div>
       </li>
