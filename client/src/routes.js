@@ -39,7 +39,7 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
     url: '/getting-started',
     resolve: {
       topCompanies: function (Company) {
-        return Company.getCompanies({ size: 5, hasjobs: true });
+        return Company.getCompanies({ size: 5, hasjobs: true, description: true });
       }
     },
     controller: require('./pages/getting-started/controller.js'),

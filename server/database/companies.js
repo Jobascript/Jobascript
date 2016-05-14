@@ -30,6 +30,7 @@ module.exports = function (db) {
     var sqlStr = [
       'SELECT * FROM ${table~}',
       'WHERE ' + helpers.toSqlString(filter, 'AND'),
+      options && options.description ? ' AND description IS NOT NULL' : '',
       options && options.hasjobs ? ' AND id IN (SELECT company_id FROM jobs)' : '',
       'ORDER BY created DESC',
       'LIMIT ${size:raw}',
