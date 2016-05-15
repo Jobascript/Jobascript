@@ -1,5 +1,6 @@
 var Promise = require('bluebird');
 var inflection = require('inflection');
+var _ = require('underscore');
 var style = require('./getting-started.css');
 
 module.exports = function ($scope, topCompanies, User, Company, $state) {
@@ -29,19 +30,24 @@ module.exports = function ($scope, topCompanies, User, Company, $state) {
       company.isFollowing = false;
       delete toFollow[company.id];
       $scope.numOfFollows = inflection.inflect(len + ' company', Object.keys(toFollow).length);
-      // $scope.numOfFollows -= 1;
     } else {
       len += 1;
       company.isFollowing = true;
       toFollow[company.id] = true;
       $scope.numOfFollows = inflection.inflect(len + ' company', Object.keys(toFollow).length);
-      // $scope.numOfFollows += 1;
     }
   };
 
-  $scope.searchCompanies = function () {
+  $scope.suggest = _.debounce(function (queryStr) {
+    if (queryStr === '') {
+      return;
+    }
 
-  };
+    Company.suggest(queryStr)
+    .then(function (resp) {
+      $scope.topCompanies = resp.data;
+    });
+  }, 200);
 };
 
 require('./getting-started.css');

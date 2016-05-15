@@ -4,7 +4,7 @@
     <p class="lead measure center">Pick a few companies that interest you to get started, <br>or <a ui-sref="auth">login here</a>.</p>
     <form class="tc mw8 center">
       <div class="dib w-60">
-        <input type="text" class="form-control b--dark-gray bg-black white" placeholder="Search For Companies..." autofocus>
+        <input type="text" class="form-control b--dark-gray bg-black white" placeholder="Search For Companies..." ng-model="searchTerm" ng-change="suggest(searchTerm)" autofocus>
       </div><div class="w-40 dib" ng-if="getLength() > 0">
         <button class="btn btn-primary" ng-click="continue()">Continue with {{numOfFollows}}</button>
       </div>
@@ -13,12 +13,12 @@
   <section class="mw9 center pt4">
     <ul class="list pa0 ma0">
       <li class="w-20 dib v-mid" ng-repeat="company in topCompanies" ng-click="toFollow(company)">
-        <article class="ma2 pa4 tc ba br3 clickable" ng-class="{'b--light-silver': company.isFollowing, 'b--white': !company.isFollowing}">
+        <article class="ma2 pa4 tc ba bw2 b--dashed br3 clickable" ng-class="{'b--light-silver': company.isFollowing, 'b--white': !company.isFollowing}">
           <div class="pr0">
             <img class="img-rounded" ng-src="{{company.logo}}" alt="{{company.name}}">
           </div>
-          <p class="text-muted mt3 mb1">{{ (company.legal_name.toLowerCase().indexOf(company.display_name.toLowerCase()) !== -1 ? company.legal_name : company.display_name) || company.display_name }}</p>
-          <h4 class="mb0 mt1">
+          <p class="text-muted mt3 mb1">{{ (company.legal_name.toLowerCase().indexOf(company.display_name.toLowerCase()) !== -1 ? company.legal_name : company.display_name) || company.display_name || company.name }}</p>
+          <h4 class="mb0 mt1" ng-if="company.job_count">
             <span class="text-primary">{{ company.job_count }}</span>
             <small class="black">jobs</small>
           </h4>
