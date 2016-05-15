@@ -6,11 +6,10 @@ module.exports = function ($http) {
       params: { company_id: currentCompany.id }
     })
     .then(function (resp) {
-      console.log('this is the response', resp.data);
       return resp.data;
     })
     .catch(function (caught) {
-      console.log('error in services js ', caught);
+      console.error('error in jobs js ', caught);
     });
   }
   return {

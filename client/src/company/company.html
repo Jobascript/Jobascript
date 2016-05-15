@@ -19,7 +19,7 @@
             </button>
           </div>
         </div>
-        <ul class="nav nav-pills mt4">
+        <ul class="nav nav-pills mt2">
           <li ui-sref-active="active">
             <a ui-sref="jobs()">
               Jobs
@@ -29,8 +29,9 @@
           <li ui-sref-active="active"><a ui-sref="comm()">Communications</a></li>
           <li ui-sref-active="active"><a ui-sref="news()">News</a></li>
         </ul>
+        <p class="small text-muted mt4">Followed by {{ company.follow_count }} people</p>
       </div>
-    </div><blockquote ng-if="company.description" ng-init="descLimit = 140" class="dib v-mid pl4 w-40" ng-click="descLimit = descLimit ? undefined : 140" ng-class="{'clickable': descLimit}">{{ company.description | limitTo:descLimit}}{{descLimit ? ' ...' : ''}}</blockquote>
+    </div><blockquote ng-if="company.description" ng-init="descLimit = 80" class="dib v-mid pl4 w-40" ng-click="descLimit = descLimit ? undefined : 80" ng-class="{'clickable': descLimit}">{{ company.description | limitTo:descLimit}}{{descLimit && descLimit < company.description.length ? ' ...' : ''}}</blockquote>
   </section>
   <section ui-view></section>
 </section>

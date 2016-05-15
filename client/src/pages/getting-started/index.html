@@ -1,32 +1,28 @@
 <div class="jbs-getting-started">
   <section class="tc bg-black pa5 near-white">
-    <h1 class="{{style.logo}}"></h1>
+    <h1 class="{{style.logo}} text-hide" title="Jobascript">Jobascript</h1>
     <p class="lead measure center">Pick a few companies that interest you to get started, <br>or <a ui-sref="auth">login here</a>.</p>
     <form class="tc mw8 center">
       <div class="dib w-60">
-        <input type="text" class="form-control b--dark-gray bg-black white" placeholder="Search For Companies...">
+        <input type="text" class="form-control b--dark-gray bg-black white" placeholder="Search For Companies..." autofocus>
       </div><div class="w-40 dib" ng-if="getLength() > 0">
         <button class="btn btn-primary" ng-click="continue()">Continue with {{numOfFollows}}</button>
       </div>
     </form>
   </section>
-  <section class="container mw8 pt4">
-    <ul class="media-list">
-      <li class="media pa4 clickable" ng-class="{'bg-success': company.isFollowing}" ng-repeat="company in topCompanies" ng-click="toFollow(company)">
-        <div class="media-left">
-          <img class="media-object img-thumbnail w4" ng-src="{{company.logo}}" alt="{{company.name}}">
-        </div>
-        <div class="media-body">
-          <div class="dib w-80 v-mid">
-            <h4 class="media-heading">{{ (company.legal_name.toLowerCase().indexOf(company.display_name.toLowerCase()) !== -1 ? company.legal_name : company.display_name) || company.display_name }}
-            </h4>
-            <p>{{ company.description }}</p>
+  <section class="mw9 center pt4">
+    <ul class="list pa0 ma0">
+      <li class="w-20 dib v-mid" ng-repeat="company in topCompanies" ng-click="toFollow(company)">
+        <article class="ma2 pa4 tc ba br3 clickable" ng-class="{'b--light-silver': company.isFollowing, 'b--white': !company.isFollowing}">
+          <div class="pr0">
+            <img class="img-rounded" ng-src="{{company.logo}}" alt="{{company.name}}">
           </div>
-          <span class="label ba black f3 v-mid ml4 tc">
+          <p class="text-muted mt3 mb1">{{ (company.legal_name.toLowerCase().indexOf(company.display_name.toLowerCase()) !== -1 ? company.legal_name : company.display_name) || company.display_name }}</p>
+          <h4 class="mb0 mt1">
             <span class="text-primary">{{ company.job_count }}</span>
-            <span class="f5">jobs</span>
-          </span>
-        </div>
+            <small class="black">jobs</small>
+          </h4>
+        </article>
       </li>
     </ul>
   </section>

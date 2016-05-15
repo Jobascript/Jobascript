@@ -40,7 +40,7 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
     resolve: {
       topCompanies: function (Company) {
         return Company.getCompanies({
-          size: 5,
+          size: 10,
           hasjobs: true,
           description: true,
           orderby: 'job_count:true'
@@ -48,12 +48,14 @@ exports.config = function ($urlRouterProvider, $stateProvider) {
       }
     },
     controller: require('./pages/getting-started/controller.js'),
-    template: require('./pages/getting-started/index.html')
+    template: require('./pages/getting-started/index.html'),
+    authorize: false
   });
 
   $stateProvider.state('auth', {
     url: '/auth',
-    template: require('./auth.html')
+    template: require('./auth.html'),
+    authorize: false
   });
 };
 
@@ -75,6 +77,10 @@ exports.listen = function ($rootScope, User, $state) {
         // if no company goto start
         $state.transitionTo('start', {}, { reload: true });
       }
+    }
+    if (toState.authorize === false && User.getToken()) {
+      console.log('>>> ', User.getToken());
+      $state.go('home');
     }
   });
 };
