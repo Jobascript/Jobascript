@@ -14,7 +14,7 @@ app.provider('User', require('./shared/UserProvider.js'));
 
 app.config(function (UserProvider, $httpProvider, jwtInterceptorProvider, ngToastProvider) {
   var token = localStorage.getItem('token');
-  console.log('from localStorage: ', token);
+  // console.log('from localStorage: ', token);
 
   if (token) {
     UserProvider.setToken(token);
@@ -42,6 +42,17 @@ app.directive('authWidget', require('./shared/auth_widget/authDirective.js'));
 app.controller('topnavCtrl', require('./shared/topnav/topnavCtrl.js'));
 app.controller('sidebarCtrl', require('./shared/sidebar/sidebarCtrl.js'));
 
+app.directive('autofocus', ['$timeout', function ($timeout) {
+  return {
+    restrict: 'A',
+    link: function ($scope, $element) {
+      $timeout(function () {
+        $element[0].focus();
+      });
+    }
+  };
+}]);
+
 require('angular-jwt');
 require('angular-ui-router');
 require('ng-toast');
@@ -58,15 +69,3 @@ require('tachyons/css/tachyons.min.css');
 require('./shared/layout.css');
 
 angular.bootstrap(document, ['jobascript']);
-
-// var googleScript = window.document.createElement('script');
-// googleScript.onload = function () {
-//   console.log('gapi');
-//   angular.bootstrap(document, ['jobascript']);
-// };
-// googleScript.setAttribute('src', 'https://apis.google.com/js/client.js');
-// googleScript.setAttribute('id', 'onetime');
-
-// if (!window.document.getElementById('onetime')) {
-//   window.document.head.appendChild(googleScript);
-// }

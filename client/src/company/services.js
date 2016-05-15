@@ -8,6 +8,11 @@ module.exports = function ($http) {
 
     return $http.get(clearbitUrl, {
       params: { query: queryStr }
+    })
+    .then(function (resp) {
+      return resp.data.filter(function (com) {
+        return !!(com.name && com.logo && com.domain); // exclude incomplete data
+      });
     });
   };
 
@@ -75,7 +80,9 @@ module.exports = function ($http) {
   };
 
   var follow = function (company) {
-    return $http.post('/api/user/companies/' + company.id);
+    console.log(company);
+    var param = company.id || company.domain;
+    return $http.post('/api/user/companies/' + param);
   };
 
   return {

@@ -38,7 +38,7 @@ module.exports = function () {
       .then(function (resp) {
         // token
         saveToken(resp.data.token);
-        console.log('created a temp usr, token: ', resp.data.token);
+        // console.log('created a temp usr, token: ', resp.data.token);
         return resp.data;
       }, function (resp) {
         // 302 (Found) - user already exists
@@ -51,13 +51,13 @@ module.exports = function () {
         return newUser;
       })
       .catch(function (reason) {
-        console.log('failed creating a new user: ', reason);
+        // console.log('failed creating a new user: ', reason);
         return reason;
       });
     }
 
     function getCompanies() {
-      console.log('user.getcom: ', TOKEN, jwtHelper.decodeToken(TOKEN));
+      // console.log('user.getcom: ', TOKEN, jwtHelper.decodeToken(TOKEN));
       var promise = Promise.resolve([]);
 
       if (TOKEN) {

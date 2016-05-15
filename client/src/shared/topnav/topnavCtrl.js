@@ -58,7 +58,7 @@ module.exports = function ($scope, Company, $state, companies, User, ngToast) {
       }).then(function (id) {
         $state.go('company', { id: id });
       }).catch(function (why) {
-        console.log('shit: ', why);
+        console.error('err: ', why);
       });
     } else {
       $state.go('company', companyExist, { reload: true });
@@ -76,8 +76,8 @@ module.exports = function ($scope, Company, $state, companies, User, ngToast) {
     }
 
     Company.suggest(queryStr)
-    .then(function (resp) {
-      $scope.suggestions = resp.data;
+    .then(function (coms) {
+      $scope.suggestions = coms;
     });
   }
 

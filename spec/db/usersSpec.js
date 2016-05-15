@@ -91,7 +91,8 @@ describe('Database Users', function () {
 
   describe('Follow and Unfollow Company', function () {
     it('Takes userID and companyID and link them', function () {
-      return usersTable.followCompany(userID, companyID).should.be.fulfilled;
+      return usersTable.followCompany({ id: userID }, { id: companyID })
+      .should.be.fulfilled;
     });
 
     it('Unfollow Company', function () {
@@ -101,7 +102,8 @@ describe('Database Users', function () {
 
   describe('User specific companies list', function () {
     before(function (done) {
-      usersTable.followCompany(userID, companyID).then(function () {
+      usersTable.followCompany({ id: userID }, { id: companyID })
+      .then(function () {
         done();
       });
     });

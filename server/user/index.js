@@ -2,15 +2,17 @@ var db = require('../../server/database').usersTable;
 var auth = require('../auth');
 
 exports.followCompany = function (req, res) {
-  var userID = req.user.id;
-  var companyID = req.params.company_id;
+  // var userID = req.user.id;
+  var company = !isNaN(Number(req.params.company_id)) ?
+  { id: req.params.company_id } : { domain: req.params.company_id };
 
-  if (!companyID) {
+  if (!company.domain && !company.id) {
     res.status(400).send('company ID is required');
     return;
   }
 
-  db.followCompany(userID, companyID).then(function () {
+  db.followCompany(req.user, company)
+  .then(function () {
     res.sendStatus(200);
   }).catch(function (reason) {
     res.sendStatus(500);

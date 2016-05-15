@@ -143,21 +143,20 @@ module.exports = function (db) {
     });
   };
 
-  Users.followCompany = function (userID, companyID) {
+  Users.followCompany = function (user, company) {
     var table = 'users_companies';
 
     var sqlStr = [
       'INSERT INTO ${table~}',
       '(user_id, company_id)',
-      'VALUES ( ${userID}, ${companyID} );'
+      'VALUES ( ${userID},',
+      company.id ? '$$' + company.id + '$$);' :
+      '(SELECT id FROM companies WHERE domain=$$' + company.domain + '$$));'
     ].join(' ');
 
     return db.none(sqlStr, {
       table: table,
-      userID: userID,
-      companyID: companyID
-    }).catch(function (err) {
-      return Promise.reject(err);
+      userID: user.id
     });
   };
 
