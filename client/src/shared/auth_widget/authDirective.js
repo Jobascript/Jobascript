@@ -12,23 +12,25 @@ module.exports = function (User) {
         $scope.isSignupMode = !$scope.isSignupMode;
       };
 
-      $scope.signupOrLogin = function () {
-        console.log('$scope.isSignupMode', $scope.isSignupMode);
-        console.log('form submit', $scope.isSignupMode ? 'signup' : 'login');
-        if ($scope.isSignupMode) {
-          User.signup($scope.user).then(function (token) {
-            console.log('Full user created, token: ', token);
-            ngToast.success('<strong>signup succuess:</strong> Welcome ' +
-                            $scope.user.username + '!');
-            $state.go($state.current, {}, { reload: true });
-          })
-          .catch(function (reason) {
-            console.log('signup failed: ', reason);
-            ngToast.danger('<strong>signup failed:</strong> ' +
-                           reason.data || reason.statusText || reason);
-          });
+      $scope.signupOrLogin = function (form) {
+        if (form.$valid) {
+          if ($scope.isSignupMode) {
+            User.signup($scope.user).then(function (token) {
+              console.log('Full user created, token: ', token);
+              ngToast.success('<strong>signup succuess:</strong> Welcome ' +
+                              $scope.user.username + '!');
+              $state.go($state.current, {}, { reload: true });
+            })
+            .catch(function (reason) {
+              console.log('signup failed: ', reason);
+              ngToast.danger('<strong>signup failed:</strong> ' +
+                             reason.data || reason.statusText || reason);
+            });
+          } else {
+            login();
+          }
         } else {
-          login();
+          ngToast.danger('Please enter email and password');
         }
       };
 

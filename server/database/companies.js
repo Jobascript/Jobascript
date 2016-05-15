@@ -94,7 +94,15 @@ module.exports = function (db) {
    * @return {Object} a company object
    */
   Companies.getCompany = function (args) {
-    var sqlStr = 'SELECT * FROM ${table~} WHERE ' + helpers.toSqlString(args, 'OR') + ';';
+    var sqlStr = [
+      'SELECT *,',
+      '(SELECT count(*) FROM jobs WHERE company_id = companies.id)',
+      'AS job_count,',
+      '(SELECT count(*) FROM users_companies WHERE company_id = companies.id)',
+      'AS follow_count',
+      'FROM ${table~}',
+      'WHERE ' + helpers.toSqlString(args, 'OR') + ';'
+    ].join(' ');
 
     return db.one(sqlStr, {
       table: TABLE_NAME
