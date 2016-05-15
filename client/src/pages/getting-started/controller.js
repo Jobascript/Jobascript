@@ -4,10 +4,11 @@ var _ = require('underscore');
 var style = require('./getting-started.css');
 
 module.exports = function ($scope, topCompanies, User, Company, $state) {
+  var topCompaniesCache;
   $scope.style = style;
   $scope.numOfFollows = '';
   var toFollow = {};
-  $scope.topCompanies = topCompanies;
+  $scope.topCompanies = topCompaniesCache = topCompanies;
   $scope.getLength = function () {
     return Object.keys(toFollow).length;
   };
@@ -46,13 +47,18 @@ module.exports = function ($scope, topCompanies, User, Company, $state) {
     }
 
     Company.suggest(queryStr)
-    .then(function (resp) {
-      var suggestedCompanies = resp.data;
+    .then(function (suggestedCompanies) {
       $scope.topCompanies = $scope.topCompanies.filter(function (company) {
-        return _.contains(Object.keys(toFollow), company.id); // keep selected companies
-      }).concat(suggestedCompanies);
+        return _.contains(Object.keys(toFollow), company.domain); // keep selected companies
+      }).concat(suggestedCompanies.filter(function (sCom) {
+        return !_.contains(Object.keys(toFollow), sCom.domain);// exclude selected companies
+      }));
     });
   }, 200);
+
+  $scope.$watch('searchTerm', function (newVal, oldVal) {
+    if (newVal === '') $scope.topCompanies = topCompaniesCache;
+  });
 };
 
 require('./getting-started.css');

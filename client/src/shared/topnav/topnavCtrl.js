@@ -76,8 +76,8 @@ module.exports = function ($scope, Company, $state, companies, User, ngToast) {
     }
 
     Company.suggest(queryStr)
-    .then(function (resp) {
-      $scope.suggestions = resp.data;
+    .then(function (coms) {
+      $scope.suggestions = coms;
     });
   }
 

@@ -8,6 +8,11 @@ module.exports = function ($http) {
 
     return $http.get(clearbitUrl, {
       params: { query: queryStr }
+    })
+    .then(function (resp) {
+      return resp.data.filter(function (com) {
+        return !!(com.name && com.logo && com.domain);
+      });
     });
   };
 
