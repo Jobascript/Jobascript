@@ -157,8 +157,6 @@ module.exports = function (db) {
     return db.none(sqlStr, {
       table: table,
       userID: user.id
-    }).catch(function (err) {
-      return Promise.reject(err);
     });
   };
 
