@@ -61,20 +61,25 @@ module.exports = function ($scope, topCompanies, User, Company, $state) {
       });
 
       return $scope.topCompanies;
+    })
+    .then(function (freshTopComs) {
+      var noJobs = freshTopComs.filter(function (allComs) {
+        return allComs.job_count === undefined;
+      });
+      return Promise.map(noJobs, function (com) {
+        return Company.getCompany(com.domain, true)
+        .then(function (inDB) {
+          $scope.topCompanies = $scope.topCompanies.map(function (comOnPage) {
+            if (comOnPage.domain === inDB.domain) {
+              comOnPage = inDB; // switch with full company
+            }
+            return comOnPage;
+          });
+        }, function (comNotInDB) {
+          console.log('comNotInDB ', comNotInDB);
+        });
+      });
     });
-    // .then(function (freshTopComs) {
-    //   var noJobs = freshTopComs.filter(function (allComs) {
-    //     return allComs.job_count === undefined;
-    //   });
-    //   return Promise.map(noJobs, function (com) {
-    //     return Company.getCompany(com.domain, true);
-    //   });
-    // })
-    // .then(function (companiesWithJobs) {
-    //   console.log('companiesWithJobs ', companiesWithJobs);
-    // }, function (comNotInDB) {
-    //   console.log('comNotInDB ', comNotInDB);
-    // });
   }, 200);
 
   $scope.$watch('searchTerm', function (newVal, oldVal) {
