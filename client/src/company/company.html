@@ -1,4 +1,4 @@
-<section>
+<section class="mw9">
   <section class="mb5 mt4">
     <div class="media dib w-60 v-mid">
       <div class="media-left media-middle pr0">
@@ -30,7 +30,7 @@
           <li ui-sref-active="active"><a ui-sref="news()">News</a></li>
         </ul>
       </div>
-    </div><p class="dib v-mid pl4 w-40">{{ company.description || 'Description Coming Soon' }}</p>
+    </div><blockquote ng-if="company.description" ng-init="descLimit = 140" class="dib v-mid pl4 w-40" ng-click="descLimit = descLimit ? undefined : 140" ng-class="{'clickable': descLimit}">{{ company.description | limitTo:descLimit}}{{descLimit ? ' ...' : ''}}</blockquote>
   </section>
-  <section class="mw9" ui-view></section>
+  <section ui-view></section>
 </section>
