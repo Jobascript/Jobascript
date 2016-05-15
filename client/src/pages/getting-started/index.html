@@ -12,7 +12,7 @@
   </section>
   <section class="mw9 center pt4">
     <ul class="list pa0 ma0">
-      <li class="w-20 dib v-mid" ng-repeat="company in topCompanies" ng-click="toFollow(company)">
+      <li class="w-20 dib v-mid" ng-repeat="company in topCompanies track by company.domain" ng-click="toFollow(company)">
         <article class="ma2 pa4 tc ba bw2 b--dashed br3 clickable" ng-class="{'b--light-silver': company.isFollowing, 'b--white': !company.isFollowing}">
           <div class="pr0">
             <img class="img-rounded" ng-src="{{company.logo}}" alt="{{company.name}}">

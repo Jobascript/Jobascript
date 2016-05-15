@@ -78,9 +78,9 @@ exports.listen = function ($rootScope, User, $state) {
         $state.transitionTo('start', {}, { reload: true });
       }
     }
-    if (toState.authorize === false && User.getToken()) {
-      console.log('>>> ', User.getToken());
-      $state.go('home');
-    }
+    // if (toState.authorize === false && User.getToken()) {
+    //   console.log('>>> ', User.getToken());
+    //   $state.go('home');
+    // }
   });
 };

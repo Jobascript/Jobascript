@@ -11,11 +11,12 @@ module.exports = function ($scope, topCompanies, User, Company, $state) {
   $scope.getLength = function () {
     return Object.keys(toFollow).length;
   };
+
   $scope.continue = function () {
     console.log(toFollow);
     User.createTempUser().then(function () {
-      return Promise.map(Object.keys(toFollow), function (id) {
-        return Company.follow({ id: id });
+      return Promise.map(Object.keys(toFollow), function (domain) {
+        return Company.follow({ domain: domain });
       });
     })
     .then(function () {
@@ -28,14 +29,15 @@ module.exports = function ($scope, topCompanies, User, Company, $state) {
     if (company.isFollowing) {
       len -= 1;
       company.isFollowing = false;
-      delete toFollow[company.id];
+      delete toFollow[company.domain];
       $scope.numOfFollows = inflection.inflect(len + ' company', Object.keys(toFollow).length);
     } else {
       len += 1;
       company.isFollowing = true;
-      toFollow[company.id] = true;
+      toFollow[company.domain] = true;
       $scope.numOfFollows = inflection.inflect(len + ' company', Object.keys(toFollow).length);
     }
+    console.log(toFollow);
   };
 
   $scope.suggest = _.debounce(function (queryStr) {
@@ -45,7 +47,10 @@ module.exports = function ($scope, topCompanies, User, Company, $state) {
 
     Company.suggest(queryStr)
     .then(function (resp) {
-      $scope.topCompanies = resp.data;
+      var suggestedCompanies = resp.data;
+      $scope.topCompanies = $scope.topCompanies.filter(function (company) {
+        return _.contains(Object.keys(toFollow), company.id); // keep selected companies
+      }).concat(suggestedCompanies);
     });
   }, 200);
 };

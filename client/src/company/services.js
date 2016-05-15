@@ -75,7 +75,9 @@ module.exports = function ($http) {
   };
 
   var follow = function (company) {
-    return $http.post('/api/user/companies/' + company.id);
+    console.log(company);
+    var param = company.id || company.domain;
+    return $http.post('/api/user/companies/' + param);
   };
 
   return {
