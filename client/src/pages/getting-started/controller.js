@@ -75,7 +75,7 @@ module.exports = function ($scope, topCompanies, User, Company, $state) {
             }
             return comOnPage;
           });
-        }, function (comNotInDB) {
+        }, function () {
           var name = inflection
           .dasherize(
             angular
@@ -95,7 +95,7 @@ module.exports = function ($scope, topCompanies, User, Company, $state) {
     });
   }, 200);
 
-  $scope.$watch('searchTerm', function (newVal, oldVal) {
+  $scope.$watch('searchTerm', function (newVal) {
     if (newVal === '') $scope.topCompanies = topCompaniesCache;
   });
 };
