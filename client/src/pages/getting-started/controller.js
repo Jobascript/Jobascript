@@ -76,6 +76,18 @@ module.exports = function ($scope, topCompanies, User, Company, $state) {
             return comOnPage;
           });
         }, function (comNotInDB) {
+          var name = inflection
+          .dasherize(
+            angular
+            .lowercase(com.name)
+            .replace(/[^0-9a-zA-Z\s]/g, '')
+          );
+
+          angular.extend(com, {
+            name: name,
+            displayName: com.name
+          });
+
           Company.addCompany(com);
           // console.log('comNotInDB ', comNotInDB);
         });
