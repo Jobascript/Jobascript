@@ -76,7 +76,8 @@ module.exports = function ($scope, topCompanies, User, Company, $state) {
             return comOnPage;
           });
         }, function (comNotInDB) {
-          console.log('comNotInDB ', comNotInDB);
+          Company.addCompany(com);
+          // console.log('comNotInDB ', comNotInDB);
         });
       });
     });
